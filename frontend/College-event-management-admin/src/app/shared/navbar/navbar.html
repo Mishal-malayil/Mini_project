@@ -1,0 +1,43 @@
+<nav class="topbar">
+
+    <div>
+        <h4 class="page-title">ADMIN PANEL </h4>
+    </div>
+
+    <div class="topbar-actions">
+
+        <div class="search-box">
+            <i class="bi bi-search"></i>
+            <input type="text" placeholder="Search students, events…">
+        </div>
+
+        <button class="icon-btn" title="Notifications">
+            <i class="bi bi-bell"></i>
+            <span class="dot"></span>
+        </button>
+
+        <div class="divider"></div>
+
+        <div class="user-chip">
+    <div class="avatar">
+        {{ admin?.name?.charAt(0).toUpperCase() }}
+    </div>
+
+    <div class="user-meta">
+        <p class="user-name">
+            {{ admin?.name }}
+        </p>
+
+        <p class="user-role">
+            Administrator
+        </p>
+    </div>
+</div>
+
+        <button class="btn-logout" title="Logout">
+            <i class="bi bi-box-arrow-right"></i>
+        </button>
+
+    </div>
+
+</nav>

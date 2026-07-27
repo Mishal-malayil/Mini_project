@@ -1,0 +1,365 @@
+<div class="container-fluid">
+
+    <!-- Header -->
+    <div class="page-header d-flex justify-content-between align-items-center">
+
+        <div>
+            <h3>Students</h3>
+            <p class="text-muted mb-0">
+                Manage all registered students
+            </p>
+        </div>
+
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#studentModal">
+            <i class="bi bi-plus-circle me-2"></i>
+            Add Student
+        </button>
+
+    </div>
+
+    <!-- Table Card -->
+    <div class="card">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table student-table table-hover">
+
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Department</th>
+                            <th scope="col">Semester</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr *ngFor="let student of students; let i = index">
+
+                            <td>{{ i + 1 }}</td>
+
+                            <td>
+                                <strong>{{ student.name }}</strong>
+                            </td>
+
+                            <td>{{ student.email }}</td>
+
+                            <td>{{ student.phone }}</td>
+
+                            <td>{{ student.department }}</td>
+
+                            <td>{{ student.semester }}</td>
+
+                            <td class="text-center">
+
+                                <button class="btn btn-info btn-sm me-2" data-bs-toggle="modal"
+                                    data-bs-target="#viewStudentModal" (click)="viewStudent(student.id)">
+
+                                    <i class="bi bi-eye"></i>
+
+                                </button>
+
+                                <button class="btn btn-success btn-sm me-2" data-bs-toggle="modal"
+                                    data-bs-target="#editStudentModal" (click)="editStudent(student.id)">
+
+                                    <i class="bi bi-pencil"></i>
+
+                                </button>
+
+                                <button class="btn btn-danger btn-sm" (click)="deleteStudent(student.id)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+                <form #studentForm="ngForm" (ngSubmit)="addStudent()">
+
+                    <div class="modal fade" id="studentModal">
+
+                        <div class="modal-dialog">
+
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+
+                                    <h5>Add Student</h5>
+
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                                    </button>
+
+                                </div>
+
+                                <div class="modal-body">
+
+                                    <!-- Name -->
+                                    <div class="mb-3">
+
+                                        <label>Name</label>
+
+                                        <input type="text" class="form-control" name="name" [(ngModel)]="student.name"
+                                            #name="ngModel" required minlength="3">
+
+                                        <small class="text-danger" *ngIf="name.invalid && name.touched">
+                                            Name is required (minimum 3 characters).
+                                        </small>
+
+                                    </div>
+
+                                    <!-- Email -->
+                                    <div class="mb-3">
+
+                                        <label>Email</label>
+
+                                        <input type="email" class="form-control" name="email"
+                                            [(ngModel)]="student.email" #email="ngModel" required email>
+
+                                        <small class="text-danger" *ngIf="email.invalid && email.touched">
+                                            Enter a valid email.
+                                        </small>
+
+                                    </div>
+
+                                    <!-- Phone -->
+                                    <div class="mb-3">
+
+                                        <label>Phone</label>
+
+                                        <input type="text" class="form-control" name="phone" [(ngModel)]="student.phone"
+                                            #phone="ngModel" required pattern="^[0-9]{10}$">
+
+                                        <small class="text-danger" *ngIf="phone.invalid && phone.touched">
+                                            Phone must contain exactly 10 digits.
+                                        </small>
+
+                                    </div>
+
+                                    <!-- Department -->
+                                    <div class="mb-3">
+
+                                        <label>Department</label>
+
+                                        <input type="text" class="form-control" name="department"
+                                            [(ngModel)]="student.department" #department="ngModel" required>
+
+                                        <small class="text-danger" *ngIf="department.invalid && department.touched">
+                                            Department is required.
+                                        </small>
+
+                                    </div>
+
+                                    <!-- Semester -->
+                                    <div class="mb-3">
+
+                                        <label>Semester</label>
+
+                                        <input type="text" class="form-control" name="semester"
+                                            [(ngModel)]="student.semester" #semester="ngModel" required min="1" max="8">
+
+                                        <small class="text-danger" *ngIf="semester.invalid && semester.touched">
+                                            Semester must be between 1 and 8.
+                                        </small>
+
+                                    </div>
+
+                                    <!-- Password -->
+                                    <div class="mb-3">
+
+                                        <label>Password</label>
+
+                                        <input type="password" class="form-control" name="password"
+                                            [(ngModel)]="student.password" #password="ngModel" required minlength="6">
+
+                                        <small class="text-danger" *ngIf="password.invalid && password.touched">
+                                            Password must be at least 6 characters.
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="modal-footer">
+
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                        Cancel
+                                    </button>
+
+                                    <button type="submit" class="btn btn-success" [disabled]="studentForm.invalid">
+                                        Save Student
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </form>
+                <div class="modal fade" id="viewStudentModal">
+
+                    <div class="modal-dialog modal-lg">
+
+                        <div class="modal-content">
+
+                            <div class="modal-header bg-primary text-white">
+
+                                <h5>Student Details</h5>
+
+                                <button class="btn-close btn-close-white" data-bs-dismiss="modal">
+                                </button>
+
+                            </div>
+
+                            <div class="modal-body">
+
+                                <table class="table table-bordered">
+
+                                    <tr>
+                                        <th width="35%">Name</th>
+                                        <td>{{selectedStudent.name}}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Email</th>
+                                        <td>{{selectedStudent.email}}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Phone</th>
+                                        <td>{{selectedStudent.phone}}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Department</th>
+                                        <td>{{selectedStudent.department}}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Semester</th>
+                                        <td>{{selectedStudent.semester}}</td>
+                                    </tr>
+
+                                </table>
+
+                            </div>
+
+                            <div class="modal-footer">
+
+                                <button class="btn btn-secondary" data-bs-dismiss="modal">
+
+                                    Close
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal fade" id="editStudentModal">
+
+                    <div class="modal-dialog modal-lg">
+
+                        <div class="modal-content">
+
+                            <div class="modal-header bg-success text-white">
+
+                                <h5>Edit Student</h5>
+
+                                <button class="btn-close btn-close-white" data-bs-dismiss="modal">
+                                </button>
+
+                            </div>
+
+                            <div class="modal-body">
+
+                                <div class="row">
+
+                                    <div class="col-md-6 mb-3">
+
+                                        <label>Name</label>
+
+                                        <input type="text" class="form-control" [(ngModel)]="editStudentData.name">
+
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+
+                                        <label>Email</label>
+
+                                        <input type="email" class="form-control" [(ngModel)]="editStudentData.email">
+
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+
+                                        <label>Phone</label>
+
+                                        <input type="text" class="form-control" [(ngModel)]="editStudentData.phone">
+
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+
+                                        <label>Department</label>
+
+                                        <input type="text" class="form-control"
+                                            [(ngModel)]="editStudentData.department">
+
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+
+                                        <label>Semester</label>
+
+                                        <input type="text" class="form-control" [(ngModel)]="editStudentData.semester">
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+
+                                <button class="btn btn-secondary" data-bs-dismiss="modal">
+
+                                    Cancel
+
+                                </button>
+
+                                <button class="btn btn-success" (click)="updateStudent()">
+
+                                    Update Student
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

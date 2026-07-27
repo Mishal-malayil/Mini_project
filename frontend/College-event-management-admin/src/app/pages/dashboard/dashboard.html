@@ -1,0 +1,97 @@
+<div class="container-fluid">
+
+  <div class="dash-header">
+    <div>
+      <h3 class="dash-title">Dashboard</h3>
+      <p class="dash-sub">Overview of students, coordinators and event activity</p>
+    </div>
+<div class="dash-date">
+  {{ $any('x'.constructor.constructor('return new Date()')()) | date:'EEEE, MMMM d, y' }}
+</div>  </div>
+
+  <!-- Top-level totals -->
+  <div class="row">
+
+    <div class="col-4">
+      <div class="stat-card v-students">
+        <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
+        <p class="stat-label">Total Students</p>
+        <h2 class="stat-value">{{ dashboard.total_students | number }}</h2>
+      </div>
+    </div>
+
+    <div class="col-4">
+      <div class="stat-card v-coordinators">
+        <div class="stat-icon"><i class="bi bi-person-workspace"></i></div>
+        <p class="stat-label">Coordinators</p>
+        <h2 class="stat-value">{{ dashboard.total_coordinators | number }}</h2>
+      </div>
+    </div>
+
+    <div class="col-4">
+      <div class="stat-card v-events">
+        <div class="stat-icon"><i class="bi bi-calendar-event"></i></div>
+        <p class="stat-label">Total Events</p>
+        <h2 class="stat-value">{{ dashboard.total_events | number }}</h2>
+      </div>
+    </div>
+
+    <div class="col-4">
+      <div class="stat-card v-registrations">
+        <div class="stat-icon"><i class="bi bi-journal-check"></i></div>
+        <p class="stat-label">Registrations</p>
+        <h2 class="stat-value">{{ dashboard.total_registrations | number }}</h2>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Event status breakdown -->
+  <div class="row">
+    <div class="col-12">
+      <div class="section-card">
+
+        <div class="section-head">
+          <h5 class="section-title">Event Status Breakdown</h5>
+          <span class="section-total">{{ dashboard.total_events | number }} total events</span>
+        </div>
+
+        <div class="status-bar">
+          <span class="seg-pending" [style.width.%]="(dashboard.pending_events / dashboard.total_events) * 100"></span>
+          <span class="seg-approved" [style.width.%]="(dashboard.approved_events / dashboard.total_events) * 100"></span>
+          <span class="seg-rejected" [style.width.%]="(dashboard.rejected_events / dashboard.total_events) * 100"></span>
+        </div>
+
+        <div class="status-legend">
+
+          <div class="legend-item">
+            <div class="legend-dot dot-pending"><i class="bi bi-hourglass-split"></i></div>
+            <div>
+              <p class="legend-label">Pending</p>
+              <p class="legend-value">{{ dashboard.pending_events | number }}</p>
+            </div>
+          </div>
+
+          <div class="legend-item">
+            <div class="legend-dot dot-approved"><i class="bi bi-check-circle-fill"></i></div>
+            <div>
+              <p class="legend-label">Approved</p>
+              <p class="legend-value">{{ dashboard.approved_events | number }}</p>
+            </div>
+          </div>
+
+          <div class="legend-item">
+            <div class="legend-dot dot-rejected"><i class="bi bi-x-circle-fill"></i></div>
+            <div>
+              <p class="legend-label">Rejected</p>
+              <p class="legend-value">{{ dashboard.rejected_events | number }}</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

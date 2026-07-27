@@ -1,0 +1,83 @@
+<div class="sidebar">
+
+    <div class="brand">
+        <div class="brand-mark">CE</div>
+        <div>
+            <h3 class="brand-name">CEMS</h3>
+            <p class="brand-sub">Campus Events</p>
+        </div>
+    </div>
+
+    <nav class="nav-scroll">
+
+        <p class="nav-group-label">Overview</p>
+        <a routerLink="/dashboard" routerLinkActive="active">
+            <i class="bi bi-speedometer2"></i>
+            <span>Dashboard</span>
+        </a>
+
+        <p class="nav-group-label">People</p>
+        <a routerLink="/students" routerLinkActive="active">
+            <i class="bi bi-people"></i>
+            <span>Students</span>
+        </a>
+        <a routerLink="/coordinators" routerLinkActive="active">
+            <i class="bi bi-person-workspace"></i>
+            <span>Coordinators</span>
+        </a>
+
+        <p class="nav-group-label">Events</p>
+        <a routerLink="/event-categories" routerLinkActive="active">
+            <i class="bi bi-tags"></i>
+            <span>Categories</span>
+        </a>
+        <a routerLink="/events" routerLinkActive="active">
+            <i class="bi bi-calendar-event"></i>
+            <span>Events</span>
+        </a>
+        <a routerLink="/registrations" routerLinkActive="active">
+            <i class="bi bi-journal-check"></i>
+            <span>Registrations</span>
+        </a>
+        <a routerLink="/attendance" routerLinkActive="active">
+            <i class="bi bi-check2-square"></i>
+            <span>Attendance</span>
+        </a>
+        <a routerLink="/results" routerLinkActive="active">
+            <i class="bi bi-award"></i>
+            <span>Results</span>
+        </a>
+
+        <p class="nav-group-label">Engagement</p>
+        <a routerLink="/announcements" routerLinkActive="active">
+            <i class="bi bi-megaphone"></i>
+            <span>Announcements</span>
+        </a>
+
+    </nav>
+
+    <div class="sidebar-footer">
+    <div class="sidebar-user">
+
+        <div class="sidebar-avatar">
+            {{ admin?.name?.charAt(0).toUpperCase() }}
+        </div>
+
+        <div class="sidebar-user-meta">
+            <p class="sidebar-user-name">
+                {{ admin?.name }}
+            </p>
+
+            <p class="sidebar-user-role">
+                Administrator
+            </p>
+        </div>
+
+    </div>
+
+    <span class="sidebar-version">
+        v1.0
+    </span>
+</div>
+
+</div>

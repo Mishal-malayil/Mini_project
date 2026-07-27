@@ -1,0 +1,49 @@
+.login-container {
+
+    height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background: linear-gradient(135deg,#4e73df,#224abe);
+
+}
+
+.login-card{
+
+    width:420px;
+
+    border-radius:15px;
+
+}
+
+.login-icon{
+
+    font-size:70px;
+
+    color:#0d6efd;
+
+}
+
+.card{
+
+    border:none;
+
+}
+
+.form-control{
+
+    height:45px;
+
+}
+
+.btn{
+
+    height:45px;
+
+    font-size:18px;
+
+}
