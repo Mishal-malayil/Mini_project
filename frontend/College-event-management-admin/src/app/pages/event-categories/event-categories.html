@@ -1,1 +1,380 @@
-<p>event-categories works!</p>
+<div class="container-fluid">
+
+    <!-- Header -->
+
+    <div class="page-header d-flex justify-content-between align-items-center">
+
+        <h3>Event Categories</h3>
+
+        <button
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#addCategoryModal">
+
+            <i class="bi bi-plus-circle me-2"></i>
+            Add Category
+
+        </button>
+
+    </div>
+
+    <!-- Table -->
+<div class="card">
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table category-table table-hover align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+                        <th>Category Name</th>
+                        <th>Description</th>
+                        <th width="120">Status</th>
+                        <th width="180">Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let category of categories; let i=index">
+
+                        <td>{{i+1}}</td>
+
+                        <td>{{category.category_name}}</td>
+
+                        <td>{{category.description}}</td>
+
+                        <td>
+                            <span
+                                class="status-badge"
+                                [ngClass]="category.status === 'active' ? 'badge-active' : 'badge-inactive'">
+                                <i class="bi" [ngClass]="category.status === 'active' ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i>
+                                {{ category.status === 'active' ? 'Active' : 'Inactive' }}
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="btn btn-info btn-sm me-2"
+                                data-bs-toggle="modal"
+                                data-bs-target="#viewCategoryModal"
+                                (click)="viewCategory(category.id)">
+
+                                <i class="bi bi-eye"></i>
+
+                            </button>
+
+                            <button
+                                class="btn btn-success btn-sm me-2"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editCategoryModal"
+                                (click)="editCategory(category.id)">
+
+                                <i class="bi bi-pencil"></i>
+
+                            </button>
+
+                            <button
+                                class="btn btn-danger btn-sm"
+                                (click)="deleteCategory(category.id)">
+
+                                <i class="bi bi-trash"></i>
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+</div>
+
+</div>
+
+<!-- ================================================= -->
+<!-- ADD CATEGORY MODAL -->
+<!-- ================================================= -->
+
+<div class="modal fade" id="addCategoryModal">
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <form #categoryForm="ngForm"
+                  (ngSubmit)="addCategory(categoryForm)">
+
+                <div class="modal-header bg-primary text-white">
+
+                    <h5>Add Event Category</h5>
+
+                    <button
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="mb-3">
+
+                        <label>Category Name</label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="category_name"
+                            [(ngModel)]="category.category_name"
+                            required>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>Description</label>
+
+                        <textarea
+                            rows="4"
+                            class="form-control"
+                            name="description"
+                            [(ngModel)]="category.description"
+                            required>
+
+                        </textarea>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="d-block">Status</label>
+
+                        <select
+                            class="form-select"
+                            name="status"
+                            [(ngModel)]="category.status"
+                            required>
+
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                        Cancel
+
+                    </button>
+
+                    <button
+                        class="btn btn-primary"
+                        type="submit">
+
+                        Save Category
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================================================= -->
+<!-- VIEW CATEGORY MODAL -->
+<!-- ================================================= -->
+
+<div class="modal fade" id="viewCategoryModal">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header bg-info text-white">
+
+                <h5>Category Details</h5>
+
+                <button
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <table class="table table-bordered">
+
+                    <tr>
+
+                        <th width="35%">Category Name</th>
+
+                        <td>{{selectedCategory.category_name}}</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>Description</th>
+
+                        <td>{{selectedCategory.description}}</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>Status</th>
+
+                        <td>
+                            <span
+                                class="status-badge"
+                                [ngClass]="selectedCategory.status === 'active' ? 'badge-active' : 'badge-inactive'">
+                                <i class="bi" [ngClass]="selectedCategory.status === 'active' ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i>
+                                {{ selectedCategory.status === 'active' ? 'Active' : 'Inactive' }}
+                            </span>
+                        </td>
+
+                    </tr>
+
+                </table>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+
+                    Close
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================================================= -->
+<!-- EDIT CATEGORY MODAL -->
+<!-- ================================================= -->
+
+<div class="modal fade" id="editCategoryModal">
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <div class="modal-header bg-success text-white">
+
+                <h5>Edit Category</h5>
+
+                <button
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="mb-3">
+
+                    <label>Category Name</label>
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="editCategoryName"
+                        [(ngModel)]="editCategoryData.category_name">
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>Description</label>
+
+                    <textarea
+                        rows="4"
+                        class="form-control"
+                        name="editDescription"
+                        [(ngModel)]="editCategoryData.description">
+
+                    </textarea>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="d-block">Status</label>
+
+                    <select
+                        class="form-select"
+                        name="editStatus"
+                        [(ngModel)]="editCategoryData.status">
+
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+
+                    Cancel
+
+                </button>
+
+                <button
+                    class="btn btn-success"
+                    (click)="updateCategory()"
+                    data-bs-dismiss="modal">
+
+                    <i class="bi bi-check-circle me-2"></i>
+
+                    Update Category
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
