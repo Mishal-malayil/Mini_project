@@ -51,13 +51,23 @@
                         <td>{{category.description}}</td>
 
                         <td>
-                            <span
-                                class="status-badge"
-                                [ngClass]="category.status === 'active' ? 'badge-active' : 'badge-inactive'">
-                                <i class="bi" [ngClass]="category.status === 'active' ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i>
-                                {{ category.status === 'active' ? 'Active' : 'Inactive' }}
-                            </span>
-                        </td>
+   
+    <span
+        class="status-badge"
+        [ngClass]="category.status == 1 ? 'badge-active' : 'badge-inactive'">
+
+        <i
+            class="bi"
+            [ngClass]="category.status == 1 ? 'bi-check-circle-fill' : 'bi-x-circle-fill'">
+        </i>
+
+        {{ category.status == 1 ? 'Active' : 'Inactive' }}
+
+    </span>
+</td>
+
+                            
+                        
 
                         <td>
 
@@ -163,15 +173,15 @@
                         <label class="d-block">Status</label>
 
                         <select
-                            class="form-select"
-                            name="status"
-                            [(ngModel)]="category.status"
-                            required>
+    class="form-select"
+    name="status"
+    [(ngModel)]="category.status"
+    required>
 
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
+    <option [ngValue]="1">Active</option>
+    <option [ngValue]="0">Inactive</option>
 
-                        </select>
+</select>
 
                     </div>
 
@@ -252,11 +262,17 @@
 
                         <td>
                             <span
-                                class="status-badge"
-                                [ngClass]="selectedCategory.status === 'active' ? 'badge-active' : 'badge-inactive'">
-                                <i class="bi" [ngClass]="selectedCategory.status === 'active' ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i>
-                                {{ selectedCategory.status === 'active' ? 'Active' : 'Inactive' }}
-                            </span>
+    class="status-badge"
+    [ngClass]="selectedCategory.status ? 'badge-active' : 'badge-inactive'">
+
+    <i
+        class="bi"
+        [ngClass]="selectedCategory.status ? 'bi-check-circle-fill' : 'bi-x-circle-fill'">
+    </i>
+
+    {{ selectedCategory.status ? 'Active' : 'Inactive' }}
+
+</span>
                         </td>
 
                     </tr>
@@ -336,15 +352,15 @@
 
                     <label class="d-block">Status</label>
 
-                    <select
-                        class="form-select"
-                        name="editStatus"
-                        [(ngModel)]="editCategoryData.status">
+                   <select
+    class="form-select"
+    name="status"
+    [(ngModel)]="editCategoryData.status">
 
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
+  <option [ngValue]="1">Active</option>
+<option [ngValue]="0">Inactive</option>
 
-                    </select>
+</select>
 
                 </div>
 

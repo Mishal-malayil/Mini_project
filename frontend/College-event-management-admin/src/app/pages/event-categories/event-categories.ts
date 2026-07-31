@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { EventCategoryService } from '../../core/services/event-category';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-event-categories',
@@ -26,11 +27,11 @@ export class EventCategories implements OnInit {
   selectedCategory: any = {};
 
   editCategoryData: any = {
-    id: '',
-    category_name: '',
-    description: '',
-    status: 'active'
-  };
+  id: '',
+  category_name: '',
+  description: '',
+  status: ''
+};
 
   constructor(
     private categoryService: EventCategoryService
@@ -46,57 +47,78 @@ export class EventCategories implements OnInit {
 
   loadCategories() {
 
-    this.categoryService.getCategories().subscribe({
+  this.categoryService.getCategories().subscribe({
 
-      next: (res: any) => {
+    next: (res) => {
 
-        this.categories = res;
+      console.log(res);
 
-      },
-
-      error: (err) => {
-
-        console.log(err);
-
-      }
-
-    });
-
-  }
-
-  // Add Category
-
-  addCategory(form: NgForm) {
-
-    if (form.invalid) {
-
-      form.control.markAllAsTouched();
-
-      return;
+      this.categories = res;
 
     }
 
-    this.categoryService.addCategory(this.category).subscribe({
+  });
 
-      next: () => {
+}
 
-        alert("Category Added Successfully");
+  // Add Category
 
-        this.loadCategories();
+  addCategory(categoryForm: NgForm) {
 
-        form.resetForm();
+  if (categoryForm.invalid) {
 
-      },
-
-      error: (err) => {
-
-        console.log(err);
-
-      }
-
+    Swal.fire({
+      icon: 'warning',
+      title: 'Validation Error',
+      text: 'Please fill all required fields.',
+      confirmButtonColor: '#F59E0B'
     });
 
+    return;
+
   }
+
+  this.categoryService.addCategory(this.category).subscribe({
+
+    next: () => {
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Category added successfully.',
+        confirmButtonColor: '#2563EB'
+      });
+
+      this.loadCategories();
+
+      categoryForm.resetForm({
+        status: 1
+      });
+
+      const modal = (window as any).bootstrap.Modal.getInstance(
+        document.getElementById('addCategoryModal')
+      );
+
+      modal?.hide();
+
+    },
+
+    error: (error) => {
+
+  console.log('Validation Error:', error.error);
+
+  Swal.fire({
+    icon: 'error',
+    title: 'Validation Error',
+    text: JSON.stringify(error.error.errors),
+    confirmButtonColor: '#DC2626'
+  });
+
+}
+
+  });
+
+}
 
   // View Category
 
@@ -144,52 +166,56 @@ export class EventCategories implements OnInit {
 
   // Update Category
 
-  updateCategory() {
+updateCategory() {
 
-    this.categoryService.updateCategory(
+  Swal.fire({
+    title: 'Save Changes?',
+    text: 'Do you want to update this category?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, Update',
+    cancelButtonText: 'Cancel',
+    confirmButtonColor: '#2563EB',
+    cancelButtonColor: '#6c757d'
+  }).then((result) => {
 
-      this.editCategoryData.id,
-      this.editCategoryData
+    if (result.isConfirmed) {
 
-    ).subscribe({
-
-      next: () => {
-
-        alert("Category Updated Successfully");
-
-        this.loadCategories();
-
-      },
-
-      error: (err) => {
-
-        console.log(err);
-
-      }
-
-    });
-
-  }
-
-  // Delete Category
-
-  deleteCategory(id: number) {
-
-    if (confirm("Delete this Category?")) {
-
-      this.categoryService.deleteCategory(id).subscribe({
+      this.categoryService.updateCategory(
+        this.editCategoryData.id,
+        this.editCategoryData
+      ).subscribe({
 
         next: () => {
 
-          alert("Category Deleted");
+          const modal = document.getElementById('editCategoryModal');
+
+          if (modal) {
+            const bsModal = (window as any).bootstrap.Modal.getInstance(modal);
+            bsModal?.hide();
+          }
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Updated!',
+            text: 'Category updated successfully.',
+            confirmButtonColor: '#2563EB',
+            timer: 1800,
+            showConfirmButton: false
+          });
 
           this.loadCategories();
 
         },
 
-        error: (err) => {
+        error: () => {
 
-          console.log(err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Update Failed!',
+            text: 'Something went wrong.',
+            confirmButtonColor: '#DC2626'
+          });
 
         }
 
@@ -197,6 +223,59 @@ export class EventCategories implements OnInit {
 
     }
 
-  }
+  });
 
+}
+
+  // Delete Category
+
+  deleteCategory(id: number) {
+
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'You won\'t be able to recover this category!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Yes, Delete',
+    cancelButtonText: 'Cancel',
+    reverseButtons: true
+  }).then((result) => {
+
+    if (result.isConfirmed) {
+
+      this.categoryService.deleteCategory(id).subscribe({
+
+        next: () => {
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Deleted!',
+            text: 'Category deleted successfully.',
+            timer: 1500,
+            showConfirmButton: false
+          });
+
+          this.loadCategories();
+
+        },
+
+        error: () => {
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Failed to delete category.'
+          });
+
+        }
+
+      });
+
+    }
+
+  });
+
+}
 }
