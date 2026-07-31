@@ -39,4 +39,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index']);
 
+    Route::apiResource('events', EventController::class);
+
+Route::put('events/{id}/approve', [EventController::class, 'approve']);
+
+Route::put('events/{id}/reject', [EventController::class, 'reject']);
+
 });

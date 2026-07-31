@@ -59,7 +59,7 @@ class EventCategoryController extends Controller
         $validated = $request->validate([
             'category_name' => 'required|string|max:255|unique:event_categories,category_name,' . $id,
             'description'   => 'nullable|string',
-            'status'        => 'required|boolean',
+            'status' => 'required|boolean',
         ]);
 
         $category->update($validated);
