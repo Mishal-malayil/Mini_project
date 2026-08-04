@@ -1,0 +1,346 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+:host{
+
+    --bg:#F5F6FA;
+    --surface:#FFFFFF;
+    --border:#E6E8F0;
+    --text:#181B27;
+
+    --primary:#2563EB;
+    --success:#059669;
+    --danger:#DC2626;
+    --info:#0284C7;
+
+    display:block;
+    background:var(--bg);
+    padding:48px 40px;
+    min-height:100vh;
+    font-family:'Inter',sans-serif;
+
+}
+
+*{
+
+    box-sizing:border-box;
+
+}
+
+.container-fluid{
+
+    max-width:1200px;
+    margin:auto;
+
+}
+
+/* Header */
+
+.page-header{
+
+    margin-bottom:28px;
+    margin-top:24px;
+
+}
+
+.page-header h3{
+
+    font-family:'Sora',sans-serif;
+    font-size:26px;
+    font-weight:700;
+    color:var(--text);
+
+}
+
+/* Add Button */
+
+.btn-primary{
+
+    background:#2563EB;
+    border:none;
+    border-radius:10px;
+    padding:10px 18px;
+    font-weight:600;
+    transition:.25s;
+
+}
+
+.btn-primary:hover{
+
+    background:#1D4ED8;
+    transform:translateY(-1px);
+
+}
+
+/* Card */
+
+.card{
+
+    border:1px solid var(--border);
+    border-radius:16px;
+    box-shadow:0 8px 25px rgba(0,0,0,.06);
+    overflow:hidden;
+    background:#fff;
+
+}
+
+.card-body{
+
+    padding:0;
+
+}
+
+/* Table */
+
+.table{
+
+    margin:0;
+
+}
+
+.table thead{
+
+    background:#16213E;
+
+}
+
+.table thead th{
+
+    background:#16213E !important;
+    color:#fff;
+    border:none;
+    padding:16px;
+    font-size:13px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+
+}
+
+.table tbody td{
+
+    padding:16px;
+    vertical-align:middle;
+    border-color:#ECECEC;
+    font-size:14px;
+
+}
+
+.table tbody tr:hover{
+
+    background:#F8FAFC;
+
+}
+
+/* Announcement Title */
+
+.announcement-title{
+
+    font-family:'Sora',sans-serif;
+    font-size:15px;
+    font-weight:700;
+    color:#181B27;
+
+}
+
+/* Event Name */
+
+.event-name{
+
+    font-family:'Sora',sans-serif;
+    font-size:14px;
+    font-weight:600;
+    color:#2563EB;
+
+}
+
+/* Action Buttons */
+
+.btn-sm{
+
+    width:38px;
+    height:38px;
+    display:inline-flex;
+    justify-content:center;
+    align-items:center;
+    border:none;
+    border-radius:10px;
+    transition:.25s;
+
+}
+
+.btn-info{
+
+    background:#E0F2FE;
+    color:#0284C7;
+
+}
+
+.btn-info:hover{
+
+    background:#0284C7;
+    color:#fff;
+
+}
+
+.btn-success{
+
+    background:#D1FAE5;
+    color:#059669;
+
+}
+
+.btn-success:hover{
+
+    background:#059669;
+    color:#fff;
+
+}
+
+.btn-danger{
+
+    background:#FEE2E2;
+    color:#DC2626;
+
+}
+
+.btn-danger:hover{
+
+    background:#DC2626;
+    color:#fff;
+
+}
+
+/* Modal */
+
+.modal-content{
+
+    border:none;
+    border-radius:16px;
+    overflow:hidden;
+
+}
+
+.modal-header{
+
+    border-bottom:none;
+
+}
+
+.modal-header h5{
+
+    font-family:'Sora',sans-serif;
+    font-weight:600;
+
+}
+
+.modal-body{
+
+    padding:24px;
+
+}
+
+.modal-body label{
+
+    font-weight:600;
+    color:#374151;
+    margin-bottom:6px;
+
+}
+
+.modal-body .form-control,
+.modal-body .form-select{
+
+    border-radius:10px;
+    border:1px solid #D1D5DB;
+    padding:10px 14px;
+
+}
+
+.modal-body .form-control:focus,
+.modal-body .form-select:focus{
+
+    border-color:#2563EB;
+    box-shadow:0 0 0 .2rem rgba(37,99,235,.15);
+
+}
+
+.modal-footer{
+
+    border-top:none;
+    padding:18px 24px;
+
+}
+
+/* View Modal Table */
+
+.modal-body table{
+
+    margin-bottom:0;
+
+}
+
+.modal-body table th{
+
+    width:35%;
+    background:#F8FAFC;
+    font-weight:600;
+
+}
+
+/* Empty State */
+
+.text-center i{
+
+    color:#94A3B8;
+
+}
+
+/* Responsive */
+
+.table-responsive{
+
+    overflow-x:auto;
+
+}
+
+td:last-child{
+
+    white-space:nowrap;
+
+}
+
+@media(max-width:768px){
+
+    :host{
+
+        padding:24px 16px;
+
+    }
+
+    .page-header{
+
+        flex-direction:column;
+        align-items:flex-start !important;
+        gap:15px;
+
+    }
+
+    .btn-primary{
+
+        width:100%;
+
+    }
+
+    .table{
+
+        min-width:950px;
+
+    }
+
+    .page-header h3{
+
+        font-size:22px;
+
+    }
+
+}

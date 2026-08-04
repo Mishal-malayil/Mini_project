@@ -1,1 +1,415 @@
-<p>announcements works!</p>
+<div class="container-fluid">
+
+    <!-- Header -->
+
+    <div class="page-header d-flex justify-content-between align-items-center">
+
+        <h3>Announcements Management</h3>
+
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAnnouncementModal">
+
+            <i class="bi bi-plus-circle me-2"></i>
+
+            Add Announcement
+
+        </button>
+
+    </div>
+
+    <!-- Table -->
+
+    <div class="card">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Event</th>
+                            <th>Published At</th>
+                            <th width="170">Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr *ngFor="let announcement of announcements; let i=index">
+
+                            <td>{{i+1}}</td>
+
+                            <td>
+
+                                <span class="announcement-title">
+
+                                    {{announcement.title}}
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <span class="event-name">
+
+                                    {{announcement.event?.event_name || 'General'}}
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                {{announcement.published_at | date:'dd-MM-yyyy hh:mm a'}}
+
+                            </td>
+
+                            <td>
+
+                                <button class="btn btn-info btn-sm me-2" data-bs-toggle="modal"
+                                    data-bs-target="#viewAnnouncementModal" (click)="viewAnnouncement(announcement.id)">
+
+                                    <i class="bi bi-eye-fill"></i>
+
+                                </button>
+
+                                <button class="btn btn-success btn-sm me-2" data-bs-toggle="modal"
+                                    data-bs-target="#editAnnouncementModal" (click)="editAnnouncement(announcement.id)">
+
+                                    <i class="bi bi-pencil-fill"></i>
+
+                                </button>
+
+                                <button class="btn btn-danger btn-sm" (click)="deleteAnnouncement(announcement.id)">
+
+                                    <i class="bi bi-trash-fill"></i>
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                        <tr *ngIf="announcements.length==0">
+
+                            <td colspan="5" class="text-center py-5">
+
+                                <i class="bi bi-megaphone fs-1 text-secondary"></i>
+
+                                <h5 class="mt-3">
+
+                                    No Announcements Available
+
+                                </h5>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= ADD MODAL ================= -->
+
+<div class="modal fade" id="addAnnouncementModal">
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <div class="modal-header bg-primary text-white">
+
+                <h5>Add Announcement</h5>
+
+                <button class="btn-close btn-close-white" data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Title
+
+                        </label>
+
+                        <input type="text" class="form-control" [(ngModel)]="announcement.title">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Event
+
+                        </label>
+
+                        <select class="form-select" [(ngModel)]="announcement.event_id">
+
+                            <option value="">General</option>
+
+                            <option *ngFor="let event of events" [value]="event.id">
+
+                                {{event.event_name}}
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-12 mb-3">
+
+                        <label class="form-label">
+
+                            Message
+
+                        </label>
+
+                        <textarea rows="5" class="form-control" [(ngModel)]="announcement.message">
+
+</textarea>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Published Date
+
+                        </label>
+
+                        <input type="datetime-local" class="form-control" [(ngModel)]="announcement.published_at">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button class="btn btn-secondary" data-bs-dismiss="modal">
+
+                    Cancel
+
+                </button>
+
+                <button class="btn btn-primary" (click)="addAnnouncement()">
+
+                    Save Announcement
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= VIEW MODAL ================= -->
+
+<div class="modal fade" id="viewAnnouncementModal">
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <div class="modal-header bg-info text-white">
+
+                <h5>Announcement Details</h5>
+
+                <button class="btn-close btn-close-white" data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <table class="table table-bordered">
+
+                    <tr>
+
+                        <th width="35%">Title</th>
+
+                        <td>{{selectedAnnouncement.title}}</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>Event</th>
+
+                        <td>{{selectedAnnouncement.event?.event_name || 'General'}}</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>Message</th>
+
+                        <td>{{selectedAnnouncement.message}}</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>Published At</th>
+
+                        <td>{{selectedAnnouncement.published_at | date:'dd-MM-yyyy hh:mm a'}}</td>
+
+                    </tr>
+
+                </table>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button class="btn btn-secondary" data-bs-dismiss="modal">
+
+                    Close
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= EDIT MODAL ================= -->
+
+<div class="modal fade" id="editAnnouncementModal">
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <div class="modal-header bg-success text-white">
+
+                <h5>Edit Announcement</h5>
+
+                <button class="btn-close btn-close-white" data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Title
+
+                        </label>
+
+                        <input type="text" class="form-control" [(ngModel)]="selectedAnnouncement.title">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Event
+
+                        </label>
+
+                        <select class="form-select" [(ngModel)]="selectedAnnouncement.event_id">
+
+                            <option value="">General</option>
+
+                            <option *ngFor="let event of events" [value]="event.id">
+
+                                {{event.event_name}}
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-12 mb-3">
+
+                        <label class="form-label">
+
+                            Message
+
+                        </label>
+
+                        <textarea rows="5" class="form-control" [(ngModel)]="selectedAnnouncement.message">
+
+</textarea>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Published Date
+
+                        </label>
+
+                        <input type="datetime-local" class="form-control"
+                            [(ngModel)]="selectedAnnouncement.published_at">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button class="btn btn-secondary" data-bs-dismiss="modal">
+
+                    Cancel
+
+                </button>
+
+                <button class="btn btn-success" (click)="updateAnnouncement()">
+
+                    Update Announcement
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
