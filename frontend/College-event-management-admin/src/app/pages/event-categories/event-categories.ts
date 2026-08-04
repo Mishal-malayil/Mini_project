@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { EventCategoryService } from '../../core/services/event-category';
+import { SearchService } from '../../core/services/search';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -17,6 +18,7 @@ import Swal from 'sweetalert2';
 export class EventCategories implements OnInit {
 
   categories: any[] = [];
+  filteredCategories: any[] = [];
 
   category = {
     category_name: '',
@@ -34,12 +36,29 @@ export class EventCategories implements OnInit {
 };
 
   constructor(
-    private categoryService: EventCategoryService
+    private categoryService: EventCategoryService, private searchService: SearchService
   ) {}
 
   ngOnInit(): void {
 
     this.loadCategories();
+      this.searchService.search$.subscribe(text => {
+
+    console.log("Search:", text);
+
+    this.filteredCategories = this.categories.filter(category =>
+
+      category.category_name.toLowerCase().includes(text.toLowerCase()) ||
+
+      category.description.toLowerCase().includes(text.toLowerCase()) ||
+
+      (category.status ? 'active' : 'inactive')
+        .includes(text.toLowerCase())
+
+    );
+
+  });
+
 
   }
 
@@ -54,6 +73,7 @@ export class EventCategories implements OnInit {
       console.log(res);
 
       this.categories = res;
+      this.filteredCategories = res;
 
     }
 

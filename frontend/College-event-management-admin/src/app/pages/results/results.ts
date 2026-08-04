@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ResultService } from '../../core/services/result';
+import { SearchService } from '../../core/services/search';
 
 @Component({
   selector: 'app-results',
@@ -12,14 +13,41 @@ import { ResultService } from '../../core/services/result';
 export class Results implements OnInit {
 
   results: any[] = [];
+  filteredResults: any[] = [];
 
   selectedResult: any = {};
 
-  constructor(private resultService: ResultService) {}
+  constructor(private resultService: ResultService, private searchService: SearchService) {}
 
   ngOnInit(): void {
 
     this.loadResults();
+    this.searchService.search$.subscribe(text => {
+
+    console.log("Search:", text);
+
+    this.filteredResults = this.results.filter(result =>
+
+      result.registration?.student?.name
+        ?.toLowerCase()
+        .includes(text.toLowerCase()) ||
+
+      result.registration?.event?.event_name
+        ?.toLowerCase()
+        .includes(text.toLowerCase()) ||
+
+      result.position
+        ?.toLowerCase()
+        .includes(text.toLowerCase()) ||
+
+      result.remarks
+        ?.toLowerCase()
+        .includes(text.toLowerCase())
+
+    );
+
+  });
+
 
   }
 
@@ -30,6 +58,7 @@ export class Results implements OnInit {
       next: (res: any) => {
 
         this.results = res;
+        this.filteredResults = res;
 
       },
 

@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StudentService } from '../../core/services/student';
+import { SearchService } from '../../core/services/search';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 
@@ -17,6 +18,7 @@ export class Students implements OnInit {
   editStudentData: any = {};
   isEdit = false;
   students: any[] = [];
+  filteredStudents: any[] = [];
   student = {
     name: '',
     email: '',
@@ -26,13 +28,32 @@ export class Students implements OnInit {
     password: ''
   };
 
-  constructor(@Inject(StudentService) private studentService: StudentService) {}
+  constructor(@Inject(StudentService) private studentService: StudentService, private searchService: SearchService) {}
 
   ngOnInit(): void {
     this.loadStudents();
+     this.searchService.search$.subscribe(text => {
+       console.log('Searching:', text);
+    this.filteredStudents = this.students.filter(student =>
+      student.name.toLowerCase().includes(text.toLowerCase()) ||
+      student.email.toLowerCase().includes(text.toLowerCase()) ||
+      student.department.toLowerCase().includes(text.toLowerCase())
+    );
+     console.log(this.filteredStudents);
+  });
   }
 
   loadStudents() {
+     this.studentService.getStudents().subscribe({
+
+    next: (res:any) => {
+
+      this.students = res;
+      this.filteredStudents = res;
+
+    }
+
+  });
     this.studentService.getStudents().subscribe({
       next: (res) => {
         this.students = res;

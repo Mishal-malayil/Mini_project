@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
+import { SearchService } from '../../core/services/search';
 import { EventService } from '../../core/services/event';
 
 @Component({
@@ -15,16 +16,37 @@ import { EventService } from '../../core/services/event';
 export class Events implements OnInit {
 
   events: any[] = [];
+  filteredEvents: any[] = [];
 
   selectedEvent: any = {};
 
   constructor(
-    private eventService: EventService
+    private eventService: EventService ,  private searchService: SearchService
   ) {}
 
   ngOnInit(): void {
 
     this.loadEvents();
+      this.searchService.search$.subscribe(text => {
+
+    console.log("Search:", text);
+
+    this.filteredEvents = this.events.filter(event =>
+
+      event.event_name.toLowerCase().includes(text.toLowerCase()) ||
+
+      event.venue.toLowerCase().includes(text.toLowerCase()) ||
+
+      event.status.toLowerCase().includes(text.toLowerCase()) ||
+
+      event.category?.category_name.toLowerCase().includes(text.toLowerCase()) ||
+
+      event.coordinator?.name.toLowerCase().includes(text.toLowerCase())
+
+    );
+
+  });
+
 
   }
 
@@ -37,6 +59,7 @@ export class Events implements OnInit {
       next: (res: any) => {
 
         this.events = res;
+        this.filteredEvents = res;
 
       },
 

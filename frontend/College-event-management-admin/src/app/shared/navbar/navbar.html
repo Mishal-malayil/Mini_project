@@ -8,8 +8,13 @@
 
         <div class="search-box">
             <i class="bi bi-search"></i>
-            <input type="text" placeholder="Search students, events…">
-        </div>
+<input
+    type="text"
+    class="form-control"
+    placeholder="Search students, events..."
+    [(ngModel)]="searchText"
+    (keyup)="search()">       
+     </div>
 
         <button class="icon-btn" title="Notifications">
             <i class="bi bi-bell"></i>
@@ -34,7 +39,7 @@
     </div>
 </div>
 
-        <button class="btn-logout" title="Logout">
+        <button class="btn-logout" title="Logout" (click)="logout()">
             <i class="bi bi-box-arrow-right"></i>
         </button>
 

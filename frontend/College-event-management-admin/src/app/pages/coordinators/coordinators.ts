@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CoordinatorService } from '../../core/services/coordinator';
+import { SearchService } from '../../core/services/search';
 import Swal from 'sweetalert2';
 declare var bootstrap:any;
 
@@ -18,6 +19,7 @@ declare var bootstrap:any;
 export class Coordinators implements OnInit {
 
   coordinators:any[]=[];
+  filteredCoordinators: any[] = [];
 
   coordinator:any = {
     id: undefined,
@@ -34,13 +36,29 @@ export class Coordinators implements OnInit {
   isEdit:boolean = false;
 
   editCoordinatorData:any={};
-
-  constructor(private coordinatorService:CoordinatorService){}
+  
+  constructor(private coordinatorService:CoordinatorService ,private searchService: SearchService){}
 
   ngOnInit(): void {
 
     this.loadCoordinators();
 
+     this.searchService.search$.subscribe(text => {
+     console.log('Searching:', text);
+    this.filteredCoordinators = this.coordinators.filter(coordinator =>
+
+      coordinator.name.toLowerCase().includes(text.toLowerCase()) ||
+
+      coordinator.email.toLowerCase().includes(text.toLowerCase()) ||
+
+      coordinator.department.toLowerCase().includes(text.toLowerCase()) ||
+
+      coordinator.designation.toLowerCase().includes(text.toLowerCase())
+
+    );
+     console.log(this.filteredCoordinators);
+  });
+     
   }
 
   loadCoordinators(){
@@ -50,6 +68,7 @@ export class Coordinators implements OnInit {
       next:(res)=>{
 
         this.coordinators=res;
+        this.filteredCoordinators = res;
 
       }
 
