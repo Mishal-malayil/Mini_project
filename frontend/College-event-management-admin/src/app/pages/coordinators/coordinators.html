@@ -71,15 +71,12 @@
 
                                 </button>
 
-                               <button
-    class="btn btn-success btn-sm me-2"
-    (click)="editCoordinator(coordinator)"
-    data-bs-toggle="modal"
-    data-bs-target="#editCoordinatorModal">
+                                <button class="btn btn-success btn-sm me-2" (click)="editCoordinator(coordinator)"
+                                    data-bs-toggle="modal" data-bs-target="#editCoordinatorModal">
 
-    <i class="bi bi-pencil"></i>
+                                    <i class="bi bi-pencil"></i>
 
-</button>
+                                </button>
 
                                 <button class="btn btn-danger btn-sm" (click)="deleteCoordinator(coordinator.id)">
 
@@ -195,7 +192,21 @@
                                         </small>
 
                                     </div>
+                                    <div class="mb-3">
 
+                                        <label class="form-label">Password</label>
+
+                                        <input type="password" class="form-control" name="password"
+                                            [(ngModel)]="coordinator.password" #password="ngModel" required
+                                            minlength="6">
+
+                                        <small class="text-danger" *ngIf="password.invalid && password.touched">
+
+                                            Password must be at least 6 characters.
+
+                                        </small>
+
+                                    </div>
 
 
                                 </div>
@@ -226,110 +237,203 @@
 
                 <div class="modal fade" id="editCoordinatorModal">
 
-    <div class="modal-dialog modal-lg">
+                    <div class="modal-dialog modal-lg">
 
-        <div class="modal-content">
+                        <div class="modal-content">
 
-            <div class="modal-header bg-success text-white">
+                            <div class="modal-header bg-success text-white">
 
-                <h5>Edit Coordinator</h5>
+                                <h5>Edit Coordinator</h5>
 
-                <button
-                    class="btn-close btn-close-white"
-                    data-bs-dismiss="modal">
-                </button>
+                                <button class="btn-close btn-close-white" data-bs-dismiss="modal">
+                                </button>
 
-            </div>
+                            </div>
 
-            <div class="modal-body">
+                            <div class="modal-body">
 
-                <div class="row">
+                                <div class="row">
 
-                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6 mb-3">
 
-                        <label>Name</label>
+                                        <label>Name</label>
 
-                        <input
-                            type="text"
-                            class="form-control"
-                            [(ngModel)]="editCoordinatorData.name">
+                                        <input type="text" class="form-control" [(ngModel)]="editCoordinatorData.name">
 
-                    </div>
+                                    </div>
 
-                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6 mb-3">
 
-                        <label>Email</label>
+                                        <label>Email</label>
 
-                        <input
-                            type="email"
-                            class="form-control"
-                            [(ngModel)]="editCoordinatorData.email">
+                                        <input type="email" class="form-control"
+                                            [(ngModel)]="editCoordinatorData.email">
 
-                    </div>
+                                    </div>
 
-                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6 mb-3">
 
-                        <label>Phone</label>
+                                        <label>Phone</label>
 
-                        <input
-                            type="text"
-                            class="form-control"
-                            [(ngModel)]="editCoordinatorData.phone">
+                                        <input type="text" class="form-control" [(ngModel)]="editCoordinatorData.phone">
 
-                    </div>
+                                    </div>
 
-                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6 mb-3">
 
-                        <label>Department</label>
+                                        <label>Department</label>
 
-                        <input
-                            type="text"
-                            class="form-control"
-                            [(ngModel)]="editCoordinatorData.department">
+                                        <input type="text" class="form-control"
+                                            [(ngModel)]="editCoordinatorData.department">
 
-                    </div>
+                                    </div>
 
-                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6 mb-3">
 
-                        <label>Designation</label>
+                                        <label>Designation</label>
 
-                        <input
-                            type="text"
-                            class="form-control"
-                            [(ngModel)]="editCoordinatorData.designation">
+                                        <input type="text" class="form-control"
+                                            [(ngModel)]="editCoordinatorData.designation">
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+
+                                <button class="btn btn-secondary" data-bs-dismiss="modal">
+
+                                    Cancel
+
+                                </button>
+
+                                <button type="button" class="btn btn-success" (click)="updateCoordinator()">
+
+                                    Update Coordinator
+
+                                </button>
+
+                            </div>
+
+                        </div>
 
                     </div>
 
                 </div>
+                <!-- ================= View Coordinator Modal ================= -->
 
-            </div>
+                <div class="modal fade" id="viewCoordinatorModal" tabindex="-1">
 
-            <div class="modal-footer">
+                    <div class="modal-dialog modal-lg">
 
-                <button
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal">
+                        <div class="modal-content">
 
-                    Cancel
+                            <div class="modal-header bg-primary text-white">
 
-                </button>
+                                <h5 class="modal-title">
+                                    Coordinator Details
+                                </h5>
 
-                <button
-    type="button"
-    class="btn btn-success"
-    (click)="updateCoordinator()">
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
+                                </button>
 
-    Update Coordinator
+                            </div>
 
-</button>
+                            <div class="modal-body">
 
-            </div>
+                                <div class="row">
 
-        </div>
+                                    <div class="col-md-6 mb-3">
 
-    </div>
+                                        <label class="fw-bold text-secondary">
+                                            Name
+                                        </label>
 
-</div>
+                                        <div class="form-control bg-light">
+
+                                            {{ selectedCoordinator.name }}
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+
+                                        <label class="fw-bold text-secondary">
+                                            Email
+                                        </label>
+
+                                        <div class="form-control bg-light">
+
+                                            {{ selectedCoordinator.email }}
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+
+                                        <label class="fw-bold text-secondary">
+                                            Phone
+                                        </label>
+
+                                        <div class="form-control bg-light">
+
+                                            {{ selectedCoordinator.phone }}
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+
+                                        <label class="fw-bold text-secondary">
+                                            Department
+                                        </label>
+
+                                        <div class="form-control bg-light">
+
+                                            {{ selectedCoordinator.department }}
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+
+                                        <label class="fw-bold text-secondary">
+                                            Designation
+                                        </label>
+
+                                        <div class="form-control bg-light">
+
+                                            {{ selectedCoordinator.designation }}
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+
+                                <button class="btn btn-secondary" data-bs-dismiss="modal">
+
+                                    Close
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 

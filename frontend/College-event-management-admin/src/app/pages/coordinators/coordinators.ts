@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CoordinatorService } from '../../core/services/coordinator';
 import Swal from 'sweetalert2';
+declare var bootstrap:any;
 
 @Component({
   selector: 'app-coordinators',
@@ -68,6 +69,11 @@ export class Coordinators implements OnInit {
         text: 'Coordinator added successfully.',
         confirmButtonColor: '#2563EB'
       });
+      const modal = bootstrap.Modal.getInstance(
+  document.getElementById('coordinatorModal')
+);
+
+modal?.hide();
 
       this.loadCoordinators();
 
@@ -141,14 +147,14 @@ editCoordinator(coordinator: any) {
 
 }
 
-  updateCoordinator() {
+ updateCoordinator() {
 
   this.coordinatorService.updateCoordinator(
-    this.coordinator.id,
-    this.coordinator
+    this.editCoordinatorData.id,
+    this.editCoordinatorData
   ).subscribe({
 
-    next: (response) => {
+    next: (response: any) => {
 
       Swal.fire({
         icon: 'success',
@@ -156,20 +162,12 @@ editCoordinator(coordinator: any) {
         text: response.message || 'Coordinator updated successfully.',
         confirmButtonColor: '#2563EB'
       });
+const modal = bootstrap.Modal.getInstance(
+  document.getElementById('editCoordinatorModal')
+);
 
+modal?.hide();
       this.loadCoordinators();
-
-      this.isEdit = false;
-
-      this.coordinator = {
-        id: null,
-        name: '',
-        email: '',
-        phone: '',
-        department: '',
-        designation: '',
-        password: ''
-      };
 
     },
 
@@ -177,9 +175,8 @@ editCoordinator(coordinator: any) {
 
       Swal.fire({
         icon: 'error',
-        title: 'Update Failed!',
-        text: error.error?.message || 'Unable to update coordinator.',
-        confirmButtonColor: '#DC2626'
+        title: 'Update Failed',
+        text: error.error?.message || 'Unable to update coordinator.'
       });
 
     }
@@ -187,7 +184,6 @@ editCoordinator(coordinator: any) {
   });
 
 }
-
   deleteCoordinator(id: number) {
 
   Swal.fire({
