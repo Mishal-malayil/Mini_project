@@ -8,10 +8,13 @@ use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
 {
-    public function index()
-    {
-        return Attendance::with('registration')->get();
-    }
+ public function index()
+{
+    return Attendance::with([
+        'registration.student',
+        'registration.event'
+    ])->get();
+}
 
     public function store(Request $request)
     {
@@ -30,18 +33,20 @@ class AttendanceController extends Controller
     }
 
     public function show($id)
-    {
-        $attendance = Attendance::with('registration')->find($id);
+{
+    $attendance = Attendance::with([
+        'registration.student',
+        'registration.event'
+    ])->find($id);
 
-        if (!$attendance) {
-            return response()->json([
-                'message' => 'Attendance not found'
-            ], 404);
-        }
-
-        return response()->json($attendance);
+    if (!$attendance) {
+        return response()->json([
+            'message' => 'Attendance not found'
+        ], 404);
     }
 
+    return response()->json($attendance);
+}
     public function update(Request $request, $id)
     {
         $attendance = Attendance::find($id);

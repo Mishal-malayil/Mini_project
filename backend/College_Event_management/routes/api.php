@@ -45,4 +45,7 @@ Route::put('events/{id}/approve', [EventController::class, 'approve']);
 
 Route::put('events/{id}/reject', [EventController::class, 'reject']);
 
+Route::get('/registrations', [RegistrationController::class, 'index']);
+Route::get('/registrations/{id}', [RegistrationController::class, 'show']);
+
 });
