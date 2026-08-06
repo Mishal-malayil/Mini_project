@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\Admin\AttendanceController;
 use App\Http\Controllers\Api\Admin\ResultController;
 use App\Http\Controllers\Api\Admin\AnnouncementController;
 use App\Http\Controllers\Api\Admin\DashboardController;
+use App\Http\Controllers\Api\Admin\ProfileController;
 
 
 // Public Route
@@ -47,5 +48,8 @@ Route::put('events/{id}/reject', [EventController::class, 'reject']);
 
 Route::get('/registrations', [RegistrationController::class, 'index']);
 Route::get('/registrations/{id}', [RegistrationController::class, 'show']);
+
+ Route::get('/profile', [ProfileController::class, 'profile']);
+ Route::put('/profile', [ProfileController::class, 'updateProfile']);
 
 });
