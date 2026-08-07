@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -30,4 +31,30 @@ class ProfileController extends Controller
             'admin'   => $admin
         ], 200);
     }
+
+    public function changePassword(Request $request)
+{
+    $admin = $request->user();
+
+    $validated = $request->validate([
+        'current_password' => 'required|string',
+        'new_password' => 'required|string|min:6|confirmed',
+    ]);
+
+    // Check current password
+    if (!Hash::check($validated['current_password'], $admin->password)) {
+
+        return response()->json([
+            'message' => 'Current password is incorrect.'
+        ], 422);
+    }
+
+    // Update password
+    $admin->password = Hash::make($validated['new_password']);
+    $admin->save();
+
+    return response()->json([
+        'message' => 'Password changed successfully.'
+    ], 200);
+}
 }

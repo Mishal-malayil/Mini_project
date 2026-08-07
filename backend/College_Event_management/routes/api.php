@@ -52,4 +52,11 @@ Route::get('/registrations/{id}', [RegistrationController::class, 'show']);
  Route::get('/profile', [ProfileController::class, 'profile']);
  Route::put('/profile', [ProfileController::class, 'updateProfile']);
 
+  Route::get('/profile', [ProfileController::class, 'profile']);
+
+    Route::put('/profile', [ProfileController::class, 'updateProfile']);
+
+    Route::put('/profile/change-password', [ProfileController::class, 'changePassword']);
+
+
 });
