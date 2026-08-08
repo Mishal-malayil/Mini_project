@@ -1,0 +1,209 @@
+<div class="dashboard-page">
+
+    <!-- Header -->
+    <div class="page-header">
+
+        <div>
+            <h2>Coordinator Dashboard</h2>
+            <p>Manage your events and activities</p>
+        </div>
+
+        <div class="coordinator-info">
+
+            <div class="avatar">
+                {{ coordinator?.name?.charAt(0).toUpperCase() }}
+            </div>
+
+            <div>
+                <strong>{{ coordinator?.name }}</strong>
+                <small>Coordinator</small>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Statistics -->
+
+    <div class="stats-grid">
+
+        <!-- Events -->
+        <div class="stat-card">
+
+            <div class="stat-icon blue">
+                <i class="bi bi-calendar-event"></i>
+            </div>
+
+            <div>
+                <h3>0</h3>
+                <p>Total Events</p>
+            </div>
+
+        </div>
+
+
+        <!-- Registrations -->
+        <div class="stat-card">
+
+            <div class="stat-icon green">
+                <i class="bi bi-people"></i>
+            </div>
+
+            <div>
+                <h3>0</h3>
+                <p>Registrations</p>
+            </div>
+
+        </div>
+
+
+        <!-- Attendance -->
+        <div class="stat-card">
+
+            <div class="stat-icon orange">
+                <i class="bi bi-person-check"></i>
+            </div>
+
+            <div>
+                <h3>0</h3>
+                <p>Attendance</p>
+            </div>
+
+        </div>
+
+
+        <!-- Results -->
+        <div class="stat-card">
+
+            <div class="stat-icon purple">
+                <i class="bi bi-trophy"></i>
+            </div>
+
+            <div>
+                <h3>0</h3>
+                <p>Results Published</p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Quick Actions -->
+
+    <div class="section-header">
+
+        <h3>Quick Actions</h3>
+
+        <span>
+            Manage your event activities
+        </span>
+
+    </div>
+
+
+    <div class="actions-grid">
+
+        <!-- Events -->
+
+        <div
+            class="action-card"
+            (click)="goToEvents()"
+        >
+
+            <div class="action-icon blue">
+                <i class="bi bi-calendar-plus"></i>
+            </div>
+
+            <h4>Manage Events</h4>
+
+            <p>
+                Create and manage event schedules and venues.
+            </p>
+
+        </div>
+
+
+        <!-- Registrations -->
+
+        <div
+            class="action-card"
+            (click)="goToRegistrations()"
+        >
+
+            <div class="action-icon green">
+                <i class="bi bi-people"></i>
+            </div>
+
+            <h4>Registrations</h4>
+
+            <p>
+                View and manage participant registrations.
+            </p>
+
+        </div>
+
+
+        <!-- Attendance -->
+
+        <div
+            class="action-card"
+            (click)="goToAttendance()"
+        >
+
+            <div class="action-icon orange">
+                <i class="bi bi-person-check"></i>
+            </div>
+
+            <h4>Attendance</h4>
+
+            <p>
+                Mark and manage participant attendance.
+            </p>
+
+        </div>
+
+
+        <!-- Results -->
+
+        <div
+            class="action-card"
+            (click)="goToResults()"
+        >
+
+            <div class="action-icon purple">
+                <i class="bi bi-trophy"></i>
+            </div>
+
+            <h4>Results</h4>
+
+            <p>
+                Publish event results and winners.
+            </p>
+
+        </div>
+
+
+        <!-- Announcements -->
+
+        <div
+            class="action-card"
+            (click)="goToAnnouncements()"
+        >
+
+            <div class="action-icon cyan">
+                <i class="bi bi-megaphone"></i>
+            </div>
+
+            <h4>Announcements</h4>
+
+            <p>
+                Send notifications and event announcements.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,163 @@
+<aside class="sidebar">
+
+    <!-- LOGO -->
+    <div class="sidebar-header">
+
+        <div class="logo">
+            <i class="bi bi-calendar-event"></i>
+        </div>
+
+        <div class="brand">
+            <h3>College Events</h3>
+            <span>COORDINATOR PANEL</span>
+        </div>
+
+    </div>
+
+
+    <!-- MENU -->
+    <div class="nav-scroll">
+
+        <!-- MAIN -->
+        <div class="menu-section">
+
+            <p class="menu-title">Main</p>
+
+            <a
+                routerLink="/coordinator/dashboard"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                class="menu-item">
+
+                <i class="bi bi-speedometer2"></i>
+                <span>Dashboard</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- EVENT MANAGEMENT -->
+        <div class="menu-section">
+
+            <p class="menu-title">Event Management</p>
+
+            <!-- Create and manage events -->
+            <a
+                routerLink="/coordinator/events"
+                routerLinkActive="active"
+                class="menu-item">
+
+                <i class="bi bi-calendar-event"></i>
+                <span>My Events</span>
+
+            </a>
+
+
+            <!-- Set schedule and venue -->
+            <a
+                routerLink="/coordinator/schedule"
+                routerLinkActive="active"
+                class="menu-item">
+
+                <i class="bi bi-clock"></i>
+                <span>Event Schedule</span>
+
+            </a>
+
+
+            <!-- Manage registrations -->
+            <a
+                routerLink="/coordinator/registrations"
+                routerLinkActive="active"
+                class="menu-item">
+
+                <i class="bi bi-people"></i>
+                <span>Registrations</span>
+
+            </a>
+
+
+            <!-- Mark attendance -->
+            <a
+                routerLink="/coordinator/attendance"
+                routerLinkActive="active"
+                class="menu-item">
+
+                <i class="bi bi-person-check"></i>
+                <span>Attendance</span>
+
+            </a>
+
+
+            <!-- Publish results -->
+            <a
+                routerLink="/coordinator/results"
+                routerLinkActive="active"
+                class="menu-item">
+
+                <i class="bi bi-trophy"></i>
+                <span>Results</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- COMMUNICATION -->
+        <div class="menu-section">
+
+            <p class="menu-title">Communication</p>
+
+            <!-- Send notifications -->
+            <a
+                routerLink="/coordinator/notifications"
+                routerLinkActive="active"
+                class="menu-item">
+
+                <i class="bi bi-bell"></i>
+                <span>Notifications</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- ACCOUNT -->
+        <div class="menu-section">
+
+            <p class="menu-title">Account</p>
+
+            <a
+                routerLink="/coordinator/profile"
+                routerLinkActive="active"
+                class="menu-item">
+
+                <i class="bi bi-person-circle"></i>
+                <span>My Profile</span>
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- FOOTER -->
+    <div class="sidebar-footer">
+
+        <div class="footer-icon">
+            <i class="bi bi-person-badge"></i>
+        </div>
+
+        <div>
+
+            <strong>Coordinator</strong>
+
+            <small>Event Management System</small>
+
+        </div>
+
+    </div>
+
+</aside>

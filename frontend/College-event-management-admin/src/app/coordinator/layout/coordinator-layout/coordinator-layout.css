@@ -1,0 +1,28 @@
+.coordinator-layout {
+    display: flex;
+    min-height: 100vh;
+    background: #f5f7fb;
+}
+
+.main-area {
+    margin-left: 292px;
+    width: calc(100% - 292px);
+    min-height: 100vh;
+}
+
+.page-content {
+    padding-top: 62px;
+    min-height: 100vh;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-bottom: 30px;
+}
+
+@media (max-width: 900px) {
+
+    .main-area {
+        margin-left: 0;
+        width: 100%;
+    }
+
+}

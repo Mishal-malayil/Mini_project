@@ -1,0 +1,132 @@
+<div class="login-page">
+
+    <div class="login-card">
+
+        <!-- Logo / Icon -->
+
+        <div class="login-icon">
+            <i class="bi bi-person-badge-fill"></i>
+        </div>
+
+        <!-- Heading -->
+
+        <h2>Coordinator Login</h2>
+
+        <p class="subtitle">
+            Sign in to manage your events
+        </p>
+
+
+        <!-- Login Form -->
+
+        <form
+            [formGroup]="loginForm"
+            (ngSubmit)="login()"
+        >
+
+            <!-- Email -->
+
+            <div class="form-group">
+
+                <label>
+                    Email Address
+                </label>
+
+                <div class="input-box">
+
+                    <i class="bi bi-envelope"></i>
+
+                    <input
+                        type="email"
+                        placeholder="Enter your email"
+                        formControlName="email"
+                    >
+
+                </div>
+
+                <small
+                    class="error"
+                    *ngIf="
+                        loginForm.get('email')?.touched &&
+                        loginForm.get('email')?.invalid
+                    "
+                >
+                    Please enter a valid email address.
+                </small>
+
+            </div>
+
+
+            <!-- Password -->
+
+            <div class="form-group">
+
+                <label>
+                    Password
+                </label>
+
+                <div class="input-box">
+
+                    <i class="bi bi-lock"></i>
+
+                    <input
+                        type="password"
+                        placeholder="Enter your password"
+                        formControlName="password"
+                    >
+
+                </div>
+
+                <small
+                    class="error"
+                    *ngIf="
+                        loginForm.get('password')?.touched &&
+                        loginForm.get('password')?.invalid
+                    "
+                >
+                    Password is required.
+                </small>
+
+            </div>
+
+
+            <!-- Login Button -->
+
+            <button
+                type="submit"
+                class="login-btn"
+                [disabled]="loading"
+            >
+
+                <span
+                    *ngIf="loading"
+                    class="spinner"
+                ></span>
+
+                <span *ngIf="!loading">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    Login
+                </span>
+
+                <span *ngIf="loading">
+                    Logging in...
+                </span>
+
+            </button>
+
+        </form>
+
+
+        <!-- Footer -->
+
+        <div class="login-footer">
+
+            <i class="bi bi-shield-check"></i>
+
+            Coordinator Portal
+
+        </div>
+
+    </div>
+
+</div>

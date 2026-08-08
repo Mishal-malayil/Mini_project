@@ -1,0 +1,97 @@
+<nav class="topbar">
+
+    <div class="topbar-heading">
+
+        
+
+        <h4 class="page-title">
+            COORDINATOR PANEL
+        </h4>
+
+    </div>
+
+
+    <div class="topbar-actions">
+
+
+        <!-- SEARCH -->
+
+        <div class="search-box">
+
+            <i class="bi bi-search"></i>
+
+            <input
+                type="text"
+                placeholder="Search events, registrations..."
+            >
+
+        </div>
+
+
+        <!-- NOTIFICATION -->
+
+        <button
+            class="icon-btn"
+            title="Notifications">
+
+            <i class="bi bi-bell"></i>
+
+            <span class="dot"></span>
+
+        </button>
+
+
+        <div class="divider"></div>
+
+
+        <!-- COORDINATOR -->
+
+        <div
+            class="user-chip"
+            role="button">
+
+            <div class="avatar">
+
+                {{ coordinator?.name?.charAt(0).toUpperCase() }}
+
+                
+
+            </div>
+
+
+            <div class="user-meta">
+
+                <p class="user-name">
+
+                    {{ coordinator?.name || 'Coordinator' }}
+
+                </p>
+
+                <p class="user-role">
+
+                    Coordinator
+
+                </p>
+
+            </div>
+
+
+            
+
+        </div>
+
+
+        <!-- LOGOUT -->
+
+        <button
+            class="btn-logout"
+            title="Logout"
+            (click)="logout()">
+
+            <i class="bi bi-box-arrow-right"></i>
+
+        </button>
+
+    </div>
+
+</nav>
