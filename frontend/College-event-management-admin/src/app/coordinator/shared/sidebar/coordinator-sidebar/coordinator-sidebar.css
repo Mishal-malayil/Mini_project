@@ -50,6 +50,40 @@
 
     flex-shrink: 0;
 }
+.sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--sb-text);
+    text-decoration: none;
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-bottom: 2px;
+    font-size: 13.5px;
+    font-weight: 500;
+    border-left: 3px solid transparent;
+    transition: background .15s ease, color .15s ease;
+}
+.sidebar a i {
+    font-size: 16px;
+    width: 18px;
+    text-align: center;
+}
+
+.sidebar a:hover {
+    background: var(--sb-bg-hover);
+    color: #fff;
+}
+
+.sidebar a.active {
+    background: var(--sb-bg-hover);
+    color: var(--sb-text-active);
+    border-left-color: var(--c-brand-light);
+}
+
+.sidebar a.active i {
+    color: var(--c-brand-light);
+}
 
 
 /* =====================================================
@@ -219,40 +253,22 @@
 }
 
 
-/* =====================================================
-   HOVER
-   ===================================================== */
 
-.menu-item:hover {
 
-    background: var(--sb-bg-hover);
 
-    color: var(--sb-text-active);
-
-    transform: translateX(2px);
-
-}
 
 
 /* =====================================================
    ACTIVE MENU ITEM
-   ===================================================== */
+===================================================== */
 
 .menu-item.active {
-
     background: var(--c-brand);
-
     color: #ffffff;
-
     font-weight: 600;
-
-    box-shadow:
-        0 4px 12px rgba(99, 102, 241, 0.25);
 }
 
-
 .menu-item.active i {
-
     color: #ffffff;
 }
 

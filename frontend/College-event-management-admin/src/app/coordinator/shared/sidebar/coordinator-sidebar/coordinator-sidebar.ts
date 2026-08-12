@@ -7,6 +7,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
   standalone: true,
   imports: [
     CommonModule,
+    RouterLink,
     RouterLinkActive
   ],
   templateUrl: './coordinator-sidebar.html',

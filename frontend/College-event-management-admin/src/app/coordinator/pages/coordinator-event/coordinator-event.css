@@ -1,0 +1,563 @@
+.page-container {
+    padding: 28px 0;
+}
+
+
+/* ================= PAGE HEADER ================= */
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 24px;
+}
+
+.page-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+
+    letter-spacing: .08em;
+
+    text-transform: uppercase;
+
+    color: var(--c-brand-light);
+}
+
+.page-header h2 {
+    margin: 4px 0 3px;
+
+    font-family: 'Sora', sans-serif;
+
+    font-size: 21px;
+    font-weight: 600;
+
+    color: var(--sb-text-active);
+}
+
+.page-header p {
+    margin: 0;
+
+    font-size: 12px;
+
+    color: var(--sb-text);
+}
+
+
+/* ================= ADD BUTTON ================= */
+
+.btn-add {
+    border: none;
+
+    background: var(--c-brand);
+
+    color: #fff;
+
+    padding: 10px 16px;
+
+    border-radius: 8px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 4px 12px rgba(99, 102, 241, .25);
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease;
+}
+
+.btn-add:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 16px rgba(99, 102, 241, .35);
+}
+
+
+/* ================= EVENT CARD ================= */
+
+.event-card {
+    background: var(--sb-bg);
+
+    border: 1px solid var(--sb-border);
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, .08);
+}
+
+.card-header {
+    padding: 18px 20px;
+
+    border-bottom: 1px solid var(--sb-border);
+}
+
+.card-header h5 {
+    margin: 0;
+
+    font-family: 'Sora', sans-serif;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: var(--sb-text-active);
+}
+
+.card-header p {
+    margin: 4px 0 0;
+
+    font-size: 11px;
+
+    color: var(--sb-text);
+}
+
+
+/* ================= TABLE ================= */
+
+.event-table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+.event-table thead {
+    background: var(--sb-bg-hover);
+}
+
+.event-table th {
+    padding: 12px 16px;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    letter-spacing: .05em;
+
+    color: var(--sb-text);
+
+    text-align: left;
+
+    white-space: nowrap;
+}
+
+.event-table td {
+    padding: 14px 16px;
+
+    border-top: 1px solid var(--sb-border);
+
+    font-size: 11px;
+
+    color: var(--sb-text);
+
+    vertical-align: middle;
+}
+
+.event-table tbody tr {
+    transition: background .15s ease;
+}
+
+.event-table tbody tr:hover {
+    background: var(--sb-bg-hover);
+}
+
+
+/* ================= EVENT NAME ================= */
+
+.event-name {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.event-icon {
+    width: 34px;
+    height: 34px;
+
+    border-radius: 8px;
+
+    background: var(--c-brand-tint);
+
+    color: var(--c-brand-light);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+.event-name strong {
+    display: block;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: var(--sb-text-active);
+}
+
+.event-name small {
+    display: block;
+
+    margin-top: 3px;
+
+    font-size: 10px;
+
+    color: var(--sb-text);
+}
+
+
+/* ================= STATUS ================= */
+
+.status {
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 5px 9px;
+
+    border-radius: 20px;
+
+    font-size: 9px;
+
+    font-weight: 600;
+}
+
+.status.pending {
+    background: var(--c-pending-tint);
+
+    color: var(--c-pending);
+}
+
+.status.approved {
+    background: var(--c-approved-tint);
+
+    color: var(--c-approved);
+}
+
+.status.rejected {
+    background: var(--c-rejected-tint);
+
+    color: var(--c-rejected);
+}
+
+
+/* ================= EMPTY ================= */
+
+.empty-state {
+    text-align: center;
+
+    padding: 50px 20px !important;
+}
+
+.empty-state i {
+    font-size: 30px;
+
+    color: var(--sb-text);
+}
+
+.empty-state p {
+    margin: 10px 0 3px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    color: var(--sb-text-active);
+}
+
+.empty-state small {
+    font-size: 10px;
+
+    color: var(--sb-text);
+}
+
+
+/* ================================================= */
+/* ================= MODAL ========================= */
+/* ================================================= */
+
+.modal-content {
+    background: var(--sb-bg);
+
+    border: 1px solid var(--sb-border);
+
+    border-radius: 12px;
+
+    color: var(--sb-text-active);
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, .35);
+}
+
+.modal-header {
+    padding: 18px 20px;
+
+    border-bottom: 1px solid var(--sb-border);
+
+    background: var(--sb-bg);
+}
+
+.modal-eyebrow {
+    display: block;
+
+    margin-bottom: 3px;
+
+    font-size: 9px;
+
+    font-weight: 600;
+
+    letter-spacing: .08em;
+
+    color: var(--c-brand-light);
+}
+
+.modal-title {
+    margin: 0;
+
+    font-family: 'Sora', sans-serif;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    color: var(--sb-text-active);
+}
+
+.modal-body {
+    padding: 22px 20px;
+}
+
+
+/* ================= FORM ================= */
+
+.form-label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    color: var(--sb-text-active);
+}
+
+.form-label span {
+    color: var(--c-rejected);
+}
+
+.form-control,
+.form-select {
+    min-height: 40px;
+
+    background: var(--sb-bg-hover);
+
+    border: 1px solid var(--sb-border);
+
+    border-radius: 7px;
+
+    color: var(--sb-text-active);
+
+    font-size: 12px;
+}
+
+.form-control::placeholder {
+    color: var(--sb-text);
+}
+
+.form-control:focus,
+.form-select:focus {
+    background: var(--sb-bg-hover);
+
+    color: var(--sb-text-active);
+
+    border-color: var(--c-brand-light);
+
+    box-shadow:
+        0 0 0 3px rgba(99, 102, 241, .18);
+}
+
+.form-select option {
+    background: var(--sb-bg);
+
+    color: var(--sb-text-active);
+}
+
+textarea.form-control {
+    resize: vertical;
+}
+
+
+/* ================= PENDING ================= */
+
+.pending-box {
+    min-height: 40px;
+
+    padding: 7px 12px;
+
+    border-radius: 7px;
+
+    background: var(--c-pending-tint);
+
+    border: 1px solid var(--c-pending);
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.pending-box > i {
+    color: var(--c-pending);
+
+    font-size: 16px;
+}
+
+.pending-box strong {
+    display: block;
+
+    font-size: 11px;
+
+    color: var(--c-pending);
+}
+
+.pending-box small {
+    display: block;
+
+    margin-top: 2px;
+
+    font-size: 9px;
+
+    color: var(--sb-text);
+}
+
+
+/* ================= MODAL FOOTER ================= */
+
+.modal-footer {
+    padding: 15px 20px;
+
+    border-top: 1px solid var(--sb-border);
+}
+
+
+/* CANCEL */
+
+.btn-cancel {
+    padding: 8px 15px;
+
+    border-radius: 7px;
+
+    border: 1px solid var(--sb-border);
+
+    background: var(--sb-bg-hover);
+
+    color: var(--sb-text);
+
+    font-size: 11px;
+
+    cursor: pointer;
+}
+
+.btn-cancel:hover {
+    color: var(--sb-text-active);
+
+    background: rgba(255, 255, 255, .08);
+}
+
+
+/* SAVE */
+
+.btn-save {
+    padding: 8px 16px;
+
+    border-radius: 7px;
+
+    border: none;
+
+    background: var(--c-brand);
+
+    color: #fff;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+}
+
+.btn-save:hover:not(:disabled) {
+    background: var(--c-brand-light);
+}
+
+.btn-save:disabled {
+    opacity: .55;
+
+    cursor: not-allowed;
+}
+
+
+/* ================= SPINNER ================= */
+
+.spin {
+    animation: spin .8s linear infinite;
+}
+
+@keyframes spin {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+
+    .page-header {
+        align-items: flex-start;
+
+        gap: 15px;
+
+        flex-direction: column;
+    }
+
+    .event-table {
+        min-width: 850px;
+    }
+
+}

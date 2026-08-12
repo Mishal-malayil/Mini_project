@@ -36,4 +36,38 @@ export class EventService {
     });
   }
 
+   // =====================================================
+  // COORDINATOR
+  // =====================================================
+
+  // Get Event Categories
+  getCategories(): Observable<any> {
+
+    return this.http.get(
+      environment.apiUrl + '/event-categories'
+    );
+
+  }
+
+
+  // Get Coordinator's Events
+  getCoordinatorEvents(): Observable<any> {
+
+    return this.http.get(
+      environment.apiUrl + '/coordinator/events'
+    );
+
+  }
+
+
+  // Add Event as Coordinator
+  addCoordinatorEvent(data: any): Observable<any> {
+
+    return this.http.post(
+      environment.apiUrl + '/coordinator/events',
+      data
+    );
+
+  }
+
 }

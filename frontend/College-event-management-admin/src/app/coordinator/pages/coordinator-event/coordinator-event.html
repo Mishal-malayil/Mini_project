@@ -1,0 +1,509 @@
+<div class="page-container">
+
+    <!-- ================= PAGE HEADER ================= -->
+
+    <div class="page-header">
+
+        <div>
+            <span class="page-eyebrow">
+                EVENT MANAGEMENT
+            </span>
+
+            <h2>
+                My Events
+            </h2>
+
+            <p>
+                Create and manage your events
+            </p>
+        </div>
+
+        <button
+            class="btn-add"
+            (click)="openAddEventModal()">
+
+            <i class="bi bi-plus-lg"></i>
+
+            Add Event
+
+        </button>
+
+    </div>
+
+
+    <!-- ================= EVENT CARD ================= -->
+
+    <div class="event-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h5>
+                    Events
+                </h5>
+
+                <p>
+                    Events created by you
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= TABLE ================= -->
+
+        <div class="table-responsive">
+
+            <table class="event-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+
+                        <th>Event</th>
+
+                        <th>Venue</th>
+
+                        <th>Date</th>
+
+                        <th>Time</th>
+
+                        <th>Participants</th>
+
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    <tr *ngFor="let event of events; let i = index">
+
+                        <td>
+                            {{ i + 1 }}
+                        </td>
+
+                        <td>
+
+                            <div class="event-name">
+
+                                <div class="event-icon">
+
+                                    <i class="bi bi-calendar-event"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        {{ event.event_name }}
+                                    </strong>
+
+                                    <small>
+                                        {{ event.category?.name }}
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <i class="bi bi-geo-alt me-1"></i>
+
+                            {{ event.venue }}
+
+                        </td>
+
+                        <td>
+
+                            {{ event.event_date }}
+
+                        </td>
+
+                        <td>
+
+                            {{ event.start_time }} -
+                            {{ event.end_time }}
+
+                        </td>
+
+                        <td>
+
+                            {{ event.max_participants }}
+
+                        </td>
+
+                        <td>
+
+                            <span
+                                class="status"
+                                [ngClass]="{
+                                    'pending': event.status === 'Pending',
+                                    'approved': event.status === 'Approved',
+                                    'rejected': event.status === 'Rejected'
+                                }">
+
+                                {{ event.status }}
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- NO EVENTS -->
+
+                    <tr *ngIf="events.length === 0">
+
+                        <td
+                            colspan="7"
+                            class="empty-state">
+
+                            <i class="bi bi-calendar-x"></i>
+
+                            <p>
+                                No events created yet.
+                            </p>
+
+                            <small>
+                                Click "Add Event" to create your first event.
+                            </small>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- ================= ADD EVENT MODAL =================== -->
+<!-- ===================================================== -->
+
+<div
+    class="modal fade"
+    id="addEventModal"
+    tabindex="-1"
+    aria-hidden="true">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+
+
+            <!-- HEADER -->
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span class="modal-eyebrow">
+                        EVENT MANAGEMENT
+                    </span>
+
+                    <h5 class="modal-title">
+
+                        <i class="bi bi-calendar-plus me-2"></i>
+
+                        Add New Event
+
+                    </h5>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+
+            <!-- FORM -->
+
+            <form
+                #eventForm="ngForm"
+                (ngSubmit)="addEvent(eventForm)">
+
+                <div class="modal-body">
+
+                    <div class="row g-3">
+
+
+                        <!-- CATEGORY -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+
+                                Event Category
+                                <span>*</span>
+
+                            </label>
+
+                            <select
+                                class="form-select"
+                                name="category_id"
+                                [(ngModel)]="newEvent.category_id"
+                                required>
+
+                                <option
+                                    value=""
+                                    disabled>
+
+                                    Select Category
+
+                                </option>
+
+                                <option
+                                    *ngFor="let category of categories"
+                                    [value]="category.id">
+
+                                    {{ category.name }}
+
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- EVENT NAME -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+
+                                Event Name
+                                <span>*</span>
+
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="event_name"
+                                [(ngModel)]="newEvent.event_name"
+                                placeholder="Enter event name"
+                                required>
+
+                        </div>
+
+
+                        <!-- DESCRIPTION -->
+
+                        <div class="col-12">
+
+                            <label class="form-label">
+                                Description
+                            </label>
+
+                            <textarea
+                                class="form-control"
+                                name="description"
+                                rows="3"
+                                [(ngModel)]="newEvent.description"
+                                placeholder="Enter event description">
+                            </textarea>
+
+                        </div>
+
+
+                        <!-- VENUE -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+
+                                Venue
+                                <span>*</span>
+
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="venue"
+                                [(ngModel)]="newEvent.venue"
+                                placeholder="Enter venue"
+                                required>
+
+                        </div>
+
+
+                        <!-- EVENT DATE -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+
+                                Event Date
+                                <span>*</span>
+
+                            </label>
+
+                            <input
+                                type="date"
+                                class="form-control"
+                                name="event_date"
+                                [(ngModel)]="newEvent.event_date"
+                                required>
+
+                        </div>
+
+
+                        <!-- START TIME -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+
+                                Start Time
+                                <span>*</span>
+
+                            </label>
+
+                            <input
+                                type="time"
+                                class="form-control"
+                                name="start_time"
+                                [(ngModel)]="newEvent.start_time"
+                                required>
+
+                        </div>
+
+
+                        <!-- END TIME -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+
+                                End Time
+                                <span>*</span>
+
+                            </label>
+
+                            <input
+                                type="time"
+                                class="form-control"
+                                name="end_time"
+                                [(ngModel)]="newEvent.end_time"
+                                required>
+
+                        </div>
+
+
+                        <!-- MAX PARTICIPANTS -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+
+                                Maximum Participants
+                                <span>*</span>
+
+                            </label>
+
+                            <input
+                                type="number"
+                                class="form-control"
+                                name="max_participants"
+                                [(ngModel)]="newEvent.max_participants"
+                                min="1"
+                                placeholder="Enter maximum participants"
+                                required>
+
+                        </div>
+
+
+                        <!-- STATUS INFO -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Approval Status
+                            </label>
+
+                            <div class="pending-box">
+
+                                <i class="bi bi-clock-history"></i>
+
+                                <div>
+
+                                    <strong>
+                                        Pending
+                                    </strong>
+
+                                    <small>
+                                        Admin approval required
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FOOTER -->
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn-cancel"
+                        data-bs-dismiss="modal">
+
+                        Cancel
+
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn-save"
+                        [disabled]="eventForm.invalid || loading">
+
+                        <i
+                            class="bi"
+                            [ngClass]="loading
+                                ? 'bi-arrow-repeat spin'
+                                : 'bi-check-lg'">
+                        </i>
+
+                        {{ loading ? 'Creating...' : 'Create Event' }}
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
