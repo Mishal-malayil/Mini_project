@@ -12,7 +12,7 @@ use App\Http\Controllers\Api\Admin\ResultController;
 use App\Http\Controllers\Api\Admin\AnnouncementController;
 use App\Http\Controllers\Api\Admin\DashboardController;
 use App\Http\Controllers\Api\Admin\ProfileController;
-
+use App\Http\Controllers\Api\Coordinator\CoordinatorAuthController;
 
 // Public Route
 Route::post('/admin/login', [AuthController::class, 'login']);
@@ -58,5 +58,34 @@ Route::get('/registrations/{id}', [RegistrationController::class, 'show']);
 
     Route::put('/profile/change-password', [ProfileController::class, 'changePassword']);
 
+
+});
+
+Route::prefix('coordinator')->group(function () {
+
+    Route::post('/login', [
+        CoordinatorAuthController::class,
+        'login'
+    ]);
+
+    Route::middleware('auth:sanctum')
+    ->prefix('coordinator')
+    ->group(function () {
+
+        Route::post('/logout', [
+            CoordinatorAuthController::class,
+            'logout'
+        ]);
+
+        Route::get('/profile', [
+            CoordinatorAuthController::class,
+            'profile'
+        ]);
+        Route::post(
+    '/coordinator/events',
+    [EventController::class, 'coordinatorStore']
+);
+
+    });
 
 });

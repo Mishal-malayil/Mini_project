@@ -178,4 +178,81 @@ class EventController extends Controller
             'message'=>'Event deleted successfully'
         ]);
     }
+
+    // Store event created by Coordinator
+public function coordinatorStore(Request $request)
+{
+    $validated = $request->validate([
+
+        'category_id' => 'required|exists:event_categories,id',
+
+        'event_name' => 'required|string|max:255',
+
+        'description' => 'nullable|string',
+
+        'venue' => 'required|string|max:255',
+
+        'event_date' => 'required|date',
+
+        'start_time' => 'required|date_format:H:i:s',
+
+        'end_time' => 'required|date_format:H:i:s',
+
+        'max_participants' => 'required|integer|min:1',
+
+    ]);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Get logged-in coordinator
+    |--------------------------------------------------------------------------
+    */
+
+    $coordinator = auth('coordinator')->user();
+
+    if (!$coordinator) {
+
+        return response()->json([
+            'message' => 'Coordinator not authenticated'
+        ], 401);
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Set coordinator automatically
+    |--------------------------------------------------------------------------
+    */
+
+    $validated['coordinator_id'] = $coordinator->id;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | New events must wait for Admin approval
+    |--------------------------------------------------------------------------
+    */
+
+    $validated['status'] = 'Pending';
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Create Event
+    |--------------------------------------------------------------------------
+    */
+
+    $event = Event::create($validated);
+
+
+    return response()->json([
+
+        'message' => 'Event submitted successfully. Waiting for admin approval.',
+
+        'event' => $event
+
+    ], 201);
+}
 }
