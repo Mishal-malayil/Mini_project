@@ -48,6 +48,10 @@ return [
         'driver' => 'sanctum',
         'provider' => 'admins',
     ],
+    'coordinator' => [
+    'driver' => 'sanctum',
+    'provider' => 'coordinators',
+],
 
 ],
     
@@ -82,6 +86,10 @@ return [
         'driver' => 'eloquent',
         'model' => App\Models\Admin::class,
     ],
+    'coordinators' => [
+    'driver' => 'eloquent',
+    'model' => App\Models\Coordinator::class,
+],
 
 ],
 

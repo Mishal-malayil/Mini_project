@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\Admin\AnnouncementController;
 use App\Http\Controllers\Api\Admin\DashboardController;
 use App\Http\Controllers\Api\Admin\ProfileController;
 use App\Http\Controllers\Api\Coordinator\CoordinatorAuthController;
+use App\Http\Controllers\Api\Coordinator\CoordinatorEventController;
 
 // Public Route
 Route::post('/admin/login', [AuthController::class, 'login']);
@@ -63,29 +64,41 @@ Route::get('/registrations/{id}', [RegistrationController::class, 'show']);
 
 Route::prefix('coordinator')->group(function () {
 
-    Route::post('/login', [
-        CoordinatorAuthController::class,
-        'login'
-    ]);
+    // Authentication
+    Route::post('/login', [CoordinatorAuthController::class, 'login']);
+    Route::post('/logout', [CoordinatorAuthController::class, 'logout']);
+    Route::get('/profile', [CoordinatorAuthController::class, 'profile']);
 
-    Route::middleware('auth:sanctum')
+    // Events
+    Route::get('/events', [EventController::class, 'index']);
+    Route::post('/events', [EventController::class, 'store']);
+    Route::get('/events/{id}', [EventController::class, 'show']);
+    Route::put('/events/{id}', [EventController::class, 'update']);
+    Route::delete('/events/{id}', [EventController::class, 'destroy']);
+
+     Route::middleware('auth:coordinator')
     ->prefix('coordinator')
     ->group(function () {
 
-        Route::post('/logout', [
-            CoordinatorAuthController::class,
-            'logout'
-        ]);
+        // View only logged-in coordinator's events
+        Route::get('/events',
+            [CoordinatorEventController::class, 'index']);
 
-        Route::get('/profile', [
-            CoordinatorAuthController::class,
-            'profile'
-        ]);
-        Route::post(
-    '/coordinator/events',
-    [EventController::class, 'coordinatorStore']
-);
+        // Add new event
+        Route::post('/events',
+            [CoordinatorEventController::class, 'store']);
+
+        // View single own event
+        Route::get('/events/{id}',
+            [CoordinatorEventController::class, 'show']);
+
+        // Edit own event
+        Route::put('/events/{id}',
+            [CoordinatorEventController::class, 'update']);
+
+        // Delete own event
+        Route::delete('/events/{id}',
+            [CoordinatorEventController::class, 'destroy']);
 
     });
-
 });
