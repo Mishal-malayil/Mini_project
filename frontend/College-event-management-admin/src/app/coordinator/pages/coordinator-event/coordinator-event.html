@@ -18,9 +18,7 @@
             </p>
         </div>
 
-        <button
-            class="btn-add"
-            (click)="openAddEventModal()">
+        <button class="btn-add" (click)="openAddEventModal()">
 
             <i class="bi bi-plus-lg"></i>
 
@@ -44,8 +42,8 @@
                 </h5>
 
                 <p>
-                    Events created by you
-                </p>
+    View and manage your events
+</p>
 
             </div>
 
@@ -144,9 +142,7 @@
 
                         <td>
 
-                            <span
-                                class="status"
-                                [ngClass]="{
+                            <span class="status" [ngClass]="{
                                     'pending': event.status === 'Pending',
                                     'approved': event.status === 'Approved',
                                     'rejected': event.status === 'Rejected'
@@ -165,9 +161,7 @@
 
                     <tr *ngIf="events.length === 0">
 
-                        <td
-                            colspan="7"
-                            class="empty-state">
+                        <td colspan="7" class="empty-state">
 
                             <i class="bi bi-calendar-x"></i>
 
@@ -198,11 +192,7 @@
 <!-- ================= ADD EVENT MODAL =================== -->
 <!-- ===================================================== -->
 
-<div
-    class="modal fade"
-    id="addEventModal"
-    tabindex="-1"
-    aria-hidden="true">
+<div class="modal fade" id="addEventModal" tabindex="-1" aria-hidden="true">
 
     <div class="modal-dialog modal-lg modal-dialog-centered">
 
@@ -229,10 +219,7 @@
 
                 </div>
 
-                <button
-                    type="button"
-                    class="btn-close btn-close-white"
-                    data-bs-dismiss="modal">
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
                 </button>
 
             </div>
@@ -240,9 +227,7 @@
 
             <!-- FORM -->
 
-            <form
-                #eventForm="ngForm"
-                (ngSubmit)="addEvent(eventForm)">
+            <form #eventForm="ngForm" (ngSubmit)="addEvent(eventForm)">
 
                 <div class="modal-body">
 
@@ -260,25 +245,15 @@
 
                             </label>
 
-                            <select
-                                class="form-select"
-                                name="category_id"
-                                [(ngModel)]="newEvent.category_id"
-                                required>
+                            <select class="form-select" name="category_id" [(ngModel)]="newEvent.category_id" required>
 
-                                <option
-                                    value=""
-                                    disabled>
-
-                                    Select Category
-
+                                <option value="" disabled>
+                                    Select Event Category
                                 </option>
 
-                                <option
-                                    *ngFor="let category of categories"
-                                    [value]="category.id">
+                                <option *ngFor="let category of categories" [value]="category.id">
 
-                                    {{ category.name }}
+                                    {{ category.category_name }}
 
                                 </option>
 
@@ -298,13 +273,8 @@
 
                             </label>
 
-                            <input
-                                type="text"
-                                class="form-control"
-                                name="event_name"
-                                [(ngModel)]="newEvent.event_name"
-                                placeholder="Enter event name"
-                                required>
+                            <input type="text" class="form-control" name="event_name" [(ngModel)]="newEvent.event_name"
+                                placeholder="Enter event name" required>
 
                         </div>
 
@@ -317,12 +287,8 @@
                                 Description
                             </label>
 
-                            <textarea
-                                class="form-control"
-                                name="description"
-                                rows="3"
-                                [(ngModel)]="newEvent.description"
-                                placeholder="Enter event description">
+                            <textarea class="form-control" name="description" rows="3"
+                                [(ngModel)]="newEvent.description" placeholder="Enter event description">
                             </textarea>
 
                         </div>
@@ -339,13 +305,8 @@
 
                             </label>
 
-                            <input
-                                type="text"
-                                class="form-control"
-                                name="venue"
-                                [(ngModel)]="newEvent.venue"
-                                placeholder="Enter venue"
-                                required>
+                            <input type="text" class="form-control" name="venue" [(ngModel)]="newEvent.venue"
+                                placeholder="Enter venue" required>
 
                         </div>
 
@@ -362,57 +323,272 @@
                             </label>
 
                             <input
-                                type="date"
-                                class="form-control"
-                                name="event_date"
-                                [(ngModel)]="newEvent.event_date"
-                                required>
+  type="date"
+  name="event_date"
+  [(ngModel)]="newEvent.event_date"
+  [min]="getToday()"
+  required
+>
 
                         </div>
 
 
-                        <!-- START TIME -->
+                       <div class="form-group">
 
-                        <div class="col-md-6">
+  <label>Start Time *</label>
 
-                            <label class="form-label">
+  <div
+    class="custom-time-input"
+    (click)="openTimePicker('start')"
+  >
 
-                                Start Time
-                                <span>*</span>
+    <i class="bi bi-clock"></i>
 
-                            </label>
+    <span
+      *ngIf="newEvent.start_time_display"
+    >
+      {{ newEvent.start_time_display }}
+    </span>
 
-                            <input
-                                type="time"
-                                class="form-control"
-                                name="start_time"
-                                [(ngModel)]="newEvent.start_time"
-                                required>
+    <span
+      class="time-placeholder"
+      *ngIf="!newEvent.start_time_display"
+    >
+      Select start time
+    </span>
 
-                        </div>
+    <i class="bi bi-chevron-down time-arrow"></i>
 
-
-                        <!-- END TIME -->
-
-                        <div class="col-md-6">
-
-                            <label class="form-label">
-
-                                End Time
-                                <span>*</span>
-
-                            </label>
-
-                            <input
-                                type="time"
-                                class="form-control"
-                                name="end_time"
-                                [(ngModel)]="newEvent.end_time"
-                                required>
-
-                        </div>
+  </div>
 
 
+  <!-- TIME DROPDOWN -->
+
+  <div
+    class="time-picker"
+    *ngIf="activeTimePicker === 'start'"
+    (click)="$event.stopPropagation()"
+  >
+
+    <div class="time-picker-title">
+      Select Start Time
+    </div>
+
+
+    <!-- HOURS -->
+
+    <div class="time-section">
+
+      <div class="time-label">
+        Hour
+      </div>
+
+      <div class="time-options">
+
+        <button
+          type="button"
+          *ngFor="let hour of hours"
+          [class.selected]="timePickerHour === hour"
+          (click)="selectHour(hour)"
+        >
+          {{ hour }}
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- MINUTES -->
+
+    <div class="time-section">
+
+      <div class="time-label">
+        Minute
+      </div>
+
+      <div class="time-options">
+
+        <button
+          type="button"
+          *ngFor="let minute of minutes"
+          [class.selected]="timePickerMinute === minute"
+          (click)="selectMinute(minute)"
+        >
+          {{ minute.toString().padStart(2, '0') }}
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- AM / PM -->
+
+    <div class="period-options">
+
+      <button
+        type="button"
+        [class.selected]="timePickerPeriod === 'AM'"
+        (click)="selectPeriod('AM')"
+      >
+        AM
+      </button>
+
+      <button
+        type="button"
+        [class.selected]="timePickerPeriod === 'PM'"
+        (click)="selectPeriod('PM')"
+      >
+        PM
+      </button>
+
+    </div>
+
+
+    <!-- CONFIRM -->
+
+    <button
+      type="button"
+      class="btn-confirm-time"
+      (click)="confirmTime()"
+    >
+      <i class="bi bi-check2"></i>
+      Set Time
+    </button>
+
+  </div>
+
+</div>
+
+
+<div class="form-group">
+
+  <label>End Time *</label>
+
+  <div
+    class="custom-time-input"
+    (click)="openTimePicker('end')"
+  >
+
+    <i class="bi bi-clock"></i>
+
+    <span
+      *ngIf="newEvent.end_time_display"
+    >
+      {{ newEvent.end_time_display }}
+    </span>
+
+    <span
+      class="time-placeholder"
+      *ngIf="!newEvent.end_time_display"
+    >
+      Select end time
+    </span>
+
+    <i class="bi bi-chevron-down time-arrow"></i>
+
+  </div>
+
+
+  <!-- TIME DROPDOWN -->
+
+  <div
+    class="time-picker"
+    *ngIf="activeTimePicker === 'end'"
+    (click)="$event.stopPropagation()"
+  >
+
+    <div class="time-picker-title">
+      Select End Time
+    </div>
+
+
+    <!-- HOURS -->
+
+    <div class="time-section">
+
+      <div class="time-label">
+        Hour
+      </div>
+
+      <div class="time-options">
+
+        <button
+          type="button"
+          *ngFor="let hour of hours"
+          [class.selected]="timePickerHour === hour"
+          (click)="selectHour(hour)"
+        >
+          {{ hour }}
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- MINUTES -->
+
+    <div class="time-section">
+
+      <div class="time-label">
+        Minute
+      </div>
+
+      <div class="time-options">
+
+        <button
+          type="button"
+          *ngFor="let minute of minutes"
+          [class.selected]="timePickerMinute === minute"
+          (click)="selectMinute(minute)"
+        >
+          {{ minute.toString().padStart(2, '0') }}
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- AM / PM -->
+
+    <div class="period-options">
+
+      <button
+        type="button"
+        [class.selected]="timePickerPeriod === 'AM'"
+        (click)="selectPeriod('AM')"
+      >
+        AM
+      </button>
+
+      <button
+        type="button"
+        [class.selected]="timePickerPeriod === 'PM'"
+        (click)="selectPeriod('PM')"
+      >
+        PM
+      </button>
+
+    </div>
+
+
+    <!-- CONFIRM -->
+
+    <button
+      type="button"
+      class="btn-confirm-time"
+      (click)="confirmTime()"
+    >
+      <i class="bi bi-check2"></i>
+      Set Time
+    </button>
+
+  </div>
+
+</div>
                         <!-- MAX PARTICIPANTS -->
 
                         <div class="col-md-6">
@@ -424,13 +600,8 @@
 
                             </label>
 
-                            <input
-                                type="number"
-                                class="form-control"
-                                name="max_participants"
-                                [(ngModel)]="newEvent.max_participants"
-                                min="1"
-                                placeholder="Enter maximum participants"
+                            <input type="number" class="form-control" name="max_participants"
+                                [(ngModel)]="newEvent.max_participants" min="1" placeholder="Enter maximum participants"
                                 required>
 
                         </div>
@@ -473,23 +644,15 @@
 
                 <div class="modal-footer">
 
-                    <button
-                        type="button"
-                        class="btn-cancel"
-                        data-bs-dismiss="modal">
+                    <button type="button" class="btn-cancel" data-bs-dismiss="modal">
 
                         Cancel
 
                     </button>
 
-                    <button
-                        type="submit"
-                        class="btn-save"
-                        [disabled]="eventForm.invalid || loading">
+                    <button type="submit" class="btn-save" [disabled]="eventForm.invalid || loading">
 
-                        <i
-                            class="bi"
-                            [ngClass]="loading
+                        <i class="bi" [ngClass]="loading
                                 ? 'bi-arrow-repeat spin'
                                 : 'bi-check-lg'">
                         </i>

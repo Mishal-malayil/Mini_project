@@ -12,15 +12,22 @@ export class EventService {
 
   constructor(private http: HttpClient) {}
 
+
+  // =====================================================
+  // ADMIN
+  // =====================================================
+
   // Get All Events
   getEvents(): Observable<any> {
     return this.http.get(this.apiUrl);
   }
 
+
   // Get Single Event
   getEvent(id: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/${id}`);
   }
+
 
   // Approve Event
   approveEvent(id: number): Observable<any> {
@@ -29,6 +36,7 @@ export class EventService {
     });
   }
 
+
   // Reject Event
   rejectEvent(id: number): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, {
@@ -36,7 +44,14 @@ export class EventService {
     });
   }
 
-   // =====================================================
+
+  // Create Event - Admin
+  createEvent(data: any): Observable<any> {
+    return this.http.post(this.apiUrl, data);
+  }
+
+
+  // =====================================================
   // COORDINATOR
   // =====================================================
 
@@ -50,11 +65,19 @@ export class EventService {
   }
 
 
-  // Get Coordinator's Events
+  // Get ONLY logged-in Coordinator's Events
   getCoordinatorEvents(): Observable<any> {
+  return this.http.get(
+    environment.apiUrl + '/coordinator/events'
+  );
+}
+
+
+  // Get ONE of logged-in Coordinator's Events
+  getCoordinatorEvent(id: number): Observable<any> {
 
     return this.http.get(
-      environment.apiUrl + '/coordinator/events'
+      `${environment.apiUrl}/coordinator/events/${id}`
     );
 
   }
@@ -66,6 +89,30 @@ export class EventService {
     return this.http.post(
       environment.apiUrl + '/coordinator/events',
       data
+    );
+
+  }
+
+
+  // Update Coordinator's Own Event
+  updateCoordinatorEvent(
+    id: number,
+    data: any
+  ): Observable<any> {
+
+    return this.http.put(
+      `${environment.apiUrl}/coordinator/events/${id}`,
+      data
+    );
+
+  }
+
+
+  // Delete Coordinator's Own Event
+  deleteCoordinatorEvent(id: number): Observable<any> {
+
+    return this.http.delete(
+      `${environment.apiUrl}/coordinator/events/${id}`
     );
 
   }
