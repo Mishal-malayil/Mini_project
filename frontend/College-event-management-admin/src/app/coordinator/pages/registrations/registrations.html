@@ -1,0 +1,485 @@
+<div class="registrations-page">
+
+  <!-- =====================================================
+       PAGE HEADER
+  ====================================================== -->
+
+  <div class="page-header">
+
+    <div>
+      <h2>Manage Participant Registrations</h2>
+
+      <p>
+        View and manage registrations for your events
+      </p>
+    </div>
+
+    <button
+      class="refresh-btn"
+      type="button"
+      (click)="loadRegistrations()"
+      [disabled]="loading">
+
+      <i class="bi bi-arrow-clockwise"></i>
+
+      Refresh
+
+    </button>
+
+  </div>
+
+
+  <!-- =====================================================
+       COUNT CARDS
+  ====================================================== -->
+
+  <div class="count-grid">
+
+    <!-- Total -->
+
+    <div class="count-card">
+
+      <div class="count-icon total">
+        <i class="bi bi-people"></i>
+      </div>
+
+      <div>
+
+        <span>Total Registrations</span>
+
+        <h3>
+          {{ totalRegistrations }}
+        </h3>
+
+      </div>
+
+    </div>
+
+
+    <!-- Pending -->
+
+    <div class="count-card">
+
+      <div class="count-icon pending">
+        <i class="bi bi-hourglass-split"></i>
+      </div>
+
+      <div>
+
+        <span>Pending</span>
+
+        <h3>
+          {{ pendingCount }}
+        </h3>
+
+      </div>
+
+    </div>
+
+
+    <!-- Approved -->
+
+    <div class="count-card">
+
+      <div class="count-icon approved">
+        <i class="bi bi-check-circle"></i>
+      </div>
+
+      <div>
+
+        <span>Approved</span>
+
+        <h3>
+          {{ approvedCount }}
+        </h3>
+
+      </div>
+
+    </div>
+
+
+    <!-- Rejected -->
+
+    <div class="count-card">
+
+      <div class="count-icon rejected">
+        <i class="bi bi-x-circle"></i>
+      </div>
+
+      <div>
+
+        <span>Rejected</span>
+
+        <h3>
+          {{ rejectedCount }}
+        </h3>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       SEARCH + FILTERS
+  ====================================================== -->
+
+  <div class="filter-card">
+
+    <!-- Search -->
+
+    <div class="search-box">
+
+      <i class="bi bi-search"></i>
+
+      <input
+        type="text"
+        placeholder="Search student name, email or ID..."
+        [(ngModel)]="searchText"
+        (input)="applyFilters()"
+      >
+
+    </div>
+
+
+    <!-- Event Filter -->
+
+    <select
+      [(ngModel)]="selectedEvent"
+      (change)="applyFilters()">
+
+      <option value="">
+        All Events
+      </option>
+
+      <option
+        *ngFor="let event of events"
+        [value]="event.id">
+
+        {{ event.event_name }}
+
+      </option>
+
+    </select>
+
+
+    <!-- Status Filter -->
+
+    <select
+      [(ngModel)]="selectedStatus"
+      (change)="applyFilters()">
+
+      <option value="">
+        All Status
+      </option>
+
+      <option value="Pending">
+        Pending
+      </option>
+
+      <option value="Approved">
+        Approved
+      </option>
+
+      <option value="Rejected">
+        Rejected
+      </option>
+
+    </select>
+
+
+    <!-- Reset -->
+
+    <button
+      type="button"
+      class="reset-btn"
+      (click)="resetFilters()">
+
+      <i class="bi bi-x-circle"></i>
+
+      Reset
+
+    </button>
+
+  </div>
+
+
+  <!-- =====================================================
+       REGISTRATION TABLE
+  ====================================================== -->
+
+  <div class="table-card">
+
+    <!-- Loading -->
+
+    <div
+      class="loading-container"
+      *ngIf="loading">
+
+      <div class="spinner-border"></div>
+
+      <p>
+        Loading registrations...
+      </p>
+
+    </div>
+
+
+    <!-- Table -->
+
+    <div
+      class="table-responsive"
+      *ngIf="!loading">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>#</th>
+
+            <th>Student</th>
+
+            <th>Event</th>
+
+            <th>Registration Date</th>
+
+            <th>Status</th>
+
+            <th>Action</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <!-- Registration rows -->
+
+          <tr
+            *ngFor="
+              let registration of filteredRegistrations;
+              let i = index
+            ">
+
+            <!-- Number -->
+
+            <td>
+
+              {{ i + 1 }}
+
+            </td>
+
+
+            <!-- Student -->
+
+            <td>
+
+              <div class="student-info">
+
+                <div class="student-avatar">
+
+                  {{
+                    registration.student?.name
+                      ?.charAt(0)
+                      ?.toUpperCase() || 'S'
+                  }}
+
+                </div>
+
+                <div>
+
+                  <strong>
+
+                    {{
+                      registration.student?.name ||
+                      'N/A'
+                    }}
+
+                  </strong>
+
+                  <small>
+
+                    {{
+                      registration.student?.email ||
+                      'No email'
+                    }}
+
+                  </small>
+
+                </div>
+
+              </div>
+
+            </td>
+
+
+            <!-- Event -->
+
+            <td>
+
+              <div class="event-info">
+
+                <strong>
+
+                  {{
+                    registration.event?.event_name ||
+                    'N/A'
+                  }}
+
+                </strong>
+
+              </div>
+
+            </td>
+
+
+            <!-- Registration Date -->
+
+            <td>
+
+              {{
+                registration.registration_date ||
+                'N/A'
+              }}
+
+            </td>
+
+
+            <!-- Status -->
+
+            <td>
+
+              <span
+                class="status-badge"
+                [ngClass]="{
+
+                  'status-pending':
+                    registration.status === 'Pending',
+
+                  'status-approved':
+                    registration.status === 'Approved',
+
+                  'status-rejected':
+                    registration.status === 'Rejected'
+
+                }">
+
+                <i
+                  class="bi"
+                  [ngClass]="{
+
+                    'bi-hourglass-split':
+                      registration.status === 'Pending',
+
+                    'bi-check-circle':
+                      registration.status === 'Approved',
+
+                    'bi-x-circle':
+                      registration.status === 'Rejected'
+
+                  }">
+                </i>
+
+                {{ registration.status }}
+
+              </span>
+
+            </td>
+
+
+            <!-- Actions -->
+
+            <td>
+
+              <div class="action-buttons">
+
+                <!-- View -->
+
+                <button
+                  type="button"
+                  class="view-btn"
+                  title="View Registration"
+                  (click)="viewRegistration(registration)">
+
+                  <i class="bi bi-eye"></i>
+
+                </button>
+
+
+                <!-- Approve -->
+
+                <button
+                  *ngIf="
+                    registration.status === 'Pending'
+                  "
+                  type="button"
+                  class="approve-btn"
+                  title="Approve Registration"
+                  (click)="approveRegistration(registration)">
+
+                  <i class="bi bi-check-lg"></i>
+
+                </button>
+
+
+                <!-- Reject -->
+
+                <button
+                  *ngIf="
+                    registration.status === 'Pending'
+                  "
+                  type="button"
+                  class="reject-btn"
+                  title="Reject Registration"
+                  (click)="rejectRegistration(registration)">
+
+                  <i class="bi bi-x-lg"></i>
+
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+
+          <!-- No results -->
+
+          <tr
+            *ngIf="
+              filteredRegistrations.length === 0
+            ">
+
+            <td
+              colspan="6"
+              class="empty-state">
+
+              <i class="bi bi-person-x"></i>
+
+              <h4>
+                No Registrations Found
+              </h4>
+
+              <p>
+                There are no registrations matching
+                your search or filters.
+              </p>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

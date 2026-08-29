@@ -29,6 +29,7 @@ import { CoordinatorEvents } from './coordinator/pages/coordinator-event/coordin
 
 import { EventSchedule } from './coordinator/pages/event-schedule/event-schedule';
 
+import { CoordinatorRegistrations } from './coordinator/pages/registrations/registrations';
 export const routes: Routes = [
 
     // ============================================
@@ -148,9 +149,14 @@ export const routes: Routes = [
                 component: CoordinatorEvents
             },
             {
-  path: 'schedule',
-  component: EventSchedule
-}
+                path: 'schedule',
+                component: EventSchedule
+            },
+            {
+                path: 'registrations',
+                component: CoordinatorRegistrations
+            },
+            
 
         ]
     },

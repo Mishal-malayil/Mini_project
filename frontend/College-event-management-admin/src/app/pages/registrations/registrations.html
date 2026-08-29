@@ -57,25 +57,18 @@
 
                             </td>
 
-                            <td>
-
-                                <span
-                                    class="badge bg-success"
-                                    *ngIf="registration.status=='Registered'">
-
-                                    Registered
-
-                                </span>
-
-                                <span
-                                    class="badge bg-danger"
-                                    *ngIf="registration.status=='Cancelled'">
-
-                                    Cancelled
-
-                                </span>
-
-                            </td>
+<td>
+  <span
+    class="badge rounded-pill"
+    [ngClass]="{
+      'bg-warning text-dark': registration.status === 'Pending',
+      'bg-success': registration.status === 'Approved',
+      'bg-danger': registration.status === 'Rejected'
+    }"
+  >
+    {{ registration.status }}
+  </span>
+</td>
 
                             <td class="text-center">
 
@@ -129,98 +122,225 @@
 
         <div class="modal-content">
 
+            <!-- Header -->
+
             <div class="modal-header bg-primary text-white">
 
-                <h5>Registration Details</h5>
+                <h5 class="modal-title">
+                    Registration Details
+                </h5>
 
                 <button
+                    type="button"
                     class="btn-close btn-close-white"
                     data-bs-dismiss="modal">
                 </button>
 
             </div>
 
+
+            <!-- Body -->
+
             <div class="modal-body">
 
                 <table class="table table-bordered">
 
+                    <!-- Student -->
+
                     <tr>
 
-                        <th width="35%">Student</th>
+                        <th width="35%">
+                            Student
+                        </th>
 
-                        <td>{{selectedRegistration.student?.name}}</td>
+                        <td>
+                            {{ selectedRegistration.student?.name || 'N/A' }}
+                        </td>
 
                     </tr>
 
+
+                    <!-- Email -->
+
                     <tr>
 
-                        <th>Email</th>
+                        <th>
+                            Email
+                        </th>
 
-                        <td>{{selectedRegistration.student?.email}}</td>
+                        <td>
+                            {{ selectedRegistration.student?.email || 'N/A' }}
+                        </td>
 
                     </tr>
 
+
+                    <!-- Department -->
+
                     <tr>
 
-                        <th>Department</th>
+                        <th>
+                            Department
+                        </th>
 
-                        <td>{{selectedRegistration.student?.department}}</td>
+                        <td>
+                            {{ selectedRegistration.student?.department || 'N/A' }}
+                        </td>
 
                     </tr>
 
+
+                    <!-- Semester -->
+
                     <tr>
 
-                        <th>Semester</th>
+                        <th>
+                            Semester
+                        </th>
 
-                        <td>{{selectedRegistration.student?.semester}}</td>
+                        <td>
+                            {{ selectedRegistration.student?.semester || 'N/A' }}
+                        </td>
 
                     </tr>
 
+
+                    <!-- Event -->
+
                     <tr>
 
-                        <th>Event</th>
+                        <th>
+                            Event
+                        </th>
 
-                        <td>{{selectedRegistration.event?.event_name}}</td>
+                        <td>
+                            {{ selectedRegistration.event?.event_name || 'N/A' }}
+                        </td>
 
                     </tr>
 
+
+                    <!-- Venue -->
+
                     <tr>
 
-                        <th>Venue</th>
+                        <th>
+                            Venue
+                        </th>
 
-                        <td>{{selectedRegistration.event?.venue}}</td>
+                        <td>
+                            {{ selectedRegistration.event?.venue || 'N/A' }}
+                        </td>
 
                     </tr>
 
+
+                    <!-- Event Date -->
+
                     <tr>
 
-                        <th>Event Date</th>
+                        <th>
+                            Event Date
+                        </th>
 
-                        <td>{{selectedRegistration.event?.event_date | date:'dd-MM-yyyy'}}</td>
+                        <td>
+                            {{
+                                selectedRegistration.event?.event_date
+                                | date:'dd-MM-yyyy'
+                            }}
+                        </td>
 
                     </tr>
 
+
+                    <!-- Registration Date -->
+
                     <tr>
 
-                        <th>Status</th>
+                        <th>
+                            Registration Date
+                        </th>
+
+                        <td>
+                            {{
+                                selectedRegistration.registration_date
+                                || 'N/A'
+                            }}
+                        </td>
+
+                    </tr>
+
+
+                    <!-- Status -->
+
+                    <tr>
+
+                        <th>
+                            Status
+                        </th>
 
                         <td>
 
-                            <span
-                                class="badge bg-success"
-                                *ngIf="selectedRegistration.status=='Registered'">
 
-                                Registered
+                            <!-- Pending -->
+
+                            <span
+                                class="badge bg-warning text-dark"
+                                *ngIf="
+                                    selectedRegistration.status === 'Pending'
+                                ">
+
+                                <i class="bi bi-hourglass-split"></i>
+
+                                Pending
 
                             </span>
+
+
+                            <!-- Approved -->
+
+                            <span
+                                class="badge bg-success"
+                                *ngIf="
+                                    selectedRegistration.status === 'Approved'
+                                ">
+
+                                <i class="bi bi-check-circle"></i>
+
+                                Approved
+
+                            </span>
+
+
+                            <!-- Rejected -->
 
                             <span
                                 class="badge bg-danger"
-                                *ngIf="selectedRegistration.status=='Cancelled'">
+                                *ngIf="
+                                    selectedRegistration.status === 'Rejected'
+                                ">
 
-                                Cancelled
+                                <i class="bi bi-x-circle"></i>
+
+                                Rejected
 
                             </span>
+
+
+                            <!-- Unknown -->
+
+                            <span
+                                class="badge bg-secondary"
+                                *ngIf="
+                                    selectedRegistration.status !== 'Pending' &&
+                                    selectedRegistration.status !== 'Approved' &&
+                                    selectedRegistration.status !== 'Rejected'
+                                ">
+
+                                {{ selectedRegistration.status || 'N/A' }}
+
+                            </span>
+
 
                         </td>
 
@@ -230,9 +350,13 @@
 
             </div>
 
+
+            <!-- Footer -->
+
             <div class="modal-footer">
 
                 <button
+                    type="button"
                     class="btn btn-secondary"
                     data-bs-dismiss="modal">
 
