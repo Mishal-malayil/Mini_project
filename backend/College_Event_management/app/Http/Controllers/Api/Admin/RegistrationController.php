@@ -8,15 +8,48 @@ use Illuminate\Http\Request;
 
 class RegistrationController extends Controller
 {
-    // List all registrations
+    // =====================================================
+    // GET ALL REGISTRATIONS
+    // =====================================================
+
     public function index()
     {
-        return response()->json(
-            Registration::with(['student', 'event'])->get()
-        );
+        $registrations = Registration::with([
+            'student',
+            'event'
+        ])
+        ->latest()
+        ->get();
+
+        return response()->json($registrations);
     }
 
-    // Create registration
+
+    // =====================================================
+    // GET ONE REGISTRATION
+    // =====================================================
+
+    public function show($id)
+    {
+        $registration = Registration::with([
+            'student',
+            'event'
+        ])->find($id);
+
+        if (!$registration) {
+            return response()->json([
+                'message' => 'Registration not found'
+            ], 404);
+        }
+
+        return response()->json($registration);
+    }
+
+
+    // =====================================================
+    // CREATE REGISTRATION
+    // =====================================================
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -34,29 +67,19 @@ class RegistrationController extends Controller
         ], 201);
     }
 
-    // Show one registration
-    public function show($id)
-    {
-        $registration = Registration::with(['student','event'])->find($id);
 
-        if (!$registration) {
-            return response()->json([
-                'message' => 'Registration not found'
-            ],404);
-        }
+    // =====================================================
+    // UPDATE REGISTRATION
+    // =====================================================
 
-        return response()->json($registration);
-    }
-
-    // Update registration
     public function update(Request $request, $id)
     {
         $registration = Registration::find($id);
 
         if (!$registration) {
             return response()->json([
-                'message'=>'Registration not found'
-            ],404);
+                'message' => 'Registration not found'
+            ], 404);
         }
 
         $validated = $request->validate([
@@ -69,26 +92,30 @@ class RegistrationController extends Controller
         $registration->update($validated);
 
         return response()->json([
-            'message'=>'Registration updated successfully',
-            'registration'=>$registration
+            'message' => 'Registration updated successfully',
+            'registration' => $registration
         ]);
     }
 
-    // Delete registration
+
+    // =====================================================
+    // DELETE REGISTRATION
+    // =====================================================
+
     public function destroy($id)
     {
         $registration = Registration::find($id);
 
         if (!$registration) {
             return response()->json([
-                'message'=>'Registration not found'
-            ],404);
+                'message' => 'Registration not found'
+            ], 404);
         }
 
         $registration->delete();
 
         return response()->json([
-            'message'=>'Registration deleted successfully'
+            'message' => 'Registration deleted successfully'
         ]);
     }
 }

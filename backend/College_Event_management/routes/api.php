@@ -24,7 +24,7 @@ use App\Http\Controllers\Api\Admin\ProfileController;
 
 use App\Http\Controllers\Api\Coordinator\CoordinatorAuthController;
 use App\Http\Controllers\Api\Coordinator\CoordinatorEventController;
-
+use App\Http\Controllers\Api\Coordinator\CoordinatorRegistrationController;
 
 // =====================================================
 // ADMIN LOGIN
@@ -260,6 +260,30 @@ Route::prefix('coordinator')->group(function () {
             '/events/{id}',
             [CoordinatorEventController::class, 'destroy']
         );
+
+// =====================================================
+// COORDINATOR REGISTRATIONS
+// =====================================================
+
+Route::get(
+    '/registrations',
+    [CoordinatorRegistrationController::class, 'index']
+);
+
+Route::get(
+    '/registrations/{id}',
+    [CoordinatorRegistrationController::class, 'show']
+);
+
+Route::put(
+    '/registrations/{id}/approve',
+    [CoordinatorRegistrationController::class, 'approve']
+);
+
+Route::put(
+    '/registrations/{id}/reject',
+    [CoordinatorRegistrationController::class, 'reject']
+);
 
     });
 
