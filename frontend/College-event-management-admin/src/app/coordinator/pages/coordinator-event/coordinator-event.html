@@ -57,127 +57,84 @@
             <table class="event-table">
 
                 <thead>
+    <tr>
+      <th>Event Name</th>
+      <th>Category</th>
+      <th>Venue</th>
+      <th>Date</th>
+      <th>Start Time</th>
+      <th>End Time</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
 
-                    <tr>
+  <tbody>
 
-                        <th>#</th>
+    <tr *ngFor="let event of events">
 
-                        <th>Event</th>
+      <td>
+        {{ event.event_name }}
+      </td>
 
-                        <th>Venue</th>
+      <td>
+        {{ event.category?.name || event.category?.category_name || '-' }}
+      </td>
 
-                        <th>Date</th>
+      <td>
+        {{ event.venue }}
+      </td>
 
-                        <th>Time</th>
+      <td>
+        {{ event.event_date | date:'dd-MM-yyyy' }}
+      </td>
 
-                        <th>Participants</th>
+      <td>
+        {{ event.start_time }}
+      </td>
 
-                        <th>Status</th>
+      <td>
+        {{ event.end_time }}
+      </td>
 
-                    </tr>
+      <td>
+        <span>
+          {{ event.status }}
+        </span>
+      </td>
 
-                </thead>
+      
 
+        
 
-                <tbody>
+        
 
-                    <tr *ngFor="let event of events; let i = index">
+     <td>
+  <button
+    type="button"
+    class="btn btn-sm btn-info me-1"
+    (click)="viewEvent(event)">
+    <i class="bi bi-eye"></i>
+  </button>
 
-                        <td>
-                            {{ i + 1 }}
-                        </td>
+  <button
+    type="button"
+    class="btn btn-sm btn-warning me-1"
+    (click)="editEvent(event)">
+    <i class="bi bi-pencil"></i>
+  </button>
 
-                        <td>
+  <button
+    type="button"
+    class="btn btn-sm btn-danger"
+    (click)="deleteEvent(event.id)">
+    <i class="bi bi-trash"></i>
+  </button>
+</td>
 
-                            <div class="event-name">
+    </tr>
 
-                                <div class="event-icon">
-
-                                    <i class="bi bi-calendar-event"></i>
-
-                                </div>
-
-                                <div>
-
-                                    <strong>
-                                        {{ event.event_name }}
-                                    </strong>
-
-                                    <small>
-                                        {{ event.category?.name }}
-                                    </small>
-
-                                </div>
-
-                            </div>
-
-                        </td>
-
-                        <td>
-
-                            <i class="bi bi-geo-alt me-1"></i>
-
-                            {{ event.venue }}
-
-                        </td>
-
-                        <td>
-
-                            {{ event.event_date }}
-
-                        </td>
-
-                        <td>
-
-                            {{ event.start_time }} -
-                            {{ event.end_time }}
-
-                        </td>
-
-                        <td>
-
-                            {{ event.max_participants }}
-
-                        </td>
-
-                        <td>
-
-                            <span class="status" [ngClass]="{
-                                    'pending': event.status === 'Pending',
-                                    'approved': event.status === 'Approved',
-                                    'rejected': event.status === 'Rejected'
-                                }">
-
-                                {{ event.status }}
-
-                            </span>
-
-                        </td>
-
-                    </tr>
-
-
-                    <!-- NO EVENTS -->
-
-                    <tr *ngIf="events.length === 0">
-
-                        <td colspan="7" class="empty-state">
-
-                            <i class="bi bi-calendar-x"></i>
-
-                            <p>
-                                No events created yet.
-                            </p>
-
-                            <small>
-                                Click "Add Event" to create your first event.
-                            </small>
-
-                        </td>
-
-                    </tr>
-
-                </tbody>
+  </tbody>
 
             </table>
 
@@ -668,5 +625,264 @@
         </div>
 
     </div>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- VIEW EVENT MODAL -->
+<!-- ===================================================== -->
+
+<div
+  class="modal fade"
+  id="viewEventModal"
+  tabindex="-1"
+  aria-hidden="true">
+
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+
+    <div class="modal-content event-view-modal"
+         *ngIf="selectedEvent">
+
+      <!-- Header -->
+      <div class="modal-header event-view-header">
+
+        <div>
+          <h4 class="modal-title mb-1">
+            {{ selectedEvent.event_name }}
+          </h4>
+
+          <small>
+            Event Details
+          </small>
+        </div>
+
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal">
+        </button>
+
+      </div>
+
+
+      <!-- Body -->
+      <div class="modal-body p-4">
+
+        <!-- Status -->
+        <div class="d-flex justify-content-end mb-3">
+
+          <span
+            class="badge px-3 py-2"
+            [ngClass]="{
+              'bg-warning text-dark':
+                selectedEvent.status === 'Pending',
+
+              'bg-success':
+                selectedEvent.status === 'Approved',
+
+              'bg-danger':
+                selectedEvent.status === 'Rejected'
+            }">
+
+            {{ selectedEvent.status }}
+
+          </span>
+
+        </div>
+
+
+        <!-- Event Information -->
+        <div class="row g-3">
+
+
+          <!-- Category -->
+          <div class="col-md-6">
+
+            <div class="event-info-box">
+
+              <div class="event-icon">
+                <i class="bi bi-tag"></i>
+              </div>
+
+              <div>
+                <small>Category</small>
+
+                <h6>
+                  {{ selectedEvent.category?.category_name || 'N/A' }}
+                </h6>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- Venue -->
+          <div class="col-md-6">
+
+            <div class="event-info-box">
+
+              <div class="event-icon">
+                <i class="bi bi-geo-alt"></i>
+              </div>
+
+              <div>
+                <small>Venue</small>
+
+                <h6>
+                  {{ selectedEvent.venue }}
+                </h6>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- Date -->
+          <div class="col-md-6">
+
+            <div class="event-info-box">
+
+              <div class="event-icon">
+                <i class="bi bi-calendar-event"></i>
+              </div>
+
+              <div>
+                <small>Date</small>
+
+                <h6>
+                  {{ selectedEvent.event_date }}
+                </h6>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- Time -->
+          <div class="col-md-6">
+
+            <div class="event-info-box">
+
+              <div class="event-icon">
+                <i class="bi bi-clock"></i>
+              </div>
+
+              <div>
+
+                <small>Time</small>
+
+                <h6>
+
+                  {{ selectedEvent.start_time }}
+
+                  -
+                  
+                  {{ selectedEvent.end_time }}
+
+                </h6>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- Maximum Participants -->
+          <div class="col-md-6">
+
+            <div class="event-info-box">
+
+              <div class="event-icon">
+                <i class="bi bi-people"></i>
+              </div>
+
+              <div>
+
+                <small>Maximum Participants</small>
+
+                <h6>
+                  {{ selectedEvent.max_participants }}
+                </h6>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- Coordinator -->
+          <div class="col-md-6">
+
+            <div class="event-info-box">
+
+              <div class="event-icon">
+                <i class="bi bi-person"></i>
+              </div>
+
+              <div>
+
+                <small>Coordinator</small>
+
+                <h6>
+
+                  {{ selectedEvent.coordinator?.name || 'You' }}
+
+                </h6>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- Description -->
+          <div class="col-12">
+
+            <div class="description-box">
+
+              <small>
+                Description
+              </small>
+
+              <p class="mb-0 mt-2">
+
+                {{ selectedEvent.description || 
+                   'No description provided.' }}
+
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Footer -->
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          class="btn btn-secondary px-4"
+          data-bs-dismiss="modal">
+
+          Close
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
 
 </div>

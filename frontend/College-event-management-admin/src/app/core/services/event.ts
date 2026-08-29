@@ -8,111 +8,135 @@ import { environment } from '../../../environments/environment';
 })
 export class EventService {
 
+  // =====================================================
+  // API URLs
+  // =====================================================
+
   private apiUrl = environment.apiUrl + '/events';
+
+  private coordinatorUrl =
+    environment.apiUrl + '/coordinator/events';
+
 
   constructor(private http: HttpClient) {}
 
 
   // =====================================================
-  // ADMIN
+  // ADMIN EVENTS
   // =====================================================
 
-  // Get All Events
+  // Get all events
   getEvents(): Observable<any> {
     return this.http.get(this.apiUrl);
   }
 
 
-  // Get Single Event
+  // Get single event
   getEvent(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`);
+    return this.http.get(
+      `${this.apiUrl}/${id}`
+    );
   }
 
 
-  // Approve Event
-  approveEvent(id: number): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, {
-      status: 'Approved'
-    });
-  }
-
-
-  // Reject Event
-  rejectEvent(id: number): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, {
-      status: 'Rejected'
-    });
-  }
-
-
-  // Create Event - Admin
+  // Create event - Admin
   createEvent(data: any): Observable<any> {
-    return this.http.post(this.apiUrl, data);
+    return this.http.post(
+      this.apiUrl,
+      data
+    );
+  }
+
+
+  // Approve event
+  approveEvent(id: number): Observable<any> {
+    return this.http.put(
+      `${this.apiUrl}/${id}`,
+      {
+        status: 'Approved'
+      }
+    );
+  }
+
+
+  // Reject event
+  rejectEvent(id: number): Observable<any> {
+    return this.http.put(
+      `${this.apiUrl}/${id}`,
+      {
+        status: 'Rejected'
+      }
+    );
   }
 
 
   // =====================================================
-  // COORDINATOR
+  // EVENT CATEGORIES
   // =====================================================
 
-  // Get Event Categories
   getCategories(): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/event-categories`
+    );
+  }
+
+
+  // =====================================================
+  // COORDINATOR EVENTS
+  // =====================================================
+
+  // Get ONLY logged-in coordinator's events
+  getCoordinatorEvents(): Observable<any> {
 
     return this.http.get(
-      environment.apiUrl + '/event-categories'
+      this.coordinatorUrl
     );
 
   }
 
 
-  // Get ONLY logged-in Coordinator's Events
-  getCoordinatorEvents(): Observable<any> {
-  return this.http.get(
-    environment.apiUrl + '/coordinator/events'
-  );
-}
-
-
-  // Get ONE of logged-in Coordinator's Events
+  // Get ONE own event
   getCoordinatorEvent(id: number): Observable<any> {
 
     return this.http.get(
-      `${environment.apiUrl}/coordinator/events/${id}`
+      `${this.coordinatorUrl}/${id}`
     );
 
   }
 
 
-  // Add Event as Coordinator
+  // Create event as coordinator
   addCoordinatorEvent(data: any): Observable<any> {
 
     return this.http.post(
-      environment.apiUrl + '/coordinator/events',
+      this.coordinatorUrl,
       data
     );
 
   }
 
 
-  // Update Coordinator's Own Event
+  // Update own event
   updateCoordinatorEvent(
     id: number,
     data: any
   ): Observable<any> {
 
     return this.http.put(
-      `${environment.apiUrl}/coordinator/events/${id}`,
+      `${this.coordinatorUrl}/${id}`,
       data
     );
 
   }
 
 
-  // Delete Coordinator's Own Event
-  deleteCoordinatorEvent(id: number): Observable<any> {
+  // Delete own event
+  deleteCoordinatorEvent(
+    id: number
+  ): Observable<any> {
 
     return this.http.delete(
-      `${environment.apiUrl}/coordinator/events/${id}`
+      `${this.coordinatorUrl}/${id}`
     );
 
   }

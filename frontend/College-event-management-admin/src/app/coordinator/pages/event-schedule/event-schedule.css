@@ -1,0 +1,293 @@
+.schedule-container {
+  padding: 30px;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.page-header h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.page-header p {
+  margin-top: 6px;
+  color: #6b7280;
+}
+
+
+/* =========================
+   SCHEDULE LIST
+========================= */
+
+.schedule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+
+/* =========================
+   EVENT CARD
+========================= */
+
+.schedule-card {
+  display: flex;
+  background: white;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  transition: 0.2s ease;
+}
+
+.schedule-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================
+   DATE
+========================= */
+
+.date-section {
+  width: 120px;
+  min-width: 120px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background: #eff6ff;
+
+  border-right: 1px solid #dbeafe;
+}
+
+.date-day {
+  font-size: 34px;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.date-month {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1d4ed8;
+  text-transform: uppercase;
+}
+
+.date-year {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 3px;
+}
+
+
+/* =========================
+   EVENT DETAILS
+========================= */
+
+.event-details {
+  flex: 1;
+  padding: 22px 25px;
+}
+
+.event-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.event-title-row h3 {
+  margin: 0;
+  font-size: 21px;
+  color: #111827;
+}
+
+
+.description {
+  color: #6b7280;
+  margin: 10px 0 18px;
+  line-height: 1.5;
+}
+
+
+/* =========================
+   EVENT INFO
+========================= */
+
+.event-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon {
+  font-size: 21px;
+}
+
+.info-item small {
+  display: block;
+  color: #94a3b8;
+  font-size: 12px;
+  margin-bottom: 3px;
+}
+
+.info-item strong {
+  display: block;
+  color: #374151;
+  font-size: 14px;
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+.status {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status.approved {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.status.pending {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.status.rejected {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  background: white;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+}
+
+.empty-icon {
+  font-size: 50px;
+  margin-bottom: 15px;
+}
+
+.empty-state h3 {
+  margin: 0;
+  color: #111827;
+}
+
+.empty-state p {
+  color: #6b7280;
+}
+
+
+/* =========================
+   LOADING
+========================= */
+
+.loading {
+  text-align: center;
+  padding: 80px;
+  color: #64748b;
+}
+
+.spinner {
+  width: 35px;
+  height: 35px;
+
+  border: 4px solid #e5e7eb;
+  border-top-color: #2563eb;
+
+  border-radius: 50%;
+
+  animation: spin 0.8s linear infinite;
+
+  margin: auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+  .schedule-container {
+    padding: 15px;
+  }
+
+  .schedule-card {
+    flex-direction: column;
+  }
+
+  .date-section {
+    width: 100%;
+    min-width: auto;
+    padding: 15px;
+
+    flex-direction: row;
+    gap: 8px;
+
+    border-right: none;
+    border-bottom: 1px solid #dbeafe;
+  }
+
+  .date-day {
+    font-size: 25px;
+  }
+
+  .event-details {
+    padding: 18px;
+  }
+
+  .event-title-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .event-info {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+}

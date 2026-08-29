@@ -27,6 +27,7 @@ import { CoordinatorDashboard } from './coordinator/pages/coordinator-dashboard/
 
 import { CoordinatorEvents } from './coordinator/pages/coordinator-event/coordinator-event';
 
+import { EventSchedule } from './coordinator/pages/event-schedule/event-schedule';
 
 export const routes: Routes = [
 
@@ -145,7 +146,11 @@ export const routes: Routes = [
             {
                 path: 'events',
                 component: CoordinatorEvents
-            }
+            },
+            {
+  path: 'schedule',
+  component: EventSchedule
+}
 
         ]
     },

@@ -10,7 +10,7 @@ export class AuthService {
 
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   login(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/admin/login`, data);
@@ -20,39 +20,43 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/admin/logout`, {});
   }
 
-  // Store token
+  // SAVE ADMIN TOKEN
   saveToken(token: string): void {
-    localStorage.setItem('token', token);
+    localStorage.setItem('admin_token', token);
   }
 
-  // Get token
+  // GET ADMIN TOKEN
   getToken(): string | null {
-    return localStorage.getItem('token');
+    return localStorage.getItem('admin_token');
   }
 
-  // Check login
+  // CHECK ADMIN LOGIN
   isLoggedIn(): boolean {
-    return this.getToken() !== null;
+    return !!this.getToken();
   }
 
-  // Remove token
+  // REMOVE ADMIN TOKEN
   removeToken(): void {
-  localStorage.removeItem('token');
-  localStorage.removeItem('admin');
-}
-
-  // Store admin
-  saveAdmin(admin: any): void {
-    localStorage.setItem('admin', JSON.stringify(admin));
+    localStorage.removeItem('admin_token');
+    localStorage.removeItem('admin');
   }
 
-  // Get admin
+  // SAVE ADMIN
+  saveAdmin(admin: any): void {
+    localStorage.setItem(
+      'admin',
+      JSON.stringify(admin)
+    );
+  }
+
+  // GET ADMIN
   getAdmin(): any {
     const admin = localStorage.getItem('admin');
+
     return admin ? JSON.parse(admin) : null;
   }
 
-  // Remove admin
+  // REMOVE ADMIN
   removeAdmin(): void {
     localStorage.removeItem('admin');
   }

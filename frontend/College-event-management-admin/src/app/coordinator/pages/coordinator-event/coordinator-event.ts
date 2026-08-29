@@ -20,6 +20,7 @@ import { EventService } from '../../../core/services/event';
 })
 export class CoordinatorEvents implements OnInit {
 
+
   // =====================================================
   // EVENTS & CATEGORIES
   // =====================================================
@@ -511,204 +512,305 @@ export class CoordinatorEvents implements OnInit {
   // ADD EVENT
   // =====================================================
 
-  addEvent(form: NgForm): void {
+ addEvent(form: NgForm): void {
 
-    // Form validation
-    if (form.invalid) {
+  // ==============================
+  // FORM VALIDATION
+  // ==============================
 
-      form.control.markAllAsTouched();
+  if (form.invalid) {
+    form.control.markAllAsTouched();
+    return;
+  }
 
-      return;
+  // ==============================
+  // DATE & TIME VALIDATION
+  // ==============================
 
-    }
+  if (!this.validateEventDateTime()) {
+    return;
+  }
 
+  this.loading = true;
 
-    // Date and time validation
-    if (!this.validateEventDateTime()) {
+  // ==============================
+  // EVENT DATA
+  // ==============================
 
-      return;
+  const eventData = {
 
-    }
+    category_id: Number(this.newEvent.category_id),
 
+    event_name:
+      this.newEvent.event_name.trim(),
 
-    this.loading = true;
+    description:
+      this.newEvent.description?.trim() || null,
 
+    venue:
+      this.newEvent.venue.trim(),
 
-    const eventData = {
-       
-  
-       
+    event_date:
+      this.newEvent.event_date,
 
-      category_id:
-        Number(
-          this.newEvent.category_id
-        ),
+    start_time:
+      `${this.newEvent.start_time}:00`,
 
-      event_name:
-        this.newEvent.event_name,
+    end_time:
+      `${this.newEvent.end_time}:00`,
 
-      description:
-        this.newEvent.description || null,
+    max_participants:
+      Number(this.newEvent.max_participants)
 
-      venue:
-        this.newEvent.venue,
+  };
 
-      event_date:
-        this.newEvent.event_date,
+  console.log('========== EVENT DATA ==========');
+  console.log('EDITING ID:', this.editingEventId);
+  console.log('EVENT DATA:', eventData);
+  console.log('================================');
 
-      start_time:
-        this.newEvent.start_time + ':00',
 
-      end_time:
-        this.newEvent.end_time + ':00',
+  // ==============================
+  // CREATE OR UPDATE
+  // ==============================
 
-      max_participants:
-        Number(
-          this.newEvent.max_participants
-        )
+  const request$ = this.editingEventId !== null
 
-    };
+    ? this.eventService.updateCoordinatorEvent(
+        this.editingEventId,
+        eventData
+      )
 
+    : this.eventService.addCoordinatorEvent(
+        eventData
+      );
 
-    console.log(
-      'EVENT DATA:',
-      eventData
-    );
 
+  request$.subscribe({
 
-    this.eventService
-      .addCoordinatorEvent(eventData)
-      .subscribe({
+    // ==============================
+    // SUCCESS
+    // ==============================
 
-        // =================================================
-        // SUCCESS
-        // =================================================
+    next: (response: any) => {
 
-        next: (response: any) => {
+      this.loading = false;
 
-          this.loading = false;
+      // IMPORTANT:
+      // Store this BEFORE setting editingEventId = null
+      const wasEditing =
+        this.editingEventId !== null;
 
 
-          // Close modal
-          const modalElement =
-            document.getElementById(
-              'addEventModal'
-            );
+      console.log(
+        wasEditing
+          ? 'EVENT UPDATED:'
+          : 'EVENT CREATED:',
+        response
+      );
 
-          if (modalElement) {
 
-            const bootstrap =
-              (window as any).bootstrap;
+      // ==============================
+      // CLOSE MODAL
+      // ==============================
 
-            const modal =
-              bootstrap.Modal
-                .getInstance(modalElement);
+      const modalElement =
+        document.getElementById('addEventModal');
 
-            modal?.hide();
+      if (modalElement) {
 
-          }
+        const bootstrap =
+          (window as any).bootstrap;
 
+        if (bootstrap) {
 
-          // Reset form
-          form.resetForm();
+          const modal =
+            bootstrap.Modal
+              .getInstance(modalElement);
 
-          this.resetForm();
-
-
-          // Reload only my events
-          this.loadEvents();
-
-
-          Swal.fire({
-
-            icon: 'success',
-
-            title: 'Event Created!',
-
-            text:
-              response.message ||
-              'Event submitted successfully. Waiting for admin approval.',
-
-            confirmButtonColor: '#2563EB'
-
-          });
-
-        },
-
-
-        // =================================================
-        // ERROR
-        // =================================================
-
-        error: (error) => {
-
-          this.loading = false;
-
-
-          console.error(
-            'ADD EVENT ERROR:',
-            error
-          );
-
-
-          let message =
-            'Unable to create event.';
-
-
-          // Validation error
-          if (error.status === 422) {
-
-            const errors =
-              error.error?.errors;
-
-
-            if (errors) {
-
-              message =
-                Object.values(errors)
-                  .flat()
-                  .join('\n');
-
-            }
-
-            else if (
-              error.error?.message
-            ) {
-
-              message =
-                error.error.message;
-
-            }
-
-          }
-
-
-          // Authentication error
-          if (error.status === 401) {
-
-            message =
-              'Coordinator authentication failed. Please login again.';
-
-          }
-
-
-          Swal.fire({
-
-            icon: 'error',
-
-            title: 'Failed',
-
-            text: message,
-
-            confirmButtonColor: '#DC2626'
-
-          });
+          modal?.hide();
 
         }
 
+      }
+
+
+      // ==============================
+      // RESET FORM
+      // ==============================
+
+      form.resetForm();
+
+      this.resetForm();
+
+      // Reset edit mode
+      this.editingEventId = null;
+
+
+      // ==============================
+      // RELOAD MY EVENTS
+      // ==============================
+
+      this.loadEvents();
+
+
+      // ==============================
+      // SUCCESS MESSAGE
+      // ==============================
+
+      Swal.fire({
+
+        icon: 'success',
+
+        title:
+          wasEditing
+            ? 'Event Updated!'
+            : 'Event Created!',
+
+        text:
+          response.message ||
+          (
+            wasEditing
+              ? 'Event updated successfully.'
+              : 'Event submitted successfully. Waiting for admin approval.'
+          ),
+
+        confirmButtonColor: '#2563EB'
+
       });
 
-  }
+    },
+
+
+    // ==============================
+    // ERROR
+    // ==============================
+
+    error: (error) => {
+
+      this.loading = false;
+
+      console.error(
+        '========== EVENT OPERATION ERROR =========='
+      );
+
+      console.error(
+        'STATUS:',
+        error.status
+      );
+
+      console.error(
+        'ERROR BODY:',
+        error.error
+      );
+
+      console.error(
+        'MESSAGE:',
+        error.error?.message
+      );
+
+      console.error(
+        'VALIDATION:',
+        error.error?.errors
+      );
+
+      console.error(
+        '==========================================='
+      );
+
+
+      let message =
+        'Unable to save event.';
+
+
+      // ==============================
+      // VALIDATION ERROR
+      // ==============================
+
+      if (error.status === 422) {
+
+        const errors =
+          error.error?.errors;
+
+        if (errors) {
+
+          message =
+            Object.entries(errors)
+              .map(
+                ([field, messages]: [string, any]) =>
+                  `${field}: ${messages.join(', ')}`
+              )
+              .join('\n');
+
+        }
+
+        else if (error.error?.message) {
+
+          message =
+            error.error.message;
+
+        }
+
+      }
+
+
+      // ==============================
+      // AUTH ERROR
+      // ==============================
+
+      else if (error.status === 401) {
+
+        message =
+          'Coordinator authentication failed. Please login again.';
+
+      }
+
+
+      // ==============================
+      // NOT FOUND / UNAUTHORIZED
+      // ==============================
+
+      else if (error.status === 404) {
+
+        message =
+          error.error?.message ||
+          'Event not found or you are not authorized to edit this event.';
+
+      }
+
+
+      // ==============================
+      // SERVER ERROR
+      // ==============================
+
+      else if (error.status === 500) {
+
+        message =
+          'Server error. Please check the Laravel terminal.';
+
+      }
+
+
+      Swal.fire({
+
+        icon: 'error',
+
+        title:
+          this.editingEventId !== null
+            ? 'Failed to Update Event'
+            : 'Failed to Create Event',
+
+        text: message,
+
+        confirmButtonColor: '#DC2626'
+
+      });
+
+    }
+
+  });
+
+}
 
 
   // =====================================================
@@ -918,5 +1020,169 @@ export class CoordinatorEvents implements OnInit {
     return true;
 
   }
+
+selectedEvent: any = null;
+
+viewEvent(event: any): void {
+  this.selectedEvent = event;
+
+  const modalElement = document.getElementById('viewEventModal');
+
+  if (modalElement) {
+    const bootstrap = (window as any).bootstrap;
+    const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+    modal.show();
+  }
+}
+
+deleteEvent(id: number): void {
+
+  Swal.fire({
+    icon: 'warning',
+    title: 'Delete Event?',
+    text: 'This event will be permanently deleted.',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, Delete',
+    cancelButtonText: 'Cancel',
+    confirmButtonColor: '#DC2626',
+    cancelButtonColor: '#6B7280'
+  }).then((result) => {
+
+    if (!result.isConfirmed) {
+      return;
+    }
+
+    this.loading = true;
+
+    this.eventService.deleteCoordinatorEvent(id).subscribe({
+
+      next: (response: any) => {
+
+        this.loading = false;
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Deleted!',
+          text: response.message || 'Event deleted successfully.',
+          confirmButtonColor: '#2563EB'
+        });
+
+        // Refresh My Events
+        this.loadEvents();
+
+      },
+
+      error: (error) => {
+
+        this.loading = false;
+
+        console.error('Delete event error:', error);
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Delete Failed',
+          text:
+            error.error?.message ||
+            'Unable to delete event.',
+          confirmButtonColor: '#DC2626'
+        });
+
+      }
+
+    });
+
+  });
+
+}
+setTimeForPicker(
+  time: string,
+  type: 'start' | 'end'
+): void {
+
+  if (!time) {
+    return;
+  }
+
+  const parts = time.substring(0, 5).split(':');
+
+  let hour = Number(parts[0]);
+  const minute = parts[1];
+
+  const period = hour >= 12 ? 'PM' : 'AM';
+
+  if (hour === 0) {
+    hour = 12;
+  }
+  else if (hour > 12) {
+    hour -= 12;
+  }
+
+  if (type === 'start') {
+
+    this.newEvent.start_hour = hour;
+    this.newEvent.start_minute = minute;
+    this.newEvent.start_period = period;
+
+  }
+  else {
+
+    this.newEvent.end_hour = hour;
+    this.newEvent.end_minute = minute;
+    this.newEvent.end_period = period;
+
+  }
+
+}
+
+
+editingEventId: number | null = null;
+
+editEvent(event: any): void {
+
+  this.editingEventId = event.id;
+
+  this.newEvent = {
+    category_id: event.category_id,
+    event_name: event.event_name,
+    description: event.description || '',
+    venue: event.venue,
+    event_date: event.event_date,
+    start_hour: '',
+    start_minute: '',
+    start_period: '',
+    end_hour: '',
+    end_minute: '',
+    end_period: '',
+    max_participants: event.max_participants
+  };
+
+  // Convert database time to AM/PM picker
+  this.setTimeForPicker(
+    event.start_time,
+    'start'
+  );
+
+  this.setTimeForPicker(
+    event.end_time,
+    'end'
+  );
+
+  const modalElement =
+    document.getElementById('addEventModal');
+
+  if (modalElement) {
+
+    const bootstrap = (window as any).bootstrap;
+
+    const modal =
+      bootstrap.Modal.getOrCreateInstance(
+        modalElement
+      );
+
+    modal.show();
+
+  }
+
+}
 
 }

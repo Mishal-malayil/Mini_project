@@ -1,0 +1,212 @@
+<div class="schedule-container">
+
+  <!-- HEADER -->
+
+  <div class="page-header">
+
+    <div>
+      <h2>Event Schedule</h2>
+
+      <p>
+        View your upcoming event schedule
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- LOADING -->
+
+  <div
+    class="loading"
+    *ngIf="loading"
+  >
+
+    <div class="spinner"></div>
+
+    <p>Loading schedule...</p>
+
+  </div>
+
+
+  <!-- EMPTY -->
+
+  <div
+    class="empty-state"
+    *ngIf="!loading && events.length === 0"
+  >
+
+    <div class="empty-icon">
+      📅
+    </div>
+
+    <h3>No Events Scheduled</h3>
+
+    <p>
+      You don't have any events scheduled yet.
+    </p>
+
+  </div>
+
+
+  <!-- EVENT SCHEDULE -->
+
+  <div
+    class="schedule-list"
+    *ngIf="!loading && events.length > 0"
+  >
+
+    <div
+      class="schedule-card"
+      *ngFor="let event of events"
+    >
+
+      <!-- DATE -->
+
+      <div class="date-section">
+
+        <div class="date-day">
+          {{ event.event_date | date:'dd' }}
+        </div>
+
+        <div class="date-month">
+          {{ event.event_date | date:'MMM' }}
+        </div>
+
+        <div class="date-year">
+          {{ event.event_date | date:'yyyy' }}
+        </div>
+
+      </div>
+
+
+      <!-- EVENT DETAILS -->
+
+      <div class="event-details">
+
+        <div class="event-title-row">
+
+          <h3>
+            {{ event.event_name }}
+          </h3>
+
+          <span
+            class="status"
+            [ngClass]="getStatusClass(event.status)"
+          >
+            {{ event.status }}
+          </span>
+
+        </div>
+
+
+        <p
+          class="description"
+          *ngIf="event.description"
+        >
+          {{ event.description }}
+        </p>
+
+
+        <div class="event-info">
+
+          <!-- TIME -->
+
+          <div class="info-item">
+
+            <span class="icon">
+              🕐
+            </span>
+
+            <div>
+
+              <small>Time</small>
+
+              <strong>
+
+                {{ formatTime(event.start_time) }}
+
+                -
+
+                {{ formatTime(event.end_time) }}
+
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <!-- VENUE -->
+
+          <div class="info-item">
+
+            <span class="icon">
+              📍
+            </span>
+
+            <div>
+
+              <small>Venue</small>
+
+              <strong>
+                {{ event.venue }}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <!-- CATEGORY -->
+
+          <div class="info-item">
+
+            <span class="icon">
+              🏷️
+            </span>
+
+            <div>
+
+              <small>Category</small>
+
+              <strong>
+
+                {{ event.category?.name || 'N/A' }}
+
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <!-- PARTICIPANTS -->
+
+          <div class="info-item">
+
+            <span class="icon">
+              👥
+            </span>
+
+            <div>
+
+              <small>Participants</small>
+
+              <strong>
+                {{ event.max_participants }}
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
