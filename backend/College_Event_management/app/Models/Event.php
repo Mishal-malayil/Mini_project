@@ -7,16 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 class Event extends Model
 {
     protected $fillable = [
-    'event_name',
     'category_id',
     'coordinator_id',
+    'event_name',
+    'description',
+    'venue',
     'event_date',
     'start_time',
     'end_time',
-    'venue',
     'max_participants',
-    'description',
     'status',
+
 ];
 
     public function category()

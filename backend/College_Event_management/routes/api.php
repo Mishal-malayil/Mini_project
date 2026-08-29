@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+// =====================================================
+// ADMIN CONTROLLERS
+// =====================================================
+
 use App\Http\Controllers\Api\Admin\AuthController;
 use App\Http\Controllers\Api\Admin\StudentController;
 use App\Http\Controllers\Api\Admin\CoordinatorController;
@@ -12,93 +17,250 @@ use App\Http\Controllers\Api\Admin\ResultController;
 use App\Http\Controllers\Api\Admin\AnnouncementController;
 use App\Http\Controllers\Api\Admin\DashboardController;
 use App\Http\Controllers\Api\Admin\ProfileController;
+
+// =====================================================
+// COORDINATOR CONTROLLERS
+// =====================================================
+
 use App\Http\Controllers\Api\Coordinator\CoordinatorAuthController;
 use App\Http\Controllers\Api\Coordinator\CoordinatorEventController;
 
-// Public Route
+
+// =====================================================
+// ADMIN LOGIN
+// =====================================================
+
 Route::post('/admin/login', [AuthController::class, 'login']);
 
-// Protected Routes
+
+// =====================================================
+// EVENT CATEGORIES - VIEW
+// =====================================================
+
+// Admin and Coordinator can VIEW categories
+Route::get(
+    '/event-categories',
+    [EventCategoryController::class, 'index']
+);
+
+
+// =====================================================
+// ADMIN PROTECTED ROUTES
+// =====================================================
+
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::post('/admin/logout', [AuthController::class, 'logout']);
+    // =================================================
+    // ADMIN AUTHENTICATION
+    // =================================================
 
-    Route::apiResource('students', StudentController::class);
+    Route::post(
+        '/admin/logout',
+        [AuthController::class, 'logout']
+    );
 
-    Route::apiResource('coordinators', CoordinatorController::class);
 
-    Route::apiResource('event-categories', EventCategoryController::class);
+    // =================================================
+    // STUDENTS
+    // =================================================
 
-    Route::apiResource('events', EventController::class);
+    Route::apiResource(
+        'students',
+        StudentController::class
+    );
 
-    Route::apiResource('registrations', RegistrationController::class);
 
-    Route::apiResource('attendances', AttendanceController::class);
+    // =================================================
+    // COORDINATORS
+    // =================================================
 
-    Route::apiResource('results', ResultController::class);
+    Route::apiResource(
+        'coordinators',
+        CoordinatorController::class
+    );
 
-    Route::apiResource('announcements', AnnouncementController::class);
 
-    Route::get('/dashboard', [DashboardController::class, 'index']);
+    // =================================================
+    // EVENT CATEGORIES - ADMIN MANAGEMENT
+    // =================================================
 
-    Route::apiResource('events', EventController::class);
+    Route::post(
+        '/event-categories',
+        [EventCategoryController::class, 'store']
+    );
 
-Route::put('events/{id}/approve', [EventController::class, 'approve']);
+    Route::get(
+        '/event-categories/{event_category}',
+        [EventCategoryController::class, 'show']
+    );
 
-Route::put('events/{id}/reject', [EventController::class, 'reject']);
+    Route::put(
+        '/event-categories/{event_category}',
+        [EventCategoryController::class, 'update']
+    );
 
-Route::get('/registrations', [RegistrationController::class, 'index']);
-Route::get('/registrations/{id}', [RegistrationController::class, 'show']);
+    Route::delete(
+        '/event-categories/{event_category}',
+        [EventCategoryController::class, 'destroy']
+    );
 
- Route::get('/profile', [ProfileController::class, 'profile']);
- Route::put('/profile', [ProfileController::class, 'updateProfile']);
 
-  Route::get('/profile', [ProfileController::class, 'profile']);
+    // =================================================
+    // EVENTS - ADMIN
+    // =================================================
 
-    Route::put('/profile', [ProfileController::class, 'updateProfile']);
+    Route::apiResource(
+        'events',
+        EventController::class
+    );
 
-    Route::put('/profile/change-password', [ProfileController::class, 'changePassword']);
+    // Approve Event
+    Route::put(
+        '/events/{id}/approve',
+        [EventController::class, 'approve']
+    );
 
+    // Reject Event
+    Route::put(
+        '/events/{id}/reject',
+        [EventController::class, 'reject']
+    );
+
+
+    // =================================================
+    // REGISTRATIONS
+    // =================================================
+
+    Route::apiResource(
+        'registrations',
+        RegistrationController::class
+    );
+
+
+    // =================================================
+    // ATTENDANCES
+    // =================================================
+
+    Route::apiResource(
+        'attendances',
+        AttendanceController::class
+    );
+
+
+    // =================================================
+    // RESULTS
+    // =================================================
+
+    Route::apiResource(
+        'results',
+        ResultController::class
+    );
+
+
+    // =================================================
+    // ANNOUNCEMENTS
+    // =================================================
+
+    Route::apiResource(
+        'announcements',
+        AnnouncementController::class
+    );
+
+
+    // =================================================
+    // ADMIN DASHBOARD
+    // =================================================
+
+    Route::get(
+        '/dashboard',
+        [DashboardController::class, 'index']
+    );
+
+
+    // =================================================
+    // ADMIN PROFILE
+    // =================================================
+
+    Route::get(
+        '/profile',
+        [ProfileController::class, 'profile']
+    );
+
+    Route::put(
+        '/profile',
+        [ProfileController::class, 'updateProfile']
+    );
+
+    Route::put(
+        '/profile/change-password',
+        [ProfileController::class, 'changePassword']
+    );
 
 });
 
+
+// =====================================================
+// COORDINATOR ROUTES
+// =====================================================
+
 Route::prefix('coordinator')->group(function () {
 
-    // Authentication
-    Route::post('/login', [CoordinatorAuthController::class, 'login']);
-    Route::post('/logout', [CoordinatorAuthController::class, 'logout']);
-    Route::get('/profile', [CoordinatorAuthController::class, 'profile']);
+    // =================================================
+    // COORDINATOR AUTHENTICATION
+    // =================================================
 
-    // Events
-    Route::get('/events', [EventController::class, 'index']);
-    Route::post('/events', [EventController::class, 'store']);
-    Route::get('/events/{id}', [EventController::class, 'show']);
-    Route::put('/events/{id}', [EventController::class, 'update']);
-    Route::delete('/events/{id}', [EventController::class, 'destroy']);
+    Route::post(
+        '/login',
+        [CoordinatorAuthController::class, 'login']
+    );
 
-     Route::middleware('auth:coordinator')
-    ->prefix('coordinator')
-    ->group(function () {
+    Route::post(
+        '/logout',
+        [CoordinatorAuthController::class, 'logout']
+    );
 
-        // View only logged-in coordinator's events
-        Route::get('/events',
-            [CoordinatorEventController::class, 'index']);
+    Route::get(
+        '/profile',
+        [CoordinatorAuthController::class, 'profile']
+    );
 
-        // Add new event
-        Route::post('/events',
-            [CoordinatorEventController::class, 'store']);
 
-        // View single own event
-        Route::get('/events/{id}',
-            [CoordinatorEventController::class, 'show']);
+    // =================================================
+    // COORDINATOR EVENT MANAGEMENT
+    // =================================================
 
-        // Edit own event
-        Route::put('/events/{id}',
-            [CoordinatorEventController::class, 'update']);
+    Route::middleware('auth:coordinator')->group(function () {
 
-        // Delete own event
-        Route::delete('/events/{id}',
-            [CoordinatorEventController::class, 'destroy']);
+        // View ONLY logged-in coordinator's events
+        Route::get(
+            '/events',
+            [CoordinatorEventController::class, 'index']
+        );
+
+        // Create event
+        Route::post(
+            '/events',
+            [CoordinatorEventController::class, 'store']
+        );
+
+        // View ONLY own event
+        Route::get(
+            '/events/{id}',
+            [CoordinatorEventController::class, 'show']
+        );
+
+        // Edit ONLY own event
+        Route::put(
+            '/events/{id}',
+            [CoordinatorEventController::class, 'update']
+        );
+
+        // Delete ONLY own event
+        Route::delete(
+            '/events/{id}',
+            [CoordinatorEventController::class, 'destroy']
+        );
 
     });
+
 });
