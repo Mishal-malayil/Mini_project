@@ -1,0 +1,606 @@
+<div class="result-page">
+
+  <!-- =====================================================
+       PAGE HEADER
+  ====================================================== -->
+
+  <div class="page-header">
+
+    <div>
+
+      <h2>
+        Publish Results & Winners
+      </h2>
+
+      <p>
+        Publish results and winners for your events
+      </p>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="refresh-btn"
+      (click)="refresh()"
+      [disabled]="
+        loadingEvents ||
+        loadingResults ||
+        loadingParticipants
+      ">
+
+      <i class="bi bi-arrow-clockwise"></i>
+
+      Refresh
+
+    </button>
+
+  </div>
+
+
+  <!-- =====================================================
+       SELECT EVENT
+  ====================================================== -->
+
+  <div class="selection-card">
+
+    <div class="form-group">
+
+      <label>
+        Select Event
+      </label>
+
+      <select
+        [(ngModel)]="selectedEventId"
+        (change)="eventChanged()">
+
+        <option [ngValue]="null">
+          -- Select Event --
+        </option>
+
+
+        <option
+          *ngFor="let event of events"
+          [ngValue]="event.id">
+
+          {{ event.event_name }}
+
+        </option>
+
+      </select>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       PUBLISH RESULT FORM
+  ====================================================== -->
+
+  <div
+    class="publish-card"
+    *ngIf="selectedEventId">
+
+    <div class="card-header">
+
+      <div>
+
+        <h3>
+          Publish Result
+        </h3>
+
+        <p>
+          Select an approved participant and assign
+          their result.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="form-grid">
+
+      <!-- Participant -->
+
+      <div class="form-group">
+
+        <label>
+          Participant
+        </label>
+
+        <select
+          [(ngModel)]="selectedStudentId">
+
+          <option [ngValue]="null">
+            -- Select Participant --
+          </option>
+
+
+          <option
+            *ngFor="let participant of participants"
+            [ngValue]="participant.id">
+
+            {{ participant.name }}
+
+            -
+            ID: {{ participant.id }}
+
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- Position -->
+
+      <div class="form-group">
+
+        <label>
+          Position
+        </label>
+
+        <select
+          [(ngModel)]="selectedPosition">
+
+          <option value="">
+            -- Select Position --
+          </option>
+
+
+          <option
+            value="First"
+            [disabled]="isPositionTaken('First')">
+
+            🥇 First Place
+
+          </option>
+
+
+          <option
+            value="Second"
+            [disabled]="isPositionTaken('Second')">
+
+            🥈 Second Place
+
+          </option>
+
+
+          <option
+            value="Third"
+            [disabled]="isPositionTaken('Third')">
+
+            🥉 Third Place
+
+          </option>
+
+
+          <option value="Participation">
+
+            Participation
+
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- Remarks -->
+
+      <div class="form-group full-width">
+
+        <label>
+          Remarks
+        </label>
+
+        <textarea
+          rows="3"
+          [(ngModel)]="remarks"
+          placeholder="Enter optional remarks...">
+        </textarea>
+
+      </div>
+
+    </div>
+
+
+    <!-- Publish -->
+
+    <div class="form-actions">
+
+      <button
+        type="button"
+        class="publish-btn"
+        (click)="publishResult()"
+        [disabled]="publishing">
+
+        <i
+          class="bi"
+          [ngClass]="
+            publishing
+              ? 'bi-hourglass-split'
+              : 'bi-megaphone'
+          ">
+        </i>
+
+        {{ publishing ? 'Publishing...' : 'Publish Result' }}
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       APPROVED PARTICIPANTS
+  ====================================================== -->
+
+  <div
+    class="table-card"
+    *ngIf="
+      selectedEventId &&
+      !loadingParticipants
+    ">
+
+    <div class="table-header">
+
+      <div>
+
+        <h3>
+          Approved Participants
+        </h3>
+
+        <p>
+          {{ participants.length }}
+          approved participant(s)
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div
+      class="loading-container"
+      *ngIf="loadingParticipants">
+
+      <div class="spinner-border"></div>
+
+      <p>
+        Loading participants...
+      </p>
+
+    </div>
+
+
+    <div
+      class="table-responsive"
+      *ngIf="!loadingParticipants">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              #
+            </th>
+
+            <th>
+              Student
+            </th>
+
+            <th>
+              Student ID
+            </th>
+
+            <th>
+              Email
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let participant of participants;
+              let i = index
+            ">
+
+            <td>
+              {{ i + 1 }}
+            </td>
+
+
+            <td>
+
+              <div class="student-info">
+
+                <div class="student-avatar">
+
+                  {{
+                    participant.name
+                      ?.charAt(0)
+                      ?.toUpperCase() || 'S'
+                  }}
+
+                </div>
+
+                <strong>
+
+                  {{ participant.name }}
+
+                </strong>
+
+              </div>
+
+            </td>
+
+
+            <td>
+
+              {{ participant.id }}
+
+            </td>
+
+
+            <td>
+
+              {{ participant.email || 'N/A' }}
+
+            </td>
+
+          </tr>
+
+
+          <tr
+            *ngIf="participants.length === 0">
+
+            <td
+              colspan="4"
+              class="empty-state">
+
+              <i class="bi bi-people"></i>
+
+              <h4>
+                No Approved Participants
+              </h4>
+
+              <p>
+                There are no approved participants
+                for this event.
+              </p>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       PUBLISHED RESULTS
+  ====================================================== -->
+
+  <div class="table-card">
+
+    <div class="table-header">
+
+      <div>
+
+        <h3>
+          Published Results
+        </h3>
+
+        <p>
+          Results already published for your events
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div
+      class="loading-container"
+      *ngIf="loadingResults">
+
+      <div class="spinner-border"></div>
+
+      <p>
+        Loading results...
+      </p>
+
+    </div>
+
+
+    <div
+      class="table-responsive"
+      *ngIf="!loadingResults">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              #
+            </th>
+
+            <th>
+              Student
+            </th>
+
+            <th>
+              Event
+            </th>
+
+            <th>
+              Position
+            </th>
+
+            <th>
+              Remarks
+            </th>
+
+            <th>
+              Action
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let result of results;
+              let i = index
+            ">
+
+            <td>
+              {{ i + 1 }}
+            </td>
+
+
+            <td>
+
+              <strong>
+                {{ result.student?.name || 'N/A' }}
+              </strong>
+
+              <small>
+                ID: {{ result.student?.id || 'N/A' }}
+              </small>
+
+            </td>
+
+
+            <td>
+
+              {{ result.event?.event_name || 'N/A' }}
+
+            </td>
+
+
+            <td>
+
+              <span
+                class="position-badge"
+                [ngClass]="{
+
+                  'first':
+                    result.position === 'First',
+
+                  'second':
+                    result.position === 'Second',
+
+                  'third':
+                    result.position === 'Third',
+
+                  'participation':
+                    result.position === 'Participation'
+
+                }">
+
+                {{ getPositionLabel(result.position) }}
+
+              </span>
+
+            </td>
+
+
+            <td>
+
+              {{ result.remarks || '—' }}
+
+            </td>
+
+
+            <td>
+
+              <button
+                type="button"
+                class="delete-btn"
+                title="Delete Result"
+                (click)="deleteResult(result)">
+
+                <i class="bi bi-trash"></i>
+
+              </button>
+
+            </td>
+
+          </tr>
+
+
+          <tr
+            *ngIf="results.length === 0">
+
+            <td
+              colspan="6"
+              class="empty-state">
+
+              <i class="bi bi-trophy"></i>
+
+              <h4>
+                No Results Published
+              </h4>
+
+              <p>
+                Published results will appear here.
+              </p>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       NO EVENT SELECTED
+  ====================================================== -->
+
+  <div
+    class="empty-card"
+    *ngIf="!selectedEventId">
+
+    <i class="bi bi-trophy"></i>
+
+    <h3>
+      Select an Event
+    </h3>
+
+    <p>
+      Select one of your events above to publish
+      results and winners.
+    </p>
+
+  </div>
+
+</div>

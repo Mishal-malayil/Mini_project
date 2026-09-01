@@ -1,0 +1,355 @@
+<div class="attendance-page">
+
+  <!-- =====================================================
+       PAGE HEADER
+  ====================================================== -->
+
+  <div class="page-header">
+
+    <div>
+
+      <h2>
+        Mark Attendance
+      </h2>
+
+      <p>
+        Mark attendance for participants of your events
+      </p>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="refresh-btn"
+      (click)="refresh()"
+      [disabled]="loading || loadingParticipants">
+
+      <i class="bi bi-arrow-clockwise"></i>
+
+      Refresh
+
+    </button>
+
+  </div>
+
+
+  <!-- =====================================================
+       EVENT + DATE SELECTION
+  ====================================================== -->
+
+  <div class="selection-card">
+
+    <div class="form-group">
+
+      <label>
+        Select Event
+      </label>
+
+      <select
+        [(ngModel)]="selectedEventId"
+        (change)="eventChanged()">
+
+        <option [ngValue]="null">
+          -- Select Event --
+        </option>
+
+        <option
+          *ngFor="let event of events"
+          [ngValue]="event.id">
+
+          {{ event.event_name }}
+
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label>
+        Attendance Date
+      </label>
+
+      <input
+  type="date"
+  [(ngModel)]="attendanceDate"
+  [min]="getSelectedEventDate()"
+  [max]="getSelectedEventDate()"
+  (change)="dateChanged()">
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       LOADING PARTICIPANTS
+  ====================================================== -->
+
+  <div
+    class="loading-container"
+    *ngIf="loadingParticipants">
+
+    <div class="spinner-border"></div>
+
+    <p>
+      Loading approved participants...
+    </p>
+
+  </div>
+
+
+  <!-- =====================================================
+       PARTICIPANT TABLE
+  ====================================================== -->
+
+  <div
+    class="table-card"
+    *ngIf="
+      selectedEventId &&
+      !loadingParticipants
+    ">
+
+    <div class="table-header">
+
+      <div>
+
+        <h3>
+          Participants
+        </h3>
+
+        <p>
+          {{ participants.length }}
+          approved participant(s)
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="table-responsive">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              #
+            </th>
+
+            <th>
+              Student
+            </th>
+
+            <th>
+              Student ID
+            </th>
+
+            <th>
+              Email
+            </th>
+
+            <th>
+              Attendance
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <!-- Participant -->
+
+          <tr
+            *ngFor="
+              let participant of participants;
+              let i = index
+            ">
+
+            <!-- Number -->
+
+            <td>
+              {{ i + 1 }}
+            </td>
+
+
+            <!-- Student -->
+
+            <td>
+
+              <div class="student-info">
+
+                <div class="student-avatar">
+
+                  {{
+                    participant.student?.name
+                      ?.charAt(0)
+                      ?.toUpperCase() || 'S'
+                  }}
+
+                </div>
+
+
+                <div>
+
+                  <strong>
+
+                    {{
+                      participant.student?.name ||
+                      'N/A'
+                    }}
+
+                  </strong>
+
+                </div>
+
+              </div>
+
+            </td>
+
+
+            <!-- Student ID -->
+
+            <td>
+
+              {{
+                participant.student?.id ||
+                'N/A'
+              }}
+
+            </td>
+
+
+            <!-- Email -->
+
+            <td>
+
+              {{
+                participant.student?.email ||
+                'N/A'
+              }}
+
+            </td>
+
+
+            <!-- Attendance -->
+
+            <td>
+
+              <div class="attendance-buttons">
+
+                <!-- Present -->
+
+                <button
+                  type="button"
+                  class="present-btn"
+                  [class.active]="
+                    participant.attendanceStatus === 'Present'
+                  "
+                  (click)="
+                    markAttendance(
+                      participant,
+                      'Present'
+                    )
+                  ">
+
+                  <i class="bi bi-check-circle"></i>
+
+                  Present
+
+                </button>
+
+
+                <!-- Absent -->
+
+                <button
+                  type="button"
+                  class="absent-btn"
+                  [class.active]="
+                    participant.attendanceStatus === 'Absent'
+                  "
+                  (click)="
+                    markAttendance(
+                      participant,
+                      'Absent'
+                    )
+                  ">
+
+                  <i class="bi bi-x-circle"></i>
+
+                  Absent
+
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+
+          <!-- No participants -->
+
+          <tr
+            *ngIf="
+              participants.length === 0
+            ">
+
+            <td
+              colspan="5"
+              class="empty-state">
+
+              <i class="bi bi-people"></i>
+
+              <h4>
+                No Approved Participants
+              </h4>
+
+              <p>
+                There are no approved participants
+                for this event.
+              </p>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       NO EVENT SELECTED
+  ====================================================== -->
+
+  <div
+    class="empty-card"
+    *ngIf="!selectedEventId">
+
+    <i class="bi bi-calendar-event"></i>
+
+    <h3>
+      Select an Event
+    </h3>
+
+    <p>
+      Select one of your events above to view
+      approved participants and mark attendance.
+    </p>
+
+  </div>
+
+</div>

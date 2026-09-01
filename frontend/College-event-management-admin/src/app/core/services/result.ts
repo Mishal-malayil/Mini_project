@@ -7,19 +7,130 @@ import { environment } from '../../../environments/environment';
 })
 export class ResultService {
 
-  apiUrl = environment.apiUrl + '/results';
+  // =====================================================
+  // ADMIN RESULT API
+  // =====================================================
 
-  constructor(private http: HttpClient) {}
+  apiUrl =
+    environment.apiUrl + '/results';
 
+
+  // =====================================================
+  // COORDINATOR RESULT API
+  // =====================================================
+
+  coordinatorApiUrl =
+    environment.apiUrl + '/coordinator/results';
+
+
+  constructor(
+    private http: HttpClient
+  ) {}
+
+
+  // =====================================================
+  // ADMIN
+  // =====================================================
+
+  // Get all results
   getResults() {
 
-    return this.http.get(this.apiUrl);
+    return this.http.get(
+      this.apiUrl
+    );
 
   }
 
-  getResult(id:number) {
 
-    return this.http.get(`${this.apiUrl}/${id}`);
+  // Get single result
+  getResult(
+    id: number
+  ) {
+
+    return this.http.get(
+      `${this.apiUrl}/${id}`
+    );
+
+  }
+
+
+  // =====================================================
+  // COORDINATOR
+  // =====================================================
+
+  // Get results for coordinator's own events
+  getCoordinatorResults() {
+
+    return this.http.get(
+      this.coordinatorApiUrl
+    );
+
+  }
+
+
+  // Get coordinator's own events
+  getCoordinatorEvents() {
+
+    return this.http.get(
+      `${this.coordinatorApiUrl}/events`
+    );
+
+  }
+
+
+  // Get approved participants for selected event
+  getEventParticipants(
+    eventId: number
+  ) {
+
+    return this.http.get(
+      `${this.coordinatorApiUrl}/event/${eventId}/participants`
+    );
+
+  }
+
+
+  // Create / publish result
+ createCoordinatorResult(
+  data: {
+    event_id: number;
+    student_id: number;
+    position: string;
+    remarks?: string | null;
+  }
+) {
+  return this.http.post(
+    this.coordinatorApiUrl,
+    data
+  );
+}
+
+
+  // Update coordinator result
+ updateCoordinatorResult(
+  id: number,
+  data: {
+    event_id: number;
+    student_id: number;
+    position: string;
+    remarks?: string | null;
+  }
+) {
+  return this.http.put(
+    `${this.coordinatorApiUrl}/${id}`,
+    data
+  );
+}
+
+
+  // Delete coordinator result
+  deleteCoordinatorResult(
+    id: number
+  ) {
+
+    return this.http.delete(
+      `${this.coordinatorApiUrl}/${id}`
+    );
 
   }
 

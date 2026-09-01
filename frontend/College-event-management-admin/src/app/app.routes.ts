@@ -30,6 +30,11 @@ import { CoordinatorEvents } from './coordinator/pages/coordinator-event/coordin
 import { EventSchedule } from './coordinator/pages/event-schedule/event-schedule';
 
 import { CoordinatorRegistrations } from './coordinator/pages/registrations/registrations';
+
+import { CoordinatorAttendance } from './coordinator/pages/attendance/attendance';
+
+import { CoordinatorResult } from './coordinator/pages/result/result';
+
 export const routes: Routes = [
 
     // ============================================
@@ -156,7 +161,15 @@ export const routes: Routes = [
                 path: 'registrations',
                 component: CoordinatorRegistrations
             },
-            
+            {
+                path: 'attendance',
+                component: CoordinatorAttendance
+            },
+            {
+  path: 'results',
+  component: CoordinatorResult
+}
+
 
         ]
     },
