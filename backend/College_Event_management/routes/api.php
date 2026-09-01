@@ -25,7 +25,8 @@ use App\Http\Controllers\Api\Admin\ProfileController;
 use App\Http\Controllers\Api\Coordinator\CoordinatorAuthController;
 use App\Http\Controllers\Api\Coordinator\CoordinatorEventController;
 use App\Http\Controllers\Api\Coordinator\CoordinatorRegistrationController;
-
+use App\Http\Controllers\Api\Coordinator\CoordinatorAttendanceController;
+use App\Http\Controllers\Api\Coordinator\CoordinatorResultController;
 // =====================================================
 // ADMIN LOGIN
 // =====================================================
@@ -284,6 +285,63 @@ Route::put(
     '/registrations/{id}/reject',
     [CoordinatorRegistrationController::class, 'reject']
 );
+
+Route::get(
+            '/attendance',
+            [CoordinatorAttendanceController::class, 'index']
+        );
+
+        Route::get(
+            '/attendance/event/{eventId}',
+            [CoordinatorAttendanceController::class, 'eventParticipants']
+        );
+
+        Route::post(
+            '/attendance',
+            [CoordinatorAttendanceController::class, 'store']
+        );
+
+        Route::get(
+            '/attendance/{id}',
+            [CoordinatorAttendanceController::class, 'show']
+        );
+
+        Route::delete(
+            '/attendance/{id}',
+            [CoordinatorAttendanceController::class, 'destroy']
+        );
+
+        Route::get(
+            '/results',
+            [CoordinatorResultController::class, 'index']
+        );
+
+        Route::get(
+            '/results/events',
+            [CoordinatorResultController::class, 'events']
+        );
+
+        Route::get(
+            '/results/event/{eventId}/participants',
+            [CoordinatorResultController::class, 'participants']
+        );
+
+        Route::post(
+            '/results',
+            [CoordinatorResultController::class, 'store']
+        );
+
+        Route::put(
+            '/results/{id}',
+            [CoordinatorResultController::class, 'update']
+        );
+
+        Route::delete(
+            '/results/{id}',
+            [CoordinatorResultController::class, 'destroy']
+        );
+
+
 
     });
 
