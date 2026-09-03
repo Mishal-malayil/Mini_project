@@ -27,6 +27,7 @@ use App\Http\Controllers\Api\Coordinator\CoordinatorEventController;
 use App\Http\Controllers\Api\Coordinator\CoordinatorRegistrationController;
 use App\Http\Controllers\Api\Coordinator\CoordinatorAttendanceController;
 use App\Http\Controllers\Api\Coordinator\CoordinatorResultController;
+use App\Http\Controllers\Api\Coordinator\CoordinatorAnnouncementController;
 // =====================================================
 // ADMIN LOGIN
 // =====================================================
@@ -343,6 +344,28 @@ Route::get(
 
 
 
+
+        Route::get('/announcements', [
+        CoordinatorAnnouncementController::class,
+        'index'
+    ]);
+
+    Route::post('/announcements', [
+        CoordinatorAnnouncementController::class,
+        'store'
+    ]);
+
+    Route::get('/announcements/{id}', [
+        CoordinatorAnnouncementController::class,
+        'show'
+    ]);
+
+    Route::delete('/announcements/{id}', [
+        CoordinatorAnnouncementController::class,
+        'destroy'
+    ]);
+
+    
     });
 
 });
