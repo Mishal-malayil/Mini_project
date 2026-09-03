@@ -1,0 +1,321 @@
+<div class="notification-page">
+
+  <!-- PAGE HEADER -->
+
+  <div class="page-header">
+
+    <div>
+      <h2>
+        <i class="bi bi-bell-fill"></i>
+        Send Notification
+      </h2>
+
+      <p>
+        Send announcements and important updates to your event participants.
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- SEND NOTIFICATION CARD -->
+
+  <div class="notification-card">
+
+    <div class="card-header">
+
+      <div class="header-icon">
+        <i class="bi bi-send-fill"></i>
+      </div>
+
+      <div>
+        <h5>New Notification</h5>
+        <p>Create and send a notification for your event.</p>
+      </div>
+
+    </div>
+
+
+    <div class="card-body">
+
+      <div class="row g-4">
+
+
+        <!-- EVENT -->
+
+        <div class="col-md-6">
+
+          <label class="form-label">
+            Select Event
+          </label>
+
+          <select
+            class="form-select"
+            [(ngModel)]="selectedEventId">
+
+            <option [ngValue]="null">
+              Select an event
+            </option>
+
+            <option
+              *ngFor="let event of events"
+              [ngValue]="event.id">
+
+              {{ event.event_name }}
+
+            </option>
+
+          </select>
+
+          <small class="form-text">
+            Only events assigned to you are displayed.
+          </small>
+
+        </div>
+
+
+        <!-- PUBLISHED DATE -->
+
+        <div class="col-md-6">
+
+          <label class="form-label">
+            Publish Date
+          </label>
+
+          <input
+  type="date"
+  class="form-control"
+  [(ngModel)]="publishedAt"
+  [min]="getToday()"
+  [max]="getToday()"
+  readonly>
+
+        </div>
+
+
+        <!-- TITLE -->
+
+        <div class="col-12">
+
+          <label class="form-label">
+            Notification Title
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="title"
+            maxlength="255"
+            placeholder="Enter notification title">
+
+        </div>
+
+
+        <!-- MESSAGE -->
+
+        <div class="col-12">
+
+          <label class="form-label">
+            Notification Message
+          </label>
+
+          <textarea
+            class="form-control message-box"
+            [(ngModel)]="message"
+            rows="5"
+            placeholder="Enter notification message...">
+          </textarea>
+
+        </div>
+
+
+      </div>
+
+
+      <!-- BUTTONS -->
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="resetForm()">
+
+          <i class="bi bi-arrow-counterclockwise"></i>
+
+          Clear
+
+        </button>
+
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="sendNotification()"
+          [disabled]="isLoading">
+
+          <span
+            *ngIf="isLoading"
+            class="spinner-border spinner-border-sm me-2">
+          </span>
+
+          <i
+            *ngIf="!isLoading"
+            class="bi bi-send-fill me-2">
+          </i>
+
+          {{ isLoading ? 'Sending...' : 'Send Notification' }}
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- HISTORY -->
+
+  <div class="notification-card history-card">
+
+    <div class="card-header">
+
+      <div class="header-icon">
+        <i class="bi bi-clock-history"></i>
+      </div>
+
+      <div>
+        <h5>Notification History</h5>
+        <p>View notifications previously sent for your events.</p>
+      </div>
+
+    </div>
+
+
+    <div class="card-body p-0">
+
+
+      <!-- EMPTY -->
+
+      <div
+        class="empty-state"
+        *ngIf="announcements.length === 0">
+
+        <i class="bi bi-bell-slash"></i>
+
+        <h6>No Notifications</h6>
+
+        <p>
+          You have not sent any notifications yet.
+        </p>
+
+      </div>
+
+
+      <!-- TABLE -->
+
+      <div
+        class="table-responsive"
+        *ngIf="announcements.length > 0">
+
+        <table class="table notification-table">
+
+          <thead>
+
+            <tr>
+
+              <th>#</th>
+
+              <th>Event</th>
+
+              <th>Title</th>
+
+              <th>Message</th>
+
+              <th>Published Date</th>
+
+              <th>Action</th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            <tr
+              *ngFor="
+                let announcement of announcements;
+                let i = index
+              ">
+
+              <td>
+                {{ i + 1 }}
+              </td>
+
+
+              <td>
+
+                <span class="event-name">
+
+                  {{ announcement.event?.event_name || '-' }}
+
+                </span>
+
+              </td>
+
+
+              <td>
+
+                <strong>
+                  {{ announcement.title }}
+                </strong>
+
+              </td>
+
+
+              <td>
+
+                <div class="message-preview">
+
+                  {{ announcement.message }}
+
+                </div>
+
+              </td>
+
+
+              <td>
+
+                {{ announcement.published_at | date:'dd-MM-yyyy' }}
+
+              </td>
+
+
+              <td>
+
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-danger"
+                  (click)="deleteNotification(announcement.id)">
+
+                  <i class="bi bi-trash"></i>
+
+                </button>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

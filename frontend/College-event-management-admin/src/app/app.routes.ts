@@ -35,6 +35,8 @@ import { CoordinatorAttendance } from './coordinator/pages/attendance/attendance
 
 import { CoordinatorResult } from './coordinator/pages/result/result';
 
+import { Notification } from './coordinator/pages/notification/notification';
+
 export const routes: Routes = [
 
     // ============================================
@@ -168,6 +170,10 @@ export const routes: Routes = [
             {
   path: 'results',
   component: CoordinatorResult
+},
+{
+    path: 'notifications',
+    component: Notification
 }
 
 

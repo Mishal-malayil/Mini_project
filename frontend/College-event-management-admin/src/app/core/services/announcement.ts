@@ -8,9 +8,18 @@ import { environment } from '../../../environments/environment';
 })
 export class AnnouncementService {
 
+  // Admin / General announcements
   private apiUrl = `${environment.apiUrl}/announcements`;
 
-  constructor(private http: HttpClient) { }
+  // Coordinator announcements
+  private coordinatorApiUrl =
+    `${environment.apiUrl}/coordinator/announcements`;
+
+  constructor(private http: HttpClient) {}
+
+  // =========================
+  // ADMIN / GENERAL
+  // =========================
 
   // Get All Announcements
   getAnnouncements(): Observable<any> {
@@ -35,6 +44,31 @@ export class AnnouncementService {
   // Delete Announcement
   deleteAnnouncement(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+
+  // =========================
+  // COORDINATOR
+  // =========================
+
+  // Get coordinator's announcements
+  getCoordinatorAnnouncements(): Observable<any> {
+    return this.http.get(this.coordinatorApiUrl);
+  }
+
+  // Get single coordinator announcement
+  getCoordinatorAnnouncement(id: number): Observable<any> {
+    return this.http.get(`${this.coordinatorApiUrl}/${id}`);
+  }
+
+  // Send announcement
+  sendCoordinatorAnnouncement(data: any): Observable<any> {
+    return this.http.post(this.coordinatorApiUrl, data);
+  }
+
+  // Delete coordinator announcement
+  deleteCoordinatorAnnouncement(id: number): Observable<any> {
+    return this.http.delete(`${this.coordinatorApiUrl}/${id}`);
   }
 
 }
