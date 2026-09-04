@@ -28,66 +28,66 @@
 
     <div class="stats-grid">
 
-        <!-- Events -->
-        <div class="stat-card">
+    <!-- Events -->
+    <div class="stat-card">
 
-            <div class="stat-icon blue">
-                <i class="bi bi-calendar-event"></i>
-            </div>
-
-            <div>
-                <h3>0</h3>
-                <p>Total Events</p>
-            </div>
-
+        <div class="stat-icon blue">
+            <i class="bi bi-calendar-event"></i>
         </div>
 
-
-        <!-- Registrations -->
-        <div class="stat-card">
-
-            <div class="stat-icon green">
-                <i class="bi bi-people"></i>
-            </div>
-
-            <div>
-                <h3>0</h3>
-                <p>Registrations</p>
-            </div>
-
-        </div>
-
-
-        <!-- Attendance -->
-        <div class="stat-card">
-
-            <div class="stat-icon orange">
-                <i class="bi bi-person-check"></i>
-            </div>
-
-            <div>
-                <h3>0</h3>
-                <p>Attendance</p>
-            </div>
-
-        </div>
-
-
-        <!-- Results -->
-        <div class="stat-card">
-
-            <div class="stat-icon purple">
-                <i class="bi bi-trophy"></i>
-            </div>
-
-            <div>
-                <h3>0</h3>
-                <p>Results Published</p>
-            </div>
-
+        <div>
+            <h3>{{ dashboardData.total_events }}</h3>
+            <p>Total Events</p>
         </div>
 
     </div>
+
+
+    <!-- Registrations -->
+    <div class="stat-card">
+
+        <div class="stat-icon green">
+            <i class="bi bi-people"></i>
+        </div>
+
+        <div>
+            <h3>{{ dashboardData.total_registrations }}</h3>
+            <p>Registrations</p>
+        </div>
+
+    </div>
+
+
+    <!-- Attendance -->
+    <div class="stat-card">
+
+        <div class="stat-icon orange">
+            <i class="bi bi-person-check"></i>
+        </div>
+
+        <div>
+            <h3>{{ dashboardData.total_attendance }}</h3>
+            <p>Attendance</p>
+        </div>
+
+    </div>
+
+
+    <!-- Results -->
+    <div class="stat-card">
+
+        <div class="stat-icon purple">
+            <i class="bi bi-trophy"></i>
+        </div>
+
+        <div>
+            <h3>{{ dashboardData.total_results }}</h3>
+            <p>Results Published</p>
+        </div>
+
+    </div>
+
+</div>
 
 
     <!-- Quick Actions -->

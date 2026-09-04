@@ -141,4 +141,10 @@ export class EventService {
 
   }
 
+
+  getCoordinatorDashboard(): Observable<any> {
+  return this.http.get(
+    `${environment.apiUrl}/coordinator/dashboard`
+  );
+}
 }

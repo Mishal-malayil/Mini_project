@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\Admin\ProfileController;
 // =====================================================
 
 use App\Http\Controllers\Api\Coordinator\CoordinatorAuthController;
+use App\Http\Controllers\Api\Coordinator\CoordinatorDashboardController;
 use App\Http\Controllers\Api\Coordinator\CoordinatorEventController;
 use App\Http\Controllers\Api\Coordinator\CoordinatorRegistrationController;
 use App\Http\Controllers\Api\Coordinator\CoordinatorAttendanceController;
@@ -226,7 +227,10 @@ Route::prefix('coordinator')->group(function () {
         [CoordinatorAuthController::class, 'profile']
     );
 
-
+Route::get(
+    '/dashboard',
+    [CoordinatorDashboardController::class, 'index']
+);
     // =================================================
     // COORDINATOR EVENT MANAGEMENT
     // =================================================
@@ -365,7 +369,7 @@ Route::get(
         'destroy'
     ]);
 
-    
+
     });
 
 });
