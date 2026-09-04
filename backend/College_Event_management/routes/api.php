@@ -370,6 +370,36 @@ Route::get(
     ]);
 
 
+     // Profile
+        Route::get('/profile', [
+            CoordinatorAuthController::class,
+            'profile'
+        ]);
+
+        // Update password
+        Route::put('/password', [
+            CoordinatorAuthController::class,
+            'updatePassword'
+        ]);
+
+        // Forgot Password
+Route::post('/forgot-password', [
+    CoordinatorAuthController::class,
+    'forgotPassword'
+]);
+
+// Verify OTP
+Route::post('/verify-reset-otp', [
+    CoordinatorAuthController::class,
+    'verifyResetOtp'
+]);
+
+// Reset Password
+Route::post('/reset-password', [
+    CoordinatorAuthController::class,
+    'resetPassword'
+]);
+
     });
 
 });

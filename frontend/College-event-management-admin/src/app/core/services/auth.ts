@@ -60,4 +60,49 @@ export class AuthService {
   removeAdmin(): void {
     localStorage.removeItem('admin');
   }
+
+  getCoordinatorProfile() {
+  return this.http.get(
+    `${environment.apiUrl}/coordinator/profile`
+  );
+}
+
+updateCoordinatorPassword(data: {
+  current_password: string;
+  new_password: string;
+  new_password_confirmation: string;
+}) {
+  return this.http.put(
+    `${environment.apiUrl}/coordinator/password`,
+    data
+  );
+}
+
+forgotCoordinatorPassword(email: string) {
+  return this.http.post(
+    `${environment.apiUrl}/coordinator/forgot-password`,
+    { email }
+  );
+}
+
+verifyCoordinatorResetOtp(email: string, otp: string) {
+  return this.http.post(
+    `${environment.apiUrl}/coordinator/verify-reset-otp`,
+    {
+      email,
+      otp
+    }
+  );
+}
+
+resetCoordinatorPassword(data: {
+  email: string;
+  new_password: string;
+  new_password_confirmation: string;
+}) {
+  return this.http.post(
+    `${environment.apiUrl}/coordinator/reset-password`,
+    data
+  );
+}
 }

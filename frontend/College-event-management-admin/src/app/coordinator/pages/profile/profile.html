@@ -1,0 +1,442 @@
+<div class="profile-page">
+
+  <div class="page-header">
+    <div>
+      <h2>My Profile</h2>
+      <p>View your coordinator information and manage your password.</p>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-box">
+    <div class="spinner-border text-primary"></div>
+    <p>Loading profile...</p>
+  </div>
+
+  <div *ngIf="!isLoading && coordinator" class="row g-4">
+
+    <!-- Profile Information -->
+    <div class="col-lg-7">
+
+      <div class="card profile-card">
+
+        <div class="card-header-custom">
+          <div class="icon-box">
+            <i class="bi bi-person-circle"></i>
+          </div>
+
+          <div>
+            <h4>Profile Information</h4>
+            <p>Your coordinator account details</p>
+          </div>
+        </div>
+
+        <div class="profile-body">
+
+          <div class="profile-avatar">
+            <i class="bi bi-person"></i>
+          </div>
+
+          <h3>{{ coordinator.name }}</h3>
+
+          <span class="role-badge">
+            Coordinator
+          </span>
+
+          <div class="info-list">
+
+            <div class="info-item">
+              <div class="info-icon">
+                <i class="bi bi-person"></i>
+              </div>
+
+              <div>
+                <span>Name</span>
+                <strong>{{ coordinator.name }}</strong>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-icon">
+                <i class="bi bi-envelope"></i>
+              </div>
+
+              <div>
+                <span>Email</span>
+                <strong>{{ coordinator.email }}</strong>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-icon">
+                <i class="bi bi-telephone"></i>
+              </div>
+
+              <div>
+                <span>Phone</span>
+                <strong>{{ coordinator.phone || 'Not provided' }}</strong>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-icon">
+                <i class="bi bi-building"></i>
+              </div>
+
+              <div>
+                <span>Department</span>
+                <strong>{{ coordinator.department || 'Not provided' }}</strong>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-icon">
+                <i class="bi bi-person-badge"></i>
+              </div>
+
+              <div>
+                <span>Designation</span>
+                <strong>{{ coordinator.designation || 'Not provided' }}</strong>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Password -->
+    <div class="col-lg-5">
+
+      <div class="card password-card">
+
+        <div class="card-header-custom">
+
+          <div class="icon-box password-icon">
+            <i class="bi bi-shield-lock"></i>
+          </div>
+
+          <div>
+            <h4>Update Password</h4>
+            <p>Change your account password</p>
+          </div>
+
+        </div>
+
+        <div class="password-body">
+
+          <div class="security-note">
+            <i class="bi bi-info-circle"></i>
+
+            <span>
+              Use a strong password with at least 8 characters.
+            </span>
+          </div>
+
+          <div class="form-group">
+
+            <label>Current Password</label>
+
+            <div class="input-wrapper">
+
+              <i class="bi bi-lock"></i>
+
+              <input
+                type="password"
+                class="form-control"
+                [(ngModel)]="currentPassword"
+                placeholder="Enter current password">
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>New Password</label>
+
+            <div class="input-wrapper">
+
+              <i class="bi bi-key"></i>
+
+              <input
+                type="password"
+                class="form-control"
+                [(ngModel)]="newPassword"
+                placeholder="Enter new password">
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>Confirm New Password</label>
+
+            <div class="input-wrapper">
+
+              <i class="bi bi-check2-circle"></i>
+
+              <input
+                type="password"
+                class="form-control"
+                [(ngModel)]="confirmPassword"
+                placeholder="Confirm new password">
+
+            </div>
+
+          </div>
+
+
+          <button
+            class="btn update-btn"
+            [disabled]="isUpdatingPassword"
+            (click)="updatePassword()">
+
+            <span
+              *ngIf="isUpdatingPassword"
+              class="spinner-border spinner-border-sm me-2">
+            </span>
+
+            <i
+              *ngIf="!isUpdatingPassword"
+              class="bi bi-shield-check me-2">
+            </i>
+
+            {{ isUpdatingPassword ? 'Updating...' : 'Update Password' }}
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Reset Password with OTP -->
+<div class="col-lg-5">
+
+  <div class="card password-card reset-card">
+
+    <div class="card-header-custom">
+
+      <div class="icon-box reset-icon">
+        <i class="bi bi-envelope-check"></i>
+      </div>
+
+      <div>
+        <h4>Reset Password with OTP</h4>
+        <p>Reset your password using email verification</p>
+      </div>
+
+    </div>
+
+    <div class="password-body">
+
+      <!-- Information -->
+      <div class="security-note reset-note">
+
+        <i class="bi bi-shield-check"></i>
+
+        <span>
+          An OTP will be sent to your registered email address.
+        </span>
+
+      </div>
+
+
+      <!-- Email -->
+      <div class="form-group">
+
+        <label>Email Address</label>
+
+        <div class="input-wrapper">
+
+          <i class="bi bi-envelope"></i>
+
+          <input
+            type="email"
+            class="form-control"
+            [(ngModel)]="resetEmail"
+            [disabled]="otpSent"
+            placeholder="Enter your email">
+
+        </div>
+
+      </div>
+
+
+      <!-- Send OTP -->
+      <button
+        *ngIf="!otpSent"
+        class="btn update-btn otp-btn"
+        [disabled]="isSendingOtp"
+        (click)="sendResetOtp()">
+
+        <span
+          *ngIf="isSendingOtp"
+          class="spinner-border spinner-border-sm me-2">
+        </span>
+
+        <i
+          *ngIf="!isSendingOtp"
+          class="bi bi-send me-2">
+        </i>
+
+        {{ isSendingOtp ? 'Sending OTP...' : 'Send OTP' }}
+
+      </button>
+
+
+      <!-- OTP Section -->
+      <div *ngIf="otpSent">
+
+        <div class="form-group">
+
+          <label>Enter OTP</label>
+
+          <div class="input-wrapper">
+
+            <i class="bi bi-shield-lock"></i>
+
+            <input
+              type="text"
+              class="form-control"
+              maxlength="6"
+              [(ngModel)]="resetOtp"
+              [disabled]="otpVerified"
+              placeholder="Enter 6-digit OTP">
+
+          </div>
+
+        </div>
+
+
+        <!-- Verify OTP -->
+        <button
+          *ngIf="!otpVerified"
+          class="btn verify-btn"
+          [disabled]="isVerifyingOtp"
+          (click)="verifyResetOtp()">
+
+          <span
+            *ngIf="isVerifyingOtp"
+            class="spinner-border spinner-border-sm me-2">
+          </span>
+
+          <i
+            *ngIf="!isVerifyingOtp"
+            class="bi bi-check-circle me-2">
+          </i>
+
+          {{ isVerifyingOtp ? 'Verifying...' : 'Verify OTP' }}
+
+        </button>
+
+
+        <!-- Verified -->
+        <div
+          *ngIf="otpVerified"
+          class="verified-box">
+
+          <i class="bi bi-check-circle-fill"></i>
+
+          <span>OTP verified successfully</span>
+
+        </div>
+
+
+        <!-- New Password -->
+        <div *ngIf="otpVerified">
+
+          <div class="form-group">
+
+            <label>New Password</label>
+
+            <div class="input-wrapper">
+
+              <i class="bi bi-key"></i>
+
+              <input
+                type="password"
+                class="form-control"
+                [(ngModel)]="resetNewPassword"
+                placeholder="Enter new password">
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>Confirm New Password</label>
+
+            <div class="input-wrapper">
+
+              <i class="bi bi-check2-circle"></i>
+
+              <input
+                type="password"
+                class="form-control"
+                [(ngModel)]="resetConfirmPassword"
+                placeholder="Confirm new password">
+
+            </div>
+
+          </div>
+
+
+          <!-- Reset Password -->
+          <button
+            class="btn reset-btn"
+            [disabled]="isResettingPassword"
+            (click)="resetPassword()">
+
+            <span
+              *ngIf="isResettingPassword"
+              class="spinner-border spinner-border-sm me-2">
+            </span>
+
+            <i
+              *ngIf="!isResettingPassword"
+              class="bi bi-arrow-repeat me-2">
+            </i>
+
+            {{ isResettingPassword ? 'Resetting...' : 'Reset Password' }}
+
+          </button>
+
+        </div>
+
+
+        <!-- Resend OTP -->
+        <button
+          class="btn resend-btn"
+          *ngIf="!otpVerified"
+          [disabled]="isSendingOtp"
+          (click)="sendResetOtp()">
+
+          <i class="bi bi-arrow-clockwise me-1"></i>
+
+          Resend OTP
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+  </div>
+  
+
+</div>

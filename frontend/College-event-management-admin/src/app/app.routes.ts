@@ -37,6 +37,8 @@ import { CoordinatorResult } from './coordinator/pages/result/result';
 
 import { Notification } from './coordinator/pages/notification/notification';
 
+import { Profile } from './coordinator/pages/profile/profile';
+
 export const routes: Routes = [
 
     // ============================================
@@ -174,6 +176,10 @@ export const routes: Routes = [
 {
     path: 'notifications',
     component: Notification
+},
+{
+    path: 'profile',
+    component: Profile 
 }
 
 
