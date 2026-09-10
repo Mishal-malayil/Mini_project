@@ -1,0 +1,61 @@
+<div class="login-page">
+
+  <div class="login-container">
+
+    <div class="page-header">
+      <h1>College Event Management System</h1>
+      <p>Select your account type to continue</p>
+    </div>
+
+    <div class="login-options">
+
+      <!-- Admin -->
+      <div class="login-card" (click)="goToLogin('admin')">
+        <div class="icon admin-icon">
+          <i class="bi bi-shield-lock-fill"></i>
+        </div>
+
+        <h3>Admin</h3>
+        <p>Manage events, coordinators, students and system activities.</p>
+
+        <button>
+          Admin Login
+          <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+
+      <!-- Coordinator -->
+      <div class="login-card" (click)="goToLogin('coordinator')">
+        <div class="icon coordinator-icon">
+          <i class="bi bi-person-badge-fill"></i>
+        </div>
+
+        <h3>Coordinator</h3>
+        <p>Manage events, registrations, attendance and results.</p>
+
+        <button>
+          Coordinator Login
+          <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+
+      <!-- Student -->
+      <div class="login-card" (click)="goToLogin('student')">
+        <div class="icon student-icon">
+          <i class="bi bi-mortarboard-fill"></i>
+        </div>
+
+        <h3>Student</h3>
+        <p>Register for events, view schedules, results and notifications.</p>
+
+        <button>
+          Student Login
+          <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

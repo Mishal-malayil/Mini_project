@@ -15,7 +15,18 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class CoordinatorSidebar {
 
+  coordinator: any = {}; 
+
   constructor(private router: Router) {}
+  ngOnInit(): void {
+
+    const storedCoordinator = localStorage.getItem('coordinator');
+
+    if (storedCoordinator) {
+      this.coordinator = JSON.parse(storedCoordinator);
+    }
+
+  } 
 
   logout(): void {
 

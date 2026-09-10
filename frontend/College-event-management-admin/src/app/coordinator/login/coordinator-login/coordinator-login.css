@@ -23,6 +23,9 @@
 }
 
 
+
+
+
 /* ===============================
    LOGIN PAGE
 ================================ */
@@ -359,6 +362,420 @@
     color: #059669;
 
     margin-right: 5px;
+
+}
+
+/* ============================= */
+/* FORGOT PASSWORD LINK */
+/* ============================= */
+
+.forgot-password {
+    text-align: right;
+    margin-top: -8px;
+    margin-bottom: 18px;
+}
+
+.forgot-password button {
+    border: none;
+    background: none;
+    color: #2563EB;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+}
+
+.forgot-password button:hover {
+    text-decoration: underline;
+}
+
+
+/* ============================= */
+/* MODAL OVERLAY */
+/* ============================= */
+
+.forgot-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 9999;
+    animation: modalFadeIn 0.2s ease;
+}
+
+
+
+
+/* ============================= */
+/* MODAL */
+/* ============================= */
+
+.forgot-modal {
+    width: 100%;
+    max-width: 480px;
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.25);
+
+    overflow: hidden;
+
+    animation: modalSlideUp 0.25s ease;
+}
+
+
+/* ============================= */
+/* MODAL HEADER */
+/* ============================= */
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    padding: 24px 26px 18px;
+
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.modal-icon {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #EFF6FF;
+    color: #2563EB;
+
+    border-radius: 12px;
+
+    font-size: 21px;
+
+    margin-bottom: 12px;
+}
+
+.modal-header h3 {
+    margin: 0;
+
+    font-size: 22px;
+    font-weight: 700;
+
+    color: #111827;
+}
+
+.modal-header p {
+    margin: 5px 0 0;
+
+    color: #6B7280;
+
+    font-size: 14px;
+}
+
+.close-btn {
+    width: 36px;
+    height: 36px;
+
+    border: none;
+
+    background: #F3F4F6;
+
+    color: #6B7280;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-btn:hover {
+    background: #E5E7EB;
+    color: #111827;
+}
+
+
+/* ============================= */
+/* RESET STEP */
+/* ============================= */
+
+.reset-step {
+    padding: 26px;
+}
+
+.reset-step h4 {
+    margin: 20px 0 8px;
+
+    font-size: 19px;
+    font-weight: 700;
+
+    color: #111827;
+}
+
+.step-description {
+    margin: 0 0 22px;
+
+    color: #6B7280;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+/* ============================= */
+/* STEP INDICATOR */
+/* ============================= */
+
+.step-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.step-indicator span {
+    width: 32px;
+    height: 32px;
+
+    border-radius: 50%;
+
+    background: #E5E7EB;
+
+    color: #6B7280;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.step-indicator span.active {
+    background: #2563EB;
+    color: #ffffff;
+}
+
+.step-indicator span.completed {
+    background: #16A34A;
+    color: #ffffff;
+}
+
+
+/* ============================= */
+/* MODAL FORM */
+/* ============================= */
+
+.modal-form-group {
+    margin-bottom: 18px;
+}
+
+.modal-form-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #374151;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.modal-input {
+    height: 48px;
+
+    border: 1px solid #D1D5DB;
+
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 14px;
+
+    transition: 0.2s;
+}
+
+.modal-input:focus-within {
+    border-color: #2563EB;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.modal-input i {
+    color: #6B7280;
+
+    margin-right: 10px;
+}
+
+.modal-input input {
+    width: 100%;
+
+    border: none;
+    outline: none;
+
+    font-size: 14px;
+
+    color: #111827;
+
+    background: transparent;
+}
+
+
+/* ============================= */
+/* PRIMARY BUTTON */
+/* ============================= */
+
+.modal-primary-btn {
+    width: 100%;
+
+    height: 48px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #2563EB;
+
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    transition: 0.2s;
+}
+
+.modal-primary-btn:hover:not(:disabled) {
+    background: #1D4ED8;
+}
+
+.modal-primary-btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+
+/* ============================= */
+/* BACK BUTTON */
+/* ============================= */
+
+.back-btn {
+    width: 100%;
+
+    margin-top: 12px;
+
+    height: 44px;
+
+    border: 1px solid #D1D5DB;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #374151;
+
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+.back-btn:hover {
+    background: #F9FAFB;
+}
+
+
+/* ============================= */
+/* SPINNER */
+/* ============================= */
+
+.spinner {
+    width: 17px;
+    height: 17px;
+
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #ffffff;
+
+    border-radius: 50%;
+
+    animation: spin 0.7s linear infinite;
+}
+
+
+/* ============================= */
+/* ANIMATIONS */
+/* ============================= */
+
+@keyframes spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+@keyframes modalFadeIn {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+@keyframes modalSlideUp {
+
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+}
+
+
+/* ============================= */
+/* MOBILE */
+/* ============================= */
+
+@media (max-width: 500px) {
+
+    .forgot-modal {
+        max-width: 100%;
+        border-radius: 14px;
+    }
+
+    .modal-header {
+        padding: 20px;
+    }
+
+    .reset-step {
+        padding: 20px;
+    }
 
 }
 

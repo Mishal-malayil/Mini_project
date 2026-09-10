@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-
+import { LoginSelection } from './login-selection/login-selection';
 import { Login } from './pages/login/login';
 
 import { Dashboard } from './pages/dashboard/dashboard';
@@ -39,16 +39,20 @@ import { Notification } from './coordinator/pages/notification/notification';
 
 import { Profile } from './coordinator/pages/profile/profile';
 
+
+// ================= STUDENT =================
+import { StudentLogin } from './student/login/student-login/student-login';
+import { StudentRegister } from './student/register/student-register/student-register';
+
 export const routes: Routes = [
 
     // ============================================
-    // DEFAULT
+    // LOGIN SELECTION
     // ============================================
 
     {
         path: '',
-        redirectTo: 'login',
-        pathMatch: 'full'
+        component: LoginSelection
     },
 
 
@@ -69,6 +73,19 @@ export const routes: Routes = [
     {
         path: 'coordinator/login',
         component: CoordinatorLogin
+    },
+     // ============================================
+    // STUDENT LOGIN
+    // ============================================
+
+    {
+        path: 'student/login',
+        component: StudentLogin
+    },
+
+    {
+        path: 'student/register',
+        component: StudentRegister
     },
 
 
@@ -157,31 +174,36 @@ export const routes: Routes = [
                 path: 'events',
                 component: CoordinatorEvents
             },
+
             {
                 path: 'schedule',
                 component: EventSchedule
             },
+
             {
                 path: 'registrations',
                 component: CoordinatorRegistrations
             },
+
             {
                 path: 'attendance',
                 component: CoordinatorAttendance
             },
-            {
-  path: 'results',
-  component: CoordinatorResult
-},
-{
-    path: 'notifications',
-    component: Notification
-},
-{
-    path: 'profile',
-    component: Profile 
-}
 
+            {
+                path: 'results',
+                component: CoordinatorResult
+            },
+
+            {
+                path: 'notifications',
+                component: Notification
+            },
+
+            {
+                path: 'profile',
+                component: Profile
+            }
 
         ]
     },
@@ -193,7 +215,7 @@ export const routes: Routes = [
 
     {
         path: '**',
-        redirectTo: 'login'
+        redirectTo: ''
     }
 
 ];

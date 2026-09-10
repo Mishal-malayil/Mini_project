@@ -2,7 +2,7 @@
 
     <div class="login-card">
 
-        <!-- Logo / Icon -->
+        <!-- Logo -->
 
         <div class="login-icon">
             <i class="bi bi-person-badge-fill"></i>
@@ -90,6 +90,20 @@
             </div>
 
 
+            <!-- Forgot Password -->
+
+            <div class="forgot-password">
+
+                <button
+                    type="button"
+                    (click)="openForgotPassword()"
+                >
+                    Forgot Password?
+                </button>
+
+            </div>
+
+
             <!-- Login Button -->
 
             <button
@@ -104,12 +118,17 @@
                 ></span>
 
                 <span *ngIf="!loading">
+
                     <i class="bi bi-box-arrow-in-right"></i>
+
                     Login
+
                 </span>
 
                 <span *ngIf="loading">
+
                     Logging in...
+
                 </span>
 
             </button>
@@ -124,6 +143,386 @@
             <i class="bi bi-shield-check"></i>
 
             Coordinator Portal
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- FORGOT PASSWORD MODAL -->
+<!-- ================================================= -->
+
+<div
+    class="forgot-modal-overlay"
+    *ngIf="showForgotPassword"
+    (click)="closeForgotPassword()"
+>
+
+    <div
+        class="forgot-modal"
+        (click)="$event.stopPropagation()"
+    >
+
+        <!-- Modal Header -->
+
+        <div class="modal-header">
+
+            <div>
+
+                <div class="modal-icon">
+                    <i class="bi bi-shield-lock-fill"></i>
+                </div>
+
+                <h3>
+                    Forgot Password
+                </h3>
+
+                <p>
+                    Reset your coordinator account password
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                class="close-btn"
+                (click)="closeForgotPassword()"
+            >
+                <i class="bi bi-x-lg"></i>
+            </button>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- STEP 1 : EMAIL -->
+        <!-- ================================================= -->
+
+        <div
+            class="reset-step"
+            *ngIf="resetStep === 1"
+        >
+
+            <div class="step-indicator">
+
+                <span class="active">
+                    1
+                </span>
+
+                <span>
+                    2
+                </span>
+
+                <span>
+                    3
+                </span>
+
+            </div>
+
+
+            <h4>
+                Enter Registered Email
+            </h4>
+
+            <p class="step-description">
+                Enter the email address associated with your
+                coordinator account.
+            </p>
+
+
+            <div class="modal-form-group">
+
+                <label>
+                    Email Address
+                </label>
+
+                <div class="modal-input">
+
+                    <i class="bi bi-envelope"></i>
+
+                    <input
+                        type="email"
+                        placeholder="Enter registered email"
+                        [value]="resetEmail"
+                        (input)="resetEmail = $any($event.target).value"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="modal-primary-btn"
+                [disabled]="resetLoading"
+                (click)="sendOtp()"
+            >
+
+                <span
+                    *ngIf="resetLoading"
+                    class="spinner"
+                ></span>
+
+                <span *ngIf="!resetLoading">
+
+                    <i class="bi bi-send"></i>
+
+                    Send OTP
+
+                </span>
+
+                <span *ngIf="resetLoading">
+
+                    Sending OTP...
+
+                </span>
+
+            </button>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- STEP 2 : OTP -->
+        <!-- ================================================= -->
+
+        <div
+            class="reset-step"
+            *ngIf="resetStep === 2"
+        >
+
+            <div class="step-indicator">
+
+                <span class="completed">
+                    <i class="bi bi-check"></i>
+                </span>
+
+                <span class="active">
+                    2
+                </span>
+
+                <span>
+                    3
+                </span>
+
+            </div>
+
+
+            <h4>
+                Verify OTP
+            </h4>
+
+            <p class="step-description">
+
+                Enter the 6-digit OTP sent to
+
+                <strong>
+                    {{ resetEmail }}
+                </strong>
+
+            </p>
+
+
+            <div class="modal-form-group">
+
+                <label>
+                    OTP
+                </label>
+
+                <div class="modal-input">
+
+                    <i class="bi bi-key"></i>
+
+                    <input
+                        type="text"
+                        maxlength="6"
+                        inputmode="numeric"
+                        placeholder="Enter 6-digit OTP"
+                        [value]="resetOtp"
+                        (input)="resetOtp = $any($event.target).value"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="modal-primary-btn"
+                [disabled]="verifyLoading"
+                (click)="verifyOtp()"
+            >
+
+                <span
+                    *ngIf="verifyLoading"
+                    class="spinner"
+                ></span>
+
+                <span *ngIf="!verifyLoading">
+
+                    <i class="bi bi-check-circle"></i>
+
+                    Verify OTP
+
+                </span>
+
+                <span *ngIf="verifyLoading">
+
+                    Verifying...
+
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="back-btn"
+                (click)="resetStep = 1"
+            >
+
+                <i class="bi bi-arrow-left"></i>
+
+                Change Email
+
+            </button>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- STEP 3 : NEW PASSWORD -->
+        <!-- ================================================= -->
+
+        <div
+            class="reset-step"
+            *ngIf="resetStep === 3"
+        >
+
+            <div class="step-indicator">
+
+                <span class="completed">
+                    <i class="bi bi-check"></i>
+                </span>
+
+                <span class="completed">
+                    <i class="bi bi-check"></i>
+                </span>
+
+                <span class="active">
+                    3
+                </span>
+
+            </div>
+
+
+            <h4>
+                Create New Password
+            </h4>
+
+            <p class="step-description">
+                Enter a new password for your coordinator account.
+            </p>
+
+
+            <form
+                [formGroup]="resetPasswordForm"
+                (ngSubmit)="resetPassword()"
+            >
+
+                <!-- New Password -->
+
+                <div class="modal-form-group">
+
+                    <label>
+                        New Password
+                    </label>
+
+                    <div class="modal-input">
+
+                        <i class="bi bi-lock"></i>
+
+                        <input
+                            type="password"
+                            placeholder="Minimum 8 characters"
+                            formControlName="new_password"
+                        >
+
+                    </div>
+
+                    <small
+                        class="error"
+                        *ngIf="
+                            resetPasswordForm
+                                .get('new_password')
+                                ?.touched &&
+                            resetPasswordForm
+                                .get('new_password')
+                                ?.invalid
+                        "
+                    >
+                        Password must contain at least 8 characters.
+                    </small>
+
+                </div>
+
+
+                <!-- Confirm Password -->
+
+                <div class="modal-form-group">
+
+                    <label>
+                        Confirm Password
+                    </label>
+
+                    <div class="modal-input">
+
+                        <i class="bi bi-lock-fill"></i>
+
+                        <input
+                            type="password"
+                            placeholder="Confirm new password"
+                            formControlName="new_password_confirmation"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="modal-primary-btn"
+                    [disabled]="passwordResetLoading"
+                >
+
+                    <span
+                        *ngIf="passwordResetLoading"
+                        class="spinner"
+                    ></span>
+
+                    <span *ngIf="!passwordResetLoading">
+
+                        <i class="bi bi-shield-check"></i>
+
+                        Reset Password
+
+                    </span>
+
+                    <span *ngIf="passwordResetLoading">
+
+                        Resetting...
+
+                    </span>
+
+                </button>
+
+            </form>
 
         </div>
 

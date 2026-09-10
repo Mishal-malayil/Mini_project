@@ -1,0 +1,137 @@
+.login-page {
+  min-height: 100vh;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 1100px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.page-header h1 {
+  font-size: 30px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.page-header p {
+  color: #6b7280;
+  font-size: 15px;
+}
+
+.login-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.login-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 32px 26px;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(15, 23, 42, 0.08);
+  border: 1px solid #eef2f7;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.login-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+}
+
+.icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 18px;
+  margin: 0 auto 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 32px;
+}
+
+.admin-icon {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.coordinator-icon {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.student-icon {
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+.login-card h3 {
+  font-size: 21px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 10px;
+}
+
+.login-card p {
+  min-height: 60px;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.login-card button {
+  width: 100%;
+  height: 44px;
+  border: none;
+  border-radius: 9px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.login-card button:hover {
+  background: #1d4ed8;
+}
+
+.login-card button i {
+  margin-left: 6px;
+}
+
+@media (max-width: 900px) {
+  .login-options {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+    margin: auto;
+  }
+
+  .login-card p {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 500px) {
+  .login-page {
+    padding: 25px 15px;
+  }
+
+  .page-header h1 {
+    font-size: 24px;
+  }
+}

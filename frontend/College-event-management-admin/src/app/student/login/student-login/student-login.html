@@ -1,0 +1,109 @@
+<div class="student-auth-page">
+
+  <div class="auth-card">
+
+    <div class="auth-header">
+
+      <div class="student-icon">
+        🎓
+      </div>
+
+      <h1>Student Login</h1>
+
+      <p>Login to your College Event account</p>
+
+    </div>
+
+
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="login()"
+    >
+
+      <!-- Email -->
+
+      <div class="form-group">
+
+        <label for="email">
+          Email
+        </label>
+
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="Enter your email"
+        >
+
+        @if (email.touched && email.hasError('required')) {
+          <small class="error">
+            Email is required
+          </small>
+        }
+
+        @if (email.touched && email.hasError('email')) {
+          <small class="error">
+            Enter a valid email address
+          </small>
+        }
+
+      </div>
+
+
+      <!-- Password -->
+
+      <div class="form-group">
+
+        <label for="password">
+          Password
+        </label>
+
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="Enter your password"
+        >
+
+        @if (password.touched && password.hasError('required')) {
+          <small class="error">
+            Password is required
+          </small>
+        }
+
+      </div>
+
+
+      <!-- Login Button -->
+
+      <button
+        type="submit"
+        class="login-btn"
+        [disabled]="loading"
+      >
+
+        @if (loading) {
+          <span>Logging in...</span>
+        } @else {
+          <span>Login</span>
+        }
+
+      </button>
+
+    </form>
+
+
+    <div class="auth-footer">
+
+      <p>
+        Don't have an account?
+        <a routerLink="/student/register">
+          Register
+        </a>
+      </p>
+
+    </div>
+
+  </div>
+
+</div>

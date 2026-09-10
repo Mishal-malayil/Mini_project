@@ -29,6 +29,13 @@ use App\Http\Controllers\Api\Coordinator\CoordinatorRegistrationController;
 use App\Http\Controllers\Api\Coordinator\CoordinatorAttendanceController;
 use App\Http\Controllers\Api\Coordinator\CoordinatorResultController;
 use App\Http\Controllers\Api\Coordinator\CoordinatorAnnouncementController;
+
+// =====================================================
+// COORDINATOR CONTROLLERS
+// =====================================================
+use App\Http\Controllers\Api\Student\StudentAuthController;
+
+
 // =====================================================
 // ADMIN LOGIN
 // =====================================================
@@ -402,4 +409,30 @@ Route::post('/reset-password', [
 
     });
 
+});
+
+Route::prefix('student')->group(function () {
+
+    Route::post('/register', [
+        StudentAuthController::class,
+        'register'
+    ]);
+
+    Route::post('/login', [
+        StudentAuthController::class,
+        'login'
+    ]);
+
+    Route::middleware('auth:sanctum')->group(function () {
+
+        Route::post('/logout', [
+            StudentAuthController::class,
+            'logout'
+        ]);
+
+        Route::get('/profile', [
+            StudentAuthController::class,
+            'profile'
+        ]);
+    });
 });
