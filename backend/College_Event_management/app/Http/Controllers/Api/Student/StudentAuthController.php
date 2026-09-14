@@ -11,33 +11,30 @@ class StudentAuthController extends Controller
 {
     // Student Registration
     public function register(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:students,email',
-            'phone' => 'required|string|max:15',
-            'department' => 'required|string|max:100',
-            'semester' => 'required|integer|min:1|max:8',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:students,email',
+        'phone' => 'required|string|max:15',
+        'department' => 'required|string|max:100',
+        'semester' => 'required|integer|min:1|max:8',
+        'password' => 'required|string|min:8|confirmed',
+    ]);
 
-        $student = Student::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'],
-            'department' => $validated['department'],
-            'semester' => $validated['semester'],
-            'password' => Hash::make($validated['password']),
-        ]);
+    $student = Student::create([
+        'name' => $validated['name'],
+        'email' => $validated['email'],
+        'phone' => $validated['phone'],
+        'department' => $validated['department'],
+        'semester' => $validated['semester'],
+        'password' => Hash::make($validated['password']),
+    ]);
 
-        $token = $student->createToken('student-token')->plainTextToken;
-
-        return response()->json([
-            'message' => 'Student registration successful',
-            'token' => $token,
-            'student' => $student,
-        ], 201);
-    }
+    return response()->json([
+        'message' => 'Student registration successful. Please login.',
+        'student' => $student,
+    ], 201);
+}
 
 
     // Student Login

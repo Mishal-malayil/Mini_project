@@ -1,3 +1,4 @@
+
 import { Component } from '@angular/core';
 import {
   FormBuilder,
@@ -21,7 +22,6 @@ import { StudentAuthService } from '../../../core/services/student-auth';
 })
 export class StudentRegister {
 
-  // Declare the form only
   registerForm: any;
 
   loading = false;
@@ -32,74 +32,70 @@ export class StudentRegister {
     private router: Router
   ) {
 
-    // Create the form inside constructor
     this.registerForm = this.fb.nonNullable.group({
 
-  name: [
-    '',
-    [
-      Validators.required,
-      Validators.minLength(3)
-    ]
-  ],
+      name: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3)
+        ]
+      ],
 
-  // EMAIL
-  email: [
-    '',
-    [
-      Validators.required,
-      Validators.email
-    ]
-  ],
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.email
+        ]
+      ],
 
-  // MOBILE NUMBER
-  phone: [
-    '',
-    [
-      Validators.required,
-      Validators.pattern(/^[6-9][0-9]{9}$/)
-    ]
-  ],
+      phone: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^[6-9][0-9]{9}$/)
+        ]
+      ],
 
-  department: [
-    '',
-    [
-      Validators.required
-    ]
-  ],
+      department: [
+        '',
+        [
+          Validators.required
+        ]
+      ],
 
-  semester: [
-    1,
-    [
-      Validators.required,
-      Validators.min(1),
-      Validators.max(8)
-    ]
-  ],
+      semester: [
+        1,
+        [
+          Validators.required,
+          Validators.min(1),
+          Validators.max(8)
+        ]
+      ],
 
-  // PASSWORD
-  password: [
-    '',
-    [
-      Validators.required,
-      Validators.minLength(8),
-      Validators.pattern(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/
-      )
-    ]
-  ],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/
+          )
+        ]
+      ],
 
-  password_confirmation: [
-    '',
-    [
-      Validators.required
-    ]
-  ]
+      password_confirmation: [
+        '',
+        [
+          Validators.required
+        ]
+      ]
 
-});
+    });
   }
 
-  register() {
+  register(): void {
 
     // Check validation
     if (this.registerForm.invalid) {
@@ -129,7 +125,7 @@ export class StudentRegister {
 
     this.loading = true;
 
-    // Call API
+    // Call registration API
     this.authService.register(formData)
       .subscribe({
 
@@ -143,30 +139,30 @@ export class StudentRegister {
 
           this.loading = false;
 
-          // Store token
-          localStorage.setItem(
-            'student_token',
-            response.token
-          );
-
-          // Store student
-          localStorage.setItem(
-            'student',
-            JSON.stringify(response.student)
-          );
+          /*
+           * IMPORTANT:
+           * Do NOT store student_token here.
+           * Registration should NOT automatically log in the student.
+           *
+           * Do NOT store student data here.
+           * Student data should be stored only after LOGIN.
+           */
 
           Swal.fire({
             icon: 'success',
             title: 'Registration Successful',
-            text: 'Your student account has been created.',
-            timer: 1800,
-            showConfirmButton: false
+            text: 'Your account has been created. Please login to continue.',
+            confirmButtonText: 'Go to Login',
+            allowOutsideClick: false
+          }).then(() => {
+
+            // Go to Student Login
+            this.router.navigate([
+              '/student/login'
+            ]);
+
           });
 
-          // Go to dashboard
-          this.router.navigate([
-            '/student/dashboard'
-          ]);
         },
 
         // ERROR
@@ -196,6 +192,7 @@ export class StudentRegister {
           else if (error.error?.message) {
 
             message = error.error.message;
+
           }
 
           Swal.fire({
@@ -203,8 +200,10 @@ export class StudentRegister {
             title: 'Registration Failed',
             html: message
           });
+
         }
 
       });
   }
 }
+
