@@ -1,0 +1,161 @@
+<nav class="student-navbar">
+
+  <!-- ==============================
+       LEFT SIDE
+  =============================== -->
+
+  <div class="navbar-left">
+
+    <!-- Mobile menu button -->
+    <button
+      class="mobile-menu-btn"
+      type="button"
+      aria-label="Open menu"
+    >
+      <i class="bi bi-list"></i>
+    </button>
+
+
+    <!-- Page / Portal identity -->
+
+    <div class="portal-heading">
+
+      <div class="portal-icon">
+        <i class="bi bi-calendar2-heart"></i>
+      </div>
+
+      <div class="portal-title">
+
+        <h1>Student Portal</h1>
+
+        <span>
+          College Event Management
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==============================
+       RIGHT SIDE
+  =============================== -->
+
+  <div class="navbar-right">
+
+
+    <!-- ==========================
+         SEARCH
+    =========================== -->
+
+    <div
+      class="search-wrapper"
+      [class.search-active]="searchOpen"
+    >
+
+      <button
+        class="search-button"
+        type="button"
+        title="Search"
+        (click)="toggleSearch()"
+      >
+
+        <i class="bi bi-search"></i>
+
+      </button>
+
+
+      @if (searchOpen) {
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search events..."
+          autofocus
+        />
+      }
+
+    </div>
+
+
+    <!-- ==========================
+         NOTIFICATION
+    =========================== -->
+
+    <button
+      class="navbar-icon-btn"
+      type="button"
+      title="Notifications"
+      (click)="openNotifications()"
+    >
+
+      <i class="bi bi-bell"></i>
+
+      @if (notificationCount > 0) {
+        <span class="notification-dot">
+          {{ notificationCount }}
+        </span>
+      }
+
+    </button>
+
+
+    <!-- Divider -->
+
+    <div class="navbar-divider"></div>
+
+
+    <!-- ==========================
+         STUDENT PROFILE
+    =========================== -->
+
+    <button
+      class="student-profile"
+      type="button"
+      (click)="openProfile()"
+    >
+
+      <div class="student-avatar">
+
+        {{ initials }}
+
+      </div>
+
+
+      <div class="student-info">
+
+        <strong>
+          {{ studentName }}
+        </strong>
+
+        <span>
+          {{ student?.department || 'Student' }}
+        </span>
+
+      </div>
+
+
+      <i class="bi bi-chevron-down profile-arrow"></i>
+
+    </button>
+
+
+    <!-- ==========================
+         LOGOUT
+    =========================== -->
+
+    <button
+      class="logout-btn"
+      type="button"
+      title="Logout"
+      (click)="logout()"
+    >
+
+      <i class="bi bi-box-arrow-right"></i>
+
+    </button>
+
+  </div>
+
+</nav>

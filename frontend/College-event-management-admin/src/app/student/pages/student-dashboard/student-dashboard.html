@@ -1,0 +1,642 @@
+<div class="student-dashboard">
+
+  <!-- =========================
+       WELCOME HERO
+  ========================== -->
+  <section class="welcome-section">
+
+    <div class="welcome-content">
+
+      <div class="welcome-date">
+        <i class="bi bi-calendar3"></i>
+        {{ currentDate | date:'EEEE, MMMM d, y' }}
+      </div>
+
+      <h1>
+        Welcome back,
+        <span>{{ firstName }}</span>
+        <i class="bi bi-hand-wave"></i>
+      </h1>
+
+      <p>
+        Discover upcoming college events, track your registrations,
+        and celebrate your achievements.
+      </p>
+
+      <div class="welcome-actions">
+
+        <a
+          routerLink="/student/events"
+          class="primary-action"
+        >
+          <i class="bi bi-search"></i>
+          Explore Events
+        </a>
+
+        <a
+          routerLink="/student/registrations"
+          class="secondary-action"
+        >
+          My Registrations
+          <i class="bi bi-arrow-right"></i>
+        </a>
+
+      </div>
+
+    </div>
+
+    <!-- Student profile bubble -->
+    <div class="welcome-profile">
+
+      <div class="profile-circle">
+        {{ initials }}
+      </div>
+
+      <div class="profile-info">
+        <strong>{{ studentName }}</strong>
+
+        <span>
+          {{ student?.department || 'Student' }}
+        </span>
+
+        <small>
+          Semester {{ student?.semester || '-' }}
+        </small>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       OVERVIEW
+  ========================== -->
+  <section class="overview-section">
+
+    <div class="section-heading">
+
+      <div>
+        <span class="section-label">YOUR ACTIVITY</span>
+        <h2>Event Overview</h2>
+      </div>
+
+      <a
+        routerLink="/student/registrations"
+        class="view-link"
+      >
+        View activity
+        <i class="bi bi-arrow-up-right"></i>
+      </a>
+
+    </div>
+
+
+    <div class="overview-grid">
+
+      <!-- Total Events -->
+      <div class="overview-card">
+
+        <div class="overview-icon blue">
+          <i class="bi bi-calendar-event"></i>
+        </div>
+
+        <div class="overview-details">
+          <span>Available Events</span>
+          <strong>{{ totalEvents }}</strong>
+          <small>
+            <i class="bi bi-arrow-up"></i>
+            Events available
+          </small>
+        </div>
+
+      </div>
+
+
+      <!-- Registrations -->
+      <div class="overview-card">
+
+        <div class="overview-icon purple">
+          <i class="bi bi-ticket-perforated"></i>
+        </div>
+
+        <div class="overview-details">
+          <span>My Registrations</span>
+          <strong>{{ totalRegistrations }}</strong>
+          <small>
+            Currently registered
+          </small>
+        </div>
+
+      </div>
+
+
+      <!-- Approved -->
+      <div class="overview-card">
+
+        <div class="overview-icon green">
+          <i class="bi bi-check-circle"></i>
+        </div>
+
+        <div class="overview-details">
+          <span>Approved</span>
+          <strong>{{ approvedRegistrations }}</strong>
+          <small>
+            {{ approvalPercentage }}% approval rate
+          </small>
+        </div>
+
+      </div>
+
+
+      <!-- Results -->
+      <div class="overview-card">
+
+        <div class="overview-icon orange">
+          <i class="bi bi-trophy"></i>
+        </div>
+
+        <div class="overview-details">
+          <span>Achievements</span>
+          <strong>{{ resultsCount }}</strong>
+          <small>
+            Results available
+          </small>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       FEATURED EVENT
+  ========================== -->
+  <section class="featured-section">
+
+    <div class="featured-event">
+
+      <div class="featured-left">
+
+        <span class="featured-badge">
+          <i class="bi bi-stars"></i>
+          FEATURED EVENT
+        </span>
+
+        <h2>
+          Annual College
+          <br>
+          Sports Meet
+        </h2>
+
+        <p>
+          Get ready to compete, represent your department
+          and create unforgettable memories.
+        </p>
+
+        <div class="featured-meta">
+
+          <div>
+            <i class="bi bi-calendar-event"></i>
+
+            <span>
+              <small>Date</small>
+              20 September 2026
+            </span>
+          </div>
+
+          <div>
+            <i class="bi bi-geo-alt"></i>
+
+            <span>
+              <small>Venue</small>
+              College Ground
+            </span>
+          </div>
+
+        </div>
+
+        <a
+          routerLink="/student/events"
+          class="featured-button"
+        >
+          View Event
+          <i class="bi bi-arrow-right"></i>
+        </a>
+
+      </div>
+
+
+      <div class="featured-visual">
+
+        <div class="visual-circle circle-one"></div>
+        <div class="visual-circle circle-two"></div>
+
+        <i class="bi bi-trophy-fill trophy-icon"></i>
+
+        <div class="visual-tag tag-one">
+          <i class="bi bi-people-fill"></i>
+          200+ Participants
+        </div>
+
+        <div class="visual-tag tag-two">
+          <i class="bi bi-calendar-check"></i>
+          Registration Open
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       UPCOMING EVENTS
+  ========================== -->
+  <section class="events-section">
+
+    <div class="section-heading">
+
+      <div>
+        <span class="section-label">DON'T MISS OUT</span>
+        <h2>Upcoming Events</h2>
+      </div>
+
+      <a
+        routerLink="/student/events"
+        class="view-link"
+      >
+        See all events
+        <i class="bi bi-arrow-right"></i>
+      </a>
+
+    </div>
+
+
+    <div class="events-grid">
+
+      <article
+        class="event-card"
+        *ngFor="let event of upcomingEvents"
+      >
+
+        <div
+          class="event-icon"
+          [ngClass]="getCategoryClass(event.category)"
+        >
+          <i class="bi" [ngClass]="event.icon"></i>
+        </div>
+
+        <div class="event-card-content">
+
+          <span
+            class="event-category"
+            [ngClass]="getCategoryClass(event.category)"
+          >
+            {{ event.category }}
+          </span>
+
+          <h3>{{ event.title }}</h3>
+
+          <p>
+            {{ event.description }}
+          </p>
+
+          <div class="event-details">
+
+            <span>
+              <i class="bi bi-calendar3"></i>
+              {{ event.date | date:'MMM d, y' }}
+            </span>
+
+            <span>
+              <i class="bi bi-clock"></i>
+              {{ event.time }}
+            </span>
+
+            <span>
+              <i class="bi bi-geo-alt"></i>
+              {{ event.venue }}
+            </span>
+
+          </div>
+
+          <button
+            *ngIf="!event.registered"
+            class="event-register"
+            (click)="registerEvent(event)"
+          >
+            Register Now
+            <i class="bi bi-arrow-up-right"></i>
+          </button>
+
+          <button
+            *ngIf="event.registered"
+            class="event-registered"
+            disabled
+          >
+            <i class="bi bi-check-circle-fill"></i>
+            Registered
+          </button>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       LOWER CONTENT
+  ========================== -->
+  <section class="lower-section">
+
+
+    <!-- =====================
+         MY PARTICIPATION
+    ====================== -->
+    <div class="participation-card">
+
+      <div class="card-header">
+
+        <div>
+          <span class="section-label">MY JOURNEY</span>
+          <h2>Participation</h2>
+        </div>
+
+        <div class="journey-icon">
+          <i class="bi bi-bar-chart-fill"></i>
+        </div>
+
+      </div>
+
+
+      <div class="progress-area">
+
+        <div class="progress-title">
+
+          <span>Event participation</span>
+
+          <strong>
+            {{ registrationPercentage }}%
+          </strong>
+
+        </div>
+
+        <div class="progress-track">
+
+          <div
+            class="progress-value"
+            [style.width.%]="registrationPercentage"
+          ></div>
+
+        </div>
+
+        <p>
+          You have participated in
+          <strong>{{ totalRegistrations }}</strong>
+          of
+          <strong>{{ totalEvents }}</strong>
+          available events.
+        </p>
+
+      </div>
+
+
+      <div class="participation-stats">
+
+        <div>
+          <strong>{{ totalRegistrations }}</strong>
+          <span>Registered</span>
+        </div>
+
+        <div>
+          <strong>{{ approvedRegistrations }}</strong>
+          <span>Approved</span>
+        </div>
+
+        <div>
+          <strong>{{ resultsCount }}</strong>
+          <span>Results</span>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================
+         ANNOUNCEMENTS
+    ====================== -->
+    <div class="announcements-card">
+
+      <div class="card-header">
+
+        <div>
+          <span class="section-label">STAY UPDATED</span>
+          <h2>Announcements</h2>
+        </div>
+
+        <a
+          routerLink="/student/events"
+          class="small-arrow"
+        >
+          <i class="bi bi-arrow-up-right"></i>
+        </a>
+
+      </div>
+
+
+      <div class="announcement-list">
+
+        <div
+          class="announcement-item"
+          *ngFor="let announcement of announcements"
+        >
+
+          <div class="announcement-icon">
+            <i
+              class="bi"
+              [ngClass]="announcement.icon"
+            ></i>
+          </div>
+
+          <div class="announcement-content">
+
+            <h4>
+              {{ announcement.title }}
+            </h4>
+
+            <p>
+              {{ announcement.message }}
+            </p>
+
+            <small>
+              {{ announcement.date | date:'MMM d, y' }}
+            </small>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       ACHIEVEMENTS
+  ========================== -->
+  <section class="achievements-section">
+
+    <div class="section-heading">
+
+      <div>
+        <span class="section-label">CELEBRATE YOUR SUCCESS</span>
+        <h2>Recent Achievements</h2>
+      </div>
+
+      <a
+        routerLink="/student/results"
+        class="view-link"
+      >
+        View all results
+        <i class="bi bi-arrow-right"></i>
+      </a>
+
+    </div>
+
+
+    <div class="achievement-list">
+
+      <div
+        class="achievement-item"
+        *ngFor="let achievement of achievements"
+      >
+
+        <div class="achievement-icon">
+          <i
+            class="bi"
+            [ngClass]="achievement.icon"
+          ></i>
+        </div>
+
+        <div class="achievement-info">
+
+          <span>{{ achievement.position }}</span>
+
+          <h3>
+            {{ achievement.title }}
+          </h3>
+
+          <p>
+            {{ achievement.event }}
+          </p>
+
+        </div>
+
+        <i class="bi bi-chevron-right achievement-arrow"></i>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       QUICK ACTIONS
+  ========================== -->
+  <section class="quick-section">
+
+    <div class="section-heading">
+
+      <div>
+        <span class="section-label">GET STARTED</span>
+        <h2>Quick Actions</h2>
+      </div>
+
+    </div>
+
+
+    <div class="quick-grid">
+
+      <a
+        routerLink="/student/events"
+        class="quick-card quick-blue"
+      >
+        <div class="quick-icon">
+          <i class="bi bi-calendar-plus"></i>
+        </div>
+
+        <div>
+          <h3>Browse Events</h3>
+          <p>Find your next event</p>
+        </div>
+
+        <i class="bi bi-arrow-up-right quick-arrow"></i>
+      </a>
+
+
+      <a
+        routerLink="/student/registrations"
+        class="quick-card quick-purple"
+      >
+        <div class="quick-icon">
+          <i class="bi bi-ticket-perforated"></i>
+        </div>
+
+        <div>
+          <h3>My Registrations</h3>
+          <p>Track your applications</p>
+        </div>
+
+        <i class="bi bi-arrow-up-right quick-arrow"></i>
+      </a>
+
+
+      <a
+        routerLink="/student/results"
+        class="quick-card quick-orange"
+      >
+        <div class="quick-icon">
+          <i class="bi bi-award"></i>
+        </div>
+
+        <div>
+          <h3>My Results</h3>
+          <p>View your achievements</p>
+        </div>
+
+        <i class="bi bi-arrow-up-right quick-arrow"></i>
+      </a>
+
+
+      <a
+        routerLink="/student/profile"
+        class="quick-card quick-green"
+      >
+        <div class="quick-icon">
+          <i class="bi bi-person-circle"></i>
+        </div>
+
+        <div>
+          <h3>My Profile</h3>
+          <p>Manage your account</p>
+        </div>
+
+        <i class="bi bi-arrow-up-right quick-arrow"></i>
+      </a>
+
+    </div>
+
+  </section>
+
+</div>

@@ -1,0 +1,8 @@
+.student-content {
+  margin-left: 250px;
+  min-height: calc(100vh - 70px);
+
+  padding: 30px;
+
+  background: #f5f7fb;
+}

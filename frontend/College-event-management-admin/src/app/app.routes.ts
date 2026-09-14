@@ -43,6 +43,9 @@ import { Profile } from './coordinator/pages/profile/profile';
 // ================= STUDENT =================
 import { StudentLogin } from './student/login/student-login/student-login';
 import { StudentRegister } from './student/register/student-register/student-register';
+import { StudentLayout } from './student/layouts/student-layout/student-layout';
+import { StudentDashboard } from './student/pages/student-dashboard/student-dashboard';
+
 
 export const routes: Routes = [
 
@@ -207,6 +210,28 @@ export const routes: Routes = [
 
         ]
     },
+
+
+    // ============================================
+    // STUDENT PANEL
+    // ============================================
+
+    {
+  path: 'student',
+  component: StudentLayout,
+  children: [
+    {
+      path: '',
+      redirectTo: 'dashboard',
+      pathMatch: 'full'
+    },
+    {
+      path: 'dashboard',
+      component: StudentDashboard
+    }
+
+  ]
+},
 
 
     // ============================================

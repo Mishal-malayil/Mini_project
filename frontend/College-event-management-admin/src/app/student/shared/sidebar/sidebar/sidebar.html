@@ -1,0 +1,255 @@
+<aside class="student-sidebar">
+
+
+  <!-- =====================================================
+       BRAND
+  ====================================================== -->
+
+  <div class="sidebar-brand">
+
+    <div class="brand-logo">
+
+      <i class="bi bi-calendar2-heart"></i>
+
+    </div>
+
+
+    <div class="brand-text">
+
+      <h2>College Events</h2>
+
+      <span>STUDENT PORTAL</span>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       STUDENT PROFILE MINI CARD
+  ====================================================== -->
+
+  <div class="sidebar-profile">
+
+    <div class="sidebar-avatar">
+
+      {{ initials }}
+
+    </div>
+
+
+    <div class="sidebar-profile-info">
+
+      <strong>
+        {{ studentName }}
+      </strong>
+
+      <span>
+        {{ student?.department || 'Student' }}
+      </span>
+
+    </div>
+
+
+    <div class="online-status"></div>
+
+  </div>
+
+
+  <!-- =====================================================
+       NAVIGATION
+  ====================================================== -->
+
+  <div class="sidebar-scroll">
+
+
+    <!-- ===================================================
+         MAIN
+    ==================================================== -->
+
+    <div class="nav-section">
+
+      <div class="nav-section-title">
+        MAIN
+      </div>
+
+
+      <a
+        routerLink="/student/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-item"
+      >
+
+        <span class="nav-icon">
+
+          <i class="bi bi-grid-1x2"></i>
+
+        </span>
+
+        <span class="nav-label">
+          Dashboard
+        </span>
+
+      </a>
+
+    </div>
+
+
+    <!-- ===================================================
+         EVENTS
+    ==================================================== -->
+
+    <div class="nav-section">
+
+      <div class="nav-section-title">
+        EVENTS
+      </div>
+
+
+      <a
+        routerLink="/student/events"
+        routerLinkActive="active"
+        class="nav-item"
+      >
+
+        <span class="nav-icon">
+
+          <i class="bi bi-calendar-event"></i>
+
+        </span>
+
+        <span class="nav-label">
+          Explore Events
+        </span>
+
+      </a>
+
+
+      <a
+        routerLink="/student/registrations"
+        routerLinkActive="active"
+        class="nav-item"
+      >
+
+        <span class="nav-icon">
+
+          <i class="bi bi-ticket-perforated"></i>
+
+        </span>
+
+        <span class="nav-label">
+          My Registrations
+        </span>
+
+      </a>
+
+
+      <a
+        routerLink="/student/results"
+        routerLinkActive="active"
+        class="nav-item"
+      >
+
+        <span class="nav-icon">
+
+          <i class="bi bi-trophy"></i>
+
+        </span>
+
+        <span class="nav-label">
+          My Results
+        </span>
+
+      </a>
+
+    </div>
+
+
+    <!-- ===================================================
+         ACCOUNT
+    ==================================================== -->
+
+    <div class="nav-section">
+
+      <div class="nav-section-title">
+        ACCOUNT
+      </div>
+
+
+      <a
+        routerLink="/student/profile"
+        routerLinkActive="active"
+        class="nav-item"
+      >
+
+        <span class="nav-icon">
+
+          <i class="bi bi-person-circle"></i>
+
+        </span>
+
+        <span class="nav-label">
+          My Profile
+        </span>
+
+      </a>
+
+
+      <a
+        routerLink="/student/notifications"
+        routerLinkActive="active"
+        class="nav-item"
+      >
+
+        <span class="nav-icon">
+
+          <i class="bi bi-bell"></i>
+
+        </span>
+
+        <span class="nav-label">
+          Notifications
+        </span>
+
+      </a>
+
+    </div>
+
+
+  </div>
+
+
+  <!-- =====================================================
+       SIDEBAR FOOTER
+  ====================================================== -->
+
+  <div class="sidebar-footer">
+
+    <div class="footer-card">
+
+      <div class="footer-icon">
+
+        <i class="bi bi-mortarboard-fill"></i>
+
+      </div>
+
+
+      <div class="footer-text">
+
+        <strong>
+          Student Account
+        </strong>
+
+        <span>
+          College Event Management
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+</aside>

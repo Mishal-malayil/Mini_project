@@ -1,0 +1,695 @@
+/* =========================================================
+   STUDENT NAVBAR
+========================================================= */
+
+.student-navbar {
+
+  position: fixed;
+
+  top: 0;
+  left: var(--sidebar-w, 270px);
+  right: 0;
+
+  height: 76px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 28px;
+
+  background: rgba(255, 255, 255, 0.94);
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  border-bottom: 1px solid #edf0f5;
+
+  box-shadow:
+    0 4px 20px rgba(20, 30, 50, 0.05);
+
+  z-index: 1000;
+
+}
+
+
+/* =========================================================
+   LEFT
+========================================================= */
+
+.navbar-left {
+
+  display: flex;
+  align-items: center;
+
+  min-width: 0;
+
+}
+
+
+.portal-heading {
+
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+}
+
+
+.portal-icon {
+
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #5b5ce2,
+      #7c6ff2
+    );
+
+  color: #fff;
+
+  font-size: 20px;
+
+  box-shadow:
+    0 7px 18px rgba(91, 92, 226, 0.20);
+
+}
+
+
+.portal-title h1 {
+
+  margin: 0;
+
+  font-size: 17px;
+
+  font-weight: 750;
+
+  color: #202333;
+
+  letter-spacing: -0.3px;
+
+}
+
+
+.portal-title span {
+
+  display: block;
+
+  margin-top: 2px;
+
+  font-size: 11px;
+
+  font-weight: 500;
+
+  color: #8a8fa3;
+
+}
+
+
+/* =========================================================
+   RIGHT
+========================================================= */
+
+.navbar-right {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.search-wrapper {
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+}
+
+
+.search-button {
+
+  width: 42px;
+  height: 42px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f6f7fb;
+
+  color: #606579;
+
+  font-size: 17px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+
+}
+
+
+.search-button:hover {
+
+  background: #eeeffb;
+
+  color: #5b5ce2;
+
+  transform: translateY(-1px);
+
+}
+
+
+.search-wrapper.search-active {
+
+  background: #f6f7fb;
+
+  border-radius: 12px;
+
+}
+
+
+.search-active .search-button {
+
+  background: transparent;
+
+}
+
+
+.search-input {
+
+  width: 190px;
+
+  height: 42px;
+
+  border: none;
+
+  outline: none;
+
+  background: transparent;
+
+  color: #25283a;
+
+  font-size: 13px;
+
+  padding-right: 12px;
+
+}
+
+
+.search-input::placeholder {
+
+  color: #9a9eae;
+
+}
+
+
+/* =========================================================
+   ICON BUTTON
+========================================================= */
+
+.navbar-icon-btn {
+
+  position: relative;
+
+  width: 42px;
+  height: 42px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f6f7fb;
+
+  color: #606579;
+
+  font-size: 17px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+
+}
+
+
+.navbar-icon-btn:hover {
+
+  background: #eeeffb;
+
+  color: #5b5ce2;
+
+  transform: translateY(-1px);
+
+}
+
+
+/* =========================================================
+   NOTIFICATION
+========================================================= */
+
+.notification-dot {
+
+  position: absolute;
+
+  top: 6px;
+  right: 6px;
+
+  min-width: 15px;
+  height: 15px;
+
+  padding: 0 4px;
+
+  border-radius: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #ef5b68;
+
+  color: #fff;
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  border: 2px solid #fff;
+
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.navbar-divider {
+
+  width: 1px;
+
+  height: 32px;
+
+  background: #e7e9ef;
+
+  margin: 0 5px;
+
+}
+
+
+/* =========================================================
+   STUDENT PROFILE
+========================================================= */
+
+.student-profile {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  border: none;
+
+  background: transparent;
+
+  padding: 5px 7px;
+
+  border-radius: 14px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease;
+
+}
+
+
+.student-profile:hover {
+
+  background: #f7f7fb;
+
+}
+
+
+/* =========================================================
+   AVATAR
+========================================================= */
+
+.student-avatar {
+
+  width: 39px;
+  height: 39px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #5b5ce2,
+      #8b7cf6
+    );
+
+  color: #fff;
+
+  font-size: 14px;
+
+  font-weight: 750;
+
+  box-shadow:
+    0 5px 14px rgba(91, 92, 226, 0.18);
+
+}
+
+
+/* =========================================================
+   STUDENT INFO
+========================================================= */
+
+.student-info {
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  min-width: 0;
+
+}
+
+
+.student-info strong {
+
+  max-width: 130px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  color: #25283a;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+}
+
+
+.student-info span {
+
+  max-width: 130px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  margin-top: 2px;
+
+  color: #9095a7;
+
+  font-size: 10px;
+
+  font-weight: 500;
+
+}
+
+
+/* =========================================================
+   PROFILE ARROW
+========================================================= */
+
+.profile-arrow {
+
+  margin-left: 3px;
+
+  color: #9da1b0;
+
+  font-size: 11px;
+
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+.logout-btn {
+
+  width: 42px;
+  height: 42px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #fff3f4;
+
+  color: #e45d6a;
+
+  font-size: 17px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+
+}
+
+
+.logout-btn:hover {
+
+  background: #ffe4e7;
+
+  color: #d94352;
+
+  transform: translateY(-1px);
+
+}
+
+
+/* =========================================================
+   MOBILE MENU BUTTON
+========================================================= */
+
+.mobile-menu-btn {
+
+  display: none;
+
+  width: 42px;
+  height: 42px;
+
+  margin-right: 10px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: #f6f7fb;
+
+  color: #5b5ce2;
+
+  font-size: 21px;
+
+  cursor: pointer;
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1000px) {
+
+  .student-navbar {
+
+    left: 0;
+
+    padding:
+      0 20px;
+
+  }
+
+  .mobile-menu-btn {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+  }
+
+}
+
+
+/* =========================================================
+   SMALL TABLET
+========================================================= */
+
+@media (max-width: 760px) {
+
+  .portal-title span {
+
+    display: none;
+
+  }
+
+  .portal-title h1 {
+
+    font-size: 15px;
+
+  }
+
+  .student-info {
+
+    display: none;
+
+  }
+
+  .profile-arrow {
+
+    display: none;
+
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 560px) {
+
+  .student-navbar {
+
+    height: 68px;
+
+    padding:
+      0 12px;
+
+  }
+
+  .portal-icon {
+
+    width: 38px;
+    height: 38px;
+
+    border-radius: 11px;
+
+    font-size: 18px;
+
+  }
+
+  .portal-title h1 {
+
+    font-size: 14px;
+
+  }
+
+  .search-button,
+  .navbar-icon-btn,
+  .logout-btn {
+
+    width: 38px;
+    height: 38px;
+
+    border-radius: 10px;
+
+  }
+
+  .navbar-divider {
+
+    display: none;
+
+  }
+
+  .student-profile {
+
+    padding: 0;
+
+  }
+
+  .student-avatar {
+
+    width: 38px;
+    height: 38px;
+
+    border-radius: 11px;
+
+  }
+
+  .navbar-right {
+
+    gap: 6px;
+
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+  .search-wrapper {
+
+    display: none;
+
+  }
+
+  .portal-title {
+
+    display: none;
+
+  }
+
+}
