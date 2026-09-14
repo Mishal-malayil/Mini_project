@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-navbar',
@@ -145,22 +146,48 @@ export class Navbar implements OnInit {
   // LOGOUT
   // ==============================
 
-  logout(): void {
 
-    /*
-     * Clear student authentication data.
-     */
+logout(): void {
 
-    localStorage.removeItem('student');
-    localStorage.removeItem('student_token');
-    localStorage.removeItem('token');
+  Swal.fire({
+    icon: 'question',
+    title: 'Logout?',
+    text: 'Are you sure you want to logout from your student account?',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, Logout',
+    cancelButtonText: 'Cancel',
+    reverseButtons: true,
+    allowOutsideClick: false
+  }).then((result) => {
 
-    this.student = null;
+    if (result.isConfirmed) {
 
-    this.router.navigate([
-      '/student/login'
-    ]);
+      // Remove student login data
+      localStorage.removeItem('student');
+      localStorage.removeItem('student_token');
+      localStorage.removeItem('token');
 
-  }
+      this.student = null;
+
+      // Show logout success message
+      Swal.fire({
+        icon: 'success',
+        title: 'Logged Out',
+        text: 'You have been logged out successfully.',
+        timer: 1500,
+        showConfirmButton: false
+      }).then(() => {
+
+        // Go to student login
+        this.router.navigate(['/student/login']);
+
+      });
+
+    }
+
+  });
+}
+
+
 
 }
