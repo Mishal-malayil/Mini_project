@@ -39,13 +39,15 @@ import { Notification } from './coordinator/pages/notification/notification';
 
 import { Profile } from './coordinator/pages/profile/profile';
 
+import { coordinatorAuthGuard } from './core/guards/coordinator-auth-guard';
+
 
 // ================= STUDENT =================
 import { StudentLogin } from './student/login/student-login/student-login';
 import { StudentRegister } from './student/register/student-register/student-register';
 import { StudentLayout } from './student/layouts/student-layout/student-layout';
 import { StudentDashboard } from './student/pages/student-dashboard/student-dashboard';
-
+import { studentAuthGuard } from './core/guards/student-auth-guard';
 
 export const routes: Routes = [
 
@@ -157,68 +159,70 @@ export const routes: Routes = [
     // ============================================
 
     {
-        path: 'coordinator',
-        component: CoordinatorLayout,
+    path: 'coordinator',
+    component: CoordinatorLayout,
+    canActivate: [coordinatorAuthGuard],
 
-        children: [
+    children: [
 
-            {
-                path: '',
-                redirectTo: 'dashboard',
-                pathMatch: 'full'
-            },
+        {
+            path: '',
+            redirectTo: 'dashboard',
+            pathMatch: 'full'
+        },
 
-            {
-                path: 'dashboard',
-                component: CoordinatorDashboard
-            },
+        {
+            path: 'dashboard',
+            component: CoordinatorDashboard
+        },
 
-            {
-                path: 'events',
-                component: CoordinatorEvents
-            },
+        {
+            path: 'events',
+            component: CoordinatorEvents
+        },
 
-            {
-                path: 'schedule',
-                component: EventSchedule
-            },
+        {
+            path: 'schedule',
+            component: EventSchedule
+        },
 
-            {
-                path: 'registrations',
-                component: CoordinatorRegistrations
-            },
+        {
+            path: 'registrations',
+            component: CoordinatorRegistrations
+        },
 
-            {
-                path: 'attendance',
-                component: CoordinatorAttendance
-            },
+        {
+            path: 'attendance',
+            component: CoordinatorAttendance
+        },
 
-            {
-                path: 'results',
-                component: CoordinatorResult
-            },
+        {
+            path: 'results',
+            component: CoordinatorResult
+        },
 
-            {
-                path: 'notifications',
-                component: Notification
-            },
+        {
+            path: 'notifications',
+            component: Notification
+        },
 
-            {
-                path: 'profile',
-                component: Profile
-            }
+        {
+            path: 'profile',
+            component: Profile
+        }
 
-        ]
-    },
+    ]
+},
 
 
     // ============================================
     // STUDENT PANEL
     // ============================================
 
-    {
+  {
   path: 'student',
   component: StudentLayout,
+  canActivate: [studentAuthGuard],
   children: [
     {
       path: '',
@@ -229,7 +233,6 @@ export const routes: Routes = [
       path: 'dashboard',
       component: StudentDashboard
     }
-
   ]
 },
 

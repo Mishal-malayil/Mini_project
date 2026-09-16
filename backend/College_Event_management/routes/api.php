@@ -213,203 +213,234 @@ Route::middleware('auth:sanctum')->group(function () {
 // COORDINATOR ROUTES
 // =====================================================
 
+// =====================================================
+// COORDINATOR ROUTES
+// =====================================================
+
 Route::prefix('coordinator')->group(function () {
 
     // =================================================
-    // COORDINATOR AUTHENTICATION
+    // PUBLIC COORDINATOR AUTHENTICATION
     // =================================================
 
-    Route::post(
-        '/login',
-        [CoordinatorAuthController::class, 'login']
-    );
+    // Coordinator Login
+    Route::post('/login', [
+        CoordinatorAuthController::class,
+        'login'
+    ]);
 
-    Route::post(
-        '/logout',
-        [CoordinatorAuthController::class, 'logout']
-    );
+    // Forgot Password
+    Route::post('/forgot-password', [
+        CoordinatorAuthController::class,
+        'forgotPassword'
+    ]);
 
-    Route::get(
-        '/profile',
-        [CoordinatorAuthController::class, 'profile']
-    );
+    // Verify OTP
+    Route::post('/verify-reset-otp', [
+        CoordinatorAuthController::class,
+        'verifyResetOtp'
+    ]);
 
-Route::get(
-    '/dashboard',
-    [CoordinatorDashboardController::class, 'index']
-);
+    // Reset Password
+    Route::post('/reset-password', [
+        CoordinatorAuthController::class,
+        'resetPassword'
+    ]);
+
+
     // =================================================
-    // COORDINATOR EVENT MANAGEMENT
+    // PROTECTED COORDINATOR ROUTES
     // =================================================
 
     Route::middleware('auth:coordinator')->group(function () {
 
-        // View ONLY logged-in coordinator's events
-        Route::get(
-            '/events',
-            [CoordinatorEventController::class, 'index']
-        );
+        // =================================================
+        // AUTHENTICATION
+        // =================================================
 
-        // Create event
-        Route::post(
-            '/events',
-            [CoordinatorEventController::class, 'store']
-        );
+        // Logout
+        Route::post('/logout', [
+            CoordinatorAuthController::class,
+            'logout'
+        ]);
 
-        // View ONLY own event
-        Route::get(
-            '/events/{id}',
-            [CoordinatorEventController::class, 'show']
-        );
-
-        // Edit ONLY own event
-        Route::put(
-            '/events/{id}',
-            [CoordinatorEventController::class, 'update']
-        );
-
-        // Delete ONLY own event
-        Route::delete(
-            '/events/{id}',
-            [CoordinatorEventController::class, 'destroy']
-        );
-
-// =====================================================
-// COORDINATOR REGISTRATIONS
-// =====================================================
-
-Route::get(
-    '/registrations',
-    [CoordinatorRegistrationController::class, 'index']
-);
-
-Route::get(
-    '/registrations/{id}',
-    [CoordinatorRegistrationController::class, 'show']
-);
-
-Route::put(
-    '/registrations/{id}/approve',
-    [CoordinatorRegistrationController::class, 'approve']
-);
-
-Route::put(
-    '/registrations/{id}/reject',
-    [CoordinatorRegistrationController::class, 'reject']
-);
-
-Route::get(
-            '/attendance',
-            [CoordinatorAttendanceController::class, 'index']
-        );
-
-        Route::get(
-            '/attendance/event/{eventId}',
-            [CoordinatorAttendanceController::class, 'eventParticipants']
-        );
-
-        Route::post(
-            '/attendance',
-            [CoordinatorAttendanceController::class, 'store']
-        );
-
-        Route::get(
-            '/attendance/{id}',
-            [CoordinatorAttendanceController::class, 'show']
-        );
-
-        Route::delete(
-            '/attendance/{id}',
-            [CoordinatorAttendanceController::class, 'destroy']
-        );
-
-        Route::get(
-            '/results',
-            [CoordinatorResultController::class, 'index']
-        );
-
-        Route::get(
-            '/results/events',
-            [CoordinatorResultController::class, 'events']
-        );
-
-        Route::get(
-            '/results/event/{eventId}/participants',
-            [CoordinatorResultController::class, 'participants']
-        );
-
-        Route::post(
-            '/results',
-            [CoordinatorResultController::class, 'store']
-        );
-
-        Route::put(
-            '/results/{id}',
-            [CoordinatorResultController::class, 'update']
-        );
-
-        Route::delete(
-            '/results/{id}',
-            [CoordinatorResultController::class, 'destroy']
-        );
-
-
-
-
-        Route::get('/announcements', [
-        CoordinatorAnnouncementController::class,
-        'index'
-    ]);
-
-    Route::post('/announcements', [
-        CoordinatorAnnouncementController::class,
-        'store'
-    ]);
-
-    Route::get('/announcements/{id}', [
-        CoordinatorAnnouncementController::class,
-        'show'
-    ]);
-
-    Route::delete('/announcements/{id}', [
-        CoordinatorAnnouncementController::class,
-        'destroy'
-    ]);
-
-
-     // Profile
+        // Profile
         Route::get('/profile', [
             CoordinatorAuthController::class,
             'profile'
         ]);
 
-        // Update password
+        // Update Password
         Route::put('/password', [
             CoordinatorAuthController::class,
             'updatePassword'
         ]);
 
-        // Forgot Password
-Route::post('/forgot-password', [
-    CoordinatorAuthController::class,
-    'forgotPassword'
-]);
 
-// Verify OTP
-Route::post('/verify-reset-otp', [
-    CoordinatorAuthController::class,
-    'verifyResetOtp'
-]);
+        // =================================================
+        // COORDINATOR DASHBOARD
+        // =================================================
 
-// Reset Password
-Route::post('/reset-password', [
-    CoordinatorAuthController::class,
-    'resetPassword'
-]);
+        Route::get('/dashboard', [
+            CoordinatorDashboardController::class,
+            'index'
+        ]);
+
+
+        // =================================================
+        // COORDINATOR EVENT MANAGEMENT
+        // =================================================
+
+        // View ONLY logged-in coordinator's events
+        Route::get('/events', [
+            CoordinatorEventController::class,
+            'index'
+        ]);
+
+        // Create event
+        Route::post('/events', [
+            CoordinatorEventController::class,
+            'store'
+        ]);
+
+        // View ONLY own event
+        Route::get('/events/{id}', [
+            CoordinatorEventController::class,
+            'show'
+        ]);
+
+        // Edit ONLY own event
+        Route::put('/events/{id}', [
+            CoordinatorEventController::class,
+            'update'
+        ]);
+
+        // Delete ONLY own event
+        Route::delete('/events/{id}', [
+            CoordinatorEventController::class,
+            'destroy'
+        ]);
+
+
+        // =================================================
+        // COORDINATOR REGISTRATIONS
+        // =================================================
+
+        Route::get('/registrations', [
+            CoordinatorRegistrationController::class,
+            'index'
+        ]);
+
+        Route::get('/registrations/{id}', [
+            CoordinatorRegistrationController::class,
+            'show'
+        ]);
+
+        Route::put('/registrations/{id}/approve', [
+            CoordinatorRegistrationController::class,
+            'approve'
+        ]);
+
+        Route::put('/registrations/{id}/reject', [
+            CoordinatorRegistrationController::class,
+            'reject'
+        ]);
+
+
+        // =================================================
+        // COORDINATOR ATTENDANCE
+        // =================================================
+
+        Route::get('/attendance', [
+            CoordinatorAttendanceController::class,
+            'index'
+        ]);
+
+        Route::get('/attendance/event/{eventId}', [
+            CoordinatorAttendanceController::class,
+            'eventParticipants'
+        ]);
+
+        Route::post('/attendance', [
+            CoordinatorAttendanceController::class,
+            'store'
+        ]);
+
+        Route::get('/attendance/{id}', [
+            CoordinatorAttendanceController::class,
+            'show'
+        ]);
+
+        Route::delete('/attendance/{id}', [
+            CoordinatorAttendanceController::class,
+            'destroy'
+        ]);
+
+
+        // =================================================
+        // COORDINATOR RESULTS
+        // =================================================
+
+        Route::get('/results', [
+            CoordinatorResultController::class,
+            'index'
+        ]);
+
+        Route::get('/results/events', [
+            CoordinatorResultController::class,
+            'events'
+        ]);
+
+        Route::get('/results/event/{eventId}/participants', [
+            CoordinatorResultController::class,
+            'participants'
+        ]);
+
+        Route::post('/results', [
+            CoordinatorResultController::class,
+            'store'
+        ]);
+
+        Route::put('/results/{id}', [
+            CoordinatorResultController::class,
+            'update'
+        ]);
+
+        Route::delete('/results/{id}', [
+            CoordinatorResultController::class,
+            'destroy'
+        ]);
+
+
+        // =================================================
+        // COORDINATOR ANNOUNCEMENTS
+        // =================================================
+
+        Route::get('/announcements', [
+            CoordinatorAnnouncementController::class,
+            'index'
+        ]);
+
+        Route::post('/announcements', [
+            CoordinatorAnnouncementController::class,
+            'store'
+        ]);
+
+        Route::get('/announcements/{id}', [
+            CoordinatorAnnouncementController::class,
+            'show'
+        ]);
+
+        Route::delete('/announcements/{id}', [
+            CoordinatorAnnouncementController::class,
+            'destroy'
+        ]);
 
     });
 
 });
+
+
 
 Route::prefix('student')->group(function () {
 
