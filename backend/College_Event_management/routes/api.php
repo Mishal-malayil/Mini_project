@@ -34,7 +34,7 @@ use App\Http\Controllers\Api\Coordinator\CoordinatorAnnouncementController;
 // COORDINATOR CONTROLLERS
 // =====================================================
 use App\Http\Controllers\Api\Student\StudentAuthController;
-
+use App\Http\Controllers\Api\Student\StudentEventController;
 
 // =====================================================
 // ADMIN LOGIN
@@ -442,7 +442,15 @@ Route::prefix('coordinator')->group(function () {
 
 
 
+// =====================================================
+// STUDENT ROUTES
+// =====================================================
+
 Route::prefix('student')->group(function () {
+
+    // =================================================
+    // PUBLIC STUDENT AUTHENTICATION
+    // =================================================
 
     Route::post('/register', [
         StudentAuthController::class,
@@ -454,16 +462,48 @@ Route::prefix('student')->group(function () {
         'login'
     ]);
 
+
+    // =================================================
+    // PROTECTED STUDENT ROUTES
+    // =================================================
+
     Route::middleware('auth:sanctum')->group(function () {
 
+        // Student Logout
         Route::post('/logout', [
             StudentAuthController::class,
             'logout'
         ]);
 
+        // Student Profile
         Route::get('/profile', [
             StudentAuthController::class,
             'profile'
         ]);
+
+
+        // =================================================
+        // STUDENT EVENTS
+        // =================================================
+
+        // Explore approved events
+        Route::get('/events', [
+            StudentEventController::class,
+            'index'
+        ]);
+
+        // View event details
+        Route::get('/events/{id}', [
+            StudentEventController::class,
+            'show'
+        ]);
+
+        // Register for event
+        Route::post('/events/{id}/register', [
+            StudentEventController::class,
+            'register'
+        ]);
+
     });
+
 });

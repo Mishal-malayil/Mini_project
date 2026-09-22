@@ -1,0 +1,311 @@
+<div class="explore-events-page">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+
+    <div class="header-content">
+      <div class="header-icon">
+        <i class="bi bi-calendar-event"></i>
+      </div>
+
+      <div>
+        <h1>Explore Events</h1>
+        <p>Discover upcoming college events and participate in activities.</p>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- SEARCH & FILTER -->
+  <div class="filter-section">
+
+    <!-- Search -->
+    <div class="search-box">
+
+      <i class="bi bi-search"></i>
+
+      <input
+        type="text"
+        [(ngModel)]="searchText"
+        (input)="filterEvents()"
+        placeholder="Search events..."
+      >
+
+      <button
+        *ngIf="searchText"
+        class="clear-search"
+        type="button"
+        (click)="searchText = ''; filterEvents()"
+      >
+        <i class="bi bi-x"></i>
+      </button>
+
+    </div>
+
+
+    <!-- Category Filter -->
+    <div class="category-filter">
+
+      <button
+        type="button"
+        class="category-btn"
+        [class.active]="selectedCategory === 'all'"
+        (click)="selectCategory('all')"
+      >
+        <i class="bi bi-grid"></i>
+        All Events
+      </button>
+
+      <button
+        type="button"
+        class="category-btn"
+        *ngFor="let category of categories"
+        [class.active]="selectedCategory === category.id"
+        (click)="selectCategory(category.id)"
+      >
+        <i class="bi bi-tag"></i>
+        {{ category.name }}
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- LOADING -->
+  <div
+    class="loading-container"
+    *ngIf="loading"
+  >
+
+    <div class="spinner"></div>
+
+    <p>Loading events...</p>
+
+  </div>
+
+
+  <!-- EVENTS -->
+  <div
+    class="events-section"
+    *ngIf="!loading"
+  >
+
+    <!-- Section Header -->
+    <div class="section-header">
+
+      <div>
+        <h2>Upcoming Events</h2>
+
+        <p>
+          {{ filteredEvents.length }}
+          {{ filteredEvents.length === 1 ? 'event' : 'events' }}
+          available
+        </p>
+      </div>
+
+      <button
+        *ngIf="searchText || selectedCategory !== 'all'"
+        type="button"
+        class="clear-filter-btn"
+        (click)="clearFilters()"
+      >
+        <i class="bi bi-arrow-counterclockwise"></i>
+        Clear Filters
+      </button>
+
+    </div>
+
+
+    <!-- Event Grid -->
+    <div
+      class="event-grid"
+      *ngIf="filteredEvents.length > 0"
+    >
+
+      <div
+        class="event-card"
+        *ngFor="let event of filteredEvents"
+      >
+
+        <!-- IMAGE -->
+        <div class="event-image">
+
+          <img
+            [src]="getEventImage(event)"
+            [alt]="event.event_name"
+          >
+
+          <!-- Status -->
+          <span
+            class="event-status"
+            [class.approved]="event.status === 'Approved'"
+            [class.pending]="event.status === 'Pending'"
+            [class.rejected]="event.status === 'Rejected'"
+          >
+            {{ event.status || 'Upcoming' }}
+          </span>
+
+          <!-- Category -->
+          <span class="event-category">
+            {{ getCategoryName(event) }}
+          </span>
+
+        </div>
+
+
+        <!-- CONTENT -->
+        <div class="event-content">
+
+          <h3>
+            {{ event.event_name}}
+          </h3>
+
+
+          <!-- Description -->
+          <p class="event-description">
+            {{ event.description || 'Join this exciting college event and participate with other students.' }}
+          </p>
+
+
+          <!-- Event Information -->
+          <div class="event-info">
+
+            <!-- Date -->
+            <div class="info-item">
+
+              <div class="info-icon">
+                <i class="bi bi-calendar3"></i>
+              </div>
+
+              <div>
+                <span>Date</span>
+                <strong>
+                  {{ formatDate(event.event_date || event.date) }}
+                </strong>
+              </div>
+
+            </div>
+
+
+            <!-- Time -->
+            <div class="info-item">
+
+              <div class="info-icon">
+                <i class="bi bi-clock"></i>
+              </div>
+
+              <div>
+                <span>Time</span>
+                <strong>
+                  {{ formatTime(event.event_time || event.time) }}
+                </strong>
+              </div>
+
+            </div>
+
+
+            <!-- Venue -->
+            <div class="info-item">
+
+              <div class="info-icon">
+                <i class="bi bi-geo-alt"></i>
+              </div>
+
+              <div>
+                <span>Venue</span>
+
+                <strong>
+                  {{ event.venue || 'Venue not specified' }}
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- FOOTER -->
+          <div class="event-footer">
+
+            <button
+              type="button"
+              class="view-btn"
+              (click)="viewEvent(event.id)"
+            >
+              <i class="bi bi-eye"></i>
+              View Details
+            </button>
+
+
+            <button
+              type="button"
+              class="register-btn"
+              (click)="registerEvent(event.id)"
+              [disabled]="
+                event.is_registered ||
+                event.registered ||
+                event.registration_status === 'Registered'
+              "
+            >
+
+              <ng-container
+                *ngIf="
+                  event.is_registered ||
+                  event.registered ||
+                  event.registration_status === 'Registered';
+                  else registerText
+                "
+              >
+                <i class="bi bi-check-circle"></i>
+                Registered
+              </ng-container>
+
+              <ng-template #registerText>
+                <i class="bi bi-person-plus"></i>
+                Register
+              </ng-template>
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- NO EVENTS -->
+    <div
+      class="empty-state"
+      *ngIf="filteredEvents.length === 0"
+    >
+
+      <div class="empty-icon">
+        <i class="bi bi-calendar-x"></i>
+      </div>
+
+      <h3>No Events Found</h3>
+
+      <p>
+        We couldn't find any events matching your search or selected category.
+      </p>
+
+      <button
+        type="button"
+        class="clear-filter-btn"
+        (click)="clearFilters()"
+      >
+        <i class="bi bi-arrow-counterclockwise"></i>
+        Show All Events
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

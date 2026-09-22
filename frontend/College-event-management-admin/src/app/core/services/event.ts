@@ -147,4 +147,32 @@ export class EventService {
     `${environment.apiUrl}/coordinator/dashboard`
   );
 }
+
+// =====================================================
+// STUDENT EVENTS
+// =====================================================
+
+// Get all approved events for students
+getStudentEvents(): Observable<any> {
+  return this.http.get(
+    `${environment.apiUrl}/student/events`
+  );
+}
+
+
+// Get single approved event for students
+getStudentEvent(id: number): Observable<any> {
+  return this.http.get(
+    `${environment.apiUrl}/student/events/${id}`
+  );
+}
+
+
+// Register logged-in student for an event
+registerStudentEvent(id: number): Observable<any> {
+  return this.http.post(
+    `${environment.apiUrl}/student/events/${id}/register`,
+    {}
+  );
+}
 }

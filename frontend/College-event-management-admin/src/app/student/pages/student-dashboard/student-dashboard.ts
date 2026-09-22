@@ -115,6 +115,8 @@ export class StudentDashboard implements OnInit {
 
     this.loadAnnouncements();
 
+    this.loadApprovedEvents();
+
   }
 
 
@@ -251,8 +253,34 @@ export class StudentDashboard implements OnInit {
     });
 
   }
+ // =========================================================
+ //Total events count
+ // =========================================================
+loadApprovedEvents(): void {
+  this.eventService.getStudentEvents().subscribe({
+    next: (response: any) => {
 
+      const allEvents = response.events || [];
 
+      // Show/count only admin-approved events
+      this.events = allEvents.filter(
+        (event: any) => event.status === 'Approved'
+      );
+
+      this.totalEvents = this.events.length;
+
+      console.log('Approved Events:', this.events);
+      console.log('Total Approved Events:', this.totalEvents);
+    },
+
+    error: (error) => {
+      console.error('Error loading events:', error);
+
+      this.events = [];
+      this.totalEvents = 0;
+    }
+  });
+}
   // =========================================================
   // NORMALIZE EVENT DATA
   // =========================================================

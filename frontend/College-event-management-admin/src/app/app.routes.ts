@@ -48,7 +48,7 @@ import { StudentRegister } from './student/register/student-register/student-reg
 import { StudentLayout } from './student/layouts/student-layout/student-layout';
 import { StudentDashboard } from './student/pages/student-dashboard/student-dashboard';
 import { studentAuthGuard } from './core/guards/student-auth-guard';
-
+import { ExploreEvents } from './student/pages/explore-events/explore-events';
 export const routes: Routes = [
 
     // ============================================
@@ -232,9 +232,17 @@ export const routes: Routes = [
     {
       path: 'dashboard',
       component: StudentDashboard
+    },
+    {
+        path: 'events',
+        component: ExploreEvents
     }
   ]
 },
+    
+    
+  
+
 
 
     // ============================================

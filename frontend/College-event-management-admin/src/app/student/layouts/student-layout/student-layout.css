@@ -1,8 +1,15 @@
 .student-content {
   margin-left: 250px;
-  min-height: calc(100vh - 70px);
+  min-height: 100vh;
 
-  padding: 30px;
+  padding: 100px 30px 30px;
 
   background: #f5f7fb;
+  box-sizing: border-box;
+}
+@media (max-width: 768px) {
+  .student-content {
+    margin-left: 0;
+    padding: 90px 16px 24px;
+  }
 }
