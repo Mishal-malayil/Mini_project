@@ -180,14 +180,13 @@ export class ExploreEvents implements OnInit {
     });
   }
 
-  getEventImage(event: any): string {
-
-    if (event.image) {
-      return event.image;
-    }
-
-    return 'assets/images/event-placeholder.jpg';
+ getEventImage(event: any): string {
+  if (event.image) {
+    return event.image;
   }
+
+  return 'assets/images/event-placeholder.jpg';
+}
 
   getCategoryName(event: any): string {
 

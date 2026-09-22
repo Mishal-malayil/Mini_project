@@ -537,32 +537,121 @@ export class CoordinatorEvents implements OnInit {
   // EVENT DATA
   // ==============================
 
-  const eventData = {
+const eventData = new FormData();
 
-    category_id: Number(this.newEvent.category_id),
+eventData.append(
+  'category_id',
+  String(Number(this.newEvent.category_id))
+);
 
-    event_name:
-      this.newEvent.event_name.trim(),
+eventData.append(
+  'event_name',
+  this.newEvent.event_name.trim()
+);
 
-    description:
-      this.newEvent.description?.trim() || null,
+eventData.append(
+  'description',
+  this.newEvent.description?.trim() || ''
+);
 
-    venue:
-      this.newEvent.venue.trim(),
+eventData.append(
+  'venue',
+  this.newEvent.venue.trim()
+);
 
-    event_date:
-      this.newEvent.event_date,
+eventData.append(
+  'event_date',
+  this.newEvent.event_date
+);
 
-    start_time:
-      `${this.newEvent.start_time}:00`,
+eventData.append(
+  'start_time',
+  `${this.newEvent.start_time}:00`
+);
 
-    end_time:
-      `${this.newEvent.end_time}:00`,
+eventData.append(
+  'end_time',
+  `${this.newEvent.end_time}:00`
+);
 
-    max_participants:
-      Number(this.newEvent.max_participants)
+eventData.append(
+  'max_participants',
+  String(Number(this.newEvent.max_participants))
+);
 
-  };
+
+// IMAGE
+if (this.selectedImage) {
+  eventData.append(
+    'image',
+    this.selectedImage,
+    this.selectedImage.name
+  );
+}
+
+
+// DEBUG
+console.log('SELECTED IMAGE:', this.selectedImage);
+
+eventData.forEach((value, key) => {
+  console.log('FORM DATA:', key, value);
+});
+
+
+// CREATE / UPDATE
+let request$;
+
+if (this.editingEventId !== null) {
+
+  eventData.append('_method', 'PUT');
+
+  request$ = this.eventService.updateCoordinatorEvent(
+    this.editingEventId,
+    eventData
+  );
+
+} else {
+
+  request$ = this.eventService.addCoordinatorEvent(
+    eventData
+  );
+
+}
+
+
+request$.subscribe({
+  next: (response: any) => {
+
+    console.log('Event saved:', response);
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Success',
+      text: response.message || 'Event saved successfully.',
+      timer: 1500,
+      showConfirmButton: false
+    });
+
+    this.resetForm();
+
+    this.loadEvents();
+
+  },
+
+  error: (error) => {
+
+    console.error('Event save error:', error);
+
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text:
+        error.error?.message ||
+        'Failed to save event.'
+    });
+
+  }
+});
 
   console.log('========== EVENT DATA ==========');
   console.log('EDITING ID:', this.editingEventId);
@@ -570,20 +659,9 @@ export class CoordinatorEvents implements OnInit {
   console.log('================================');
 
 
-  // ==============================
-  // CREATE OR UPDATE
-  // ==============================
 
-  const request$ = this.editingEventId !== null
 
-    ? this.eventService.updateCoordinatorEvent(
-        this.editingEventId,
-        eventData
-      )
-
-    : this.eventService.addCoordinatorEvent(
-        eventData
-      );
+    
 
 
   request$.subscribe({
@@ -818,39 +896,26 @@ export class CoordinatorEvents implements OnInit {
   // =====================================================
 
   resetForm(): void {
+  this.newEvent = {
+    category_id: '',
+    event_name: '',
+    description: '',
+    venue: '',
+    event_date: '',
+    start_time: '',
+    start_time_display: '',
+    end_time: '',
+    end_time_display: '',
+    max_participants: null
+  };
 
-    this.newEvent = {
+  this.selectedImage = null;
 
-      category_id: '',
-
-      event_name: '',
-
-      description: '',
-
-      venue: '',
-
-      event_date: '',
-
-      start_time: '',
-      start_time_display: '',
-
-      end_time: '',
-      end_time_display: '',
-
-      max_participants: null
-
-    };
-
-
-    this.activeTimePicker = null;
-
-    this.timePickerHour = 12;
-
-    this.timePickerMinute = 0;
-
-    this.timePickerPeriod = 'AM';
-
-  }
+  this.activeTimePicker = null;
+  this.timePickerHour = 12;
+  this.timePickerMinute = 0;
+  this.timePickerPeriod = 'AM';
+}
 
 
   // =====================================================
@@ -1183,6 +1248,16 @@ editEvent(event: any): void {
 
   }
 
+}
+
+selectedImage: File | null = null;
+
+onImageSelected(event: any): void {
+  const file = event.target.files?.[0];
+
+  if (file) {
+    this.selectedImage = file;
+  }
 }
 
 }

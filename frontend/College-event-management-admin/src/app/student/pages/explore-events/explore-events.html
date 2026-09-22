@@ -131,28 +131,11 @@
 
         <!-- IMAGE -->
         <div class="event-image">
-
-          <img
-            [src]="getEventImage(event)"
-            [alt]="event.event_name"
-          >
-
-          <!-- Status -->
-          <span
-            class="event-status"
-            [class.approved]="event.status === 'Approved'"
-            [class.pending]="event.status === 'Pending'"
-            [class.rejected]="event.status === 'Rejected'"
-          >
-            {{ event.status || 'Upcoming' }}
-          </span>
-
-          <!-- Category -->
-          <span class="event-category">
-            {{ getCategoryName(event) }}
-          </span>
-
-        </div>
+  <img
+    [src]="getEventImage(event)"
+    [alt]="event.event_name"
+  >
+</div>
 
 
         <!-- CONTENT -->

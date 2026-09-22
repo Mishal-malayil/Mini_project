@@ -9,26 +9,83 @@ use Illuminate\Http\Request;
 
 class StudentEventController extends Controller
 {
-    // Get available events for students
-   public function index(Request $request)
-{
-    $student = $request->user();
+    // =====================================================
+    // GET AVAILABLE EVENTS FOR STUDENTS
+    // =====================================================
 
-    $events = Event::with(['category', 'coordinator'])
-        ->where('status', 'Approved')
-        ->orderBy('event_date', 'asc')
-        ->orderBy('start_time', 'asc')
-        ->get()
-        ->map(function ($event) use ($student) {
+    public function index(Request $request)
+    {
+        $student = $request->user();
 
-            $registration = Registration::where('student_id', $student->id)
-                ->where('event_id', $event->id)
-                ->first();
+        $events = Event::with(['category', 'coordinator'])
+            ->where('status', 'Approved')
+            ->orderBy('event_date', 'asc')
+            ->orderBy('start_time', 'asc')
+            ->get()
+            ->map(function ($event) use ($student) {
 
-            return [
+                $registration = Registration::where('student_id', $student->id)
+                    ->where('event_id', $event->id)
+                    ->first();
+
+                return [
+                    'id' => $event->id,
+                    'event_name' => $event->event_name,
+                    'description' => $event->description,
+
+                    // EVENT IMAGE
+                    'image' => $event->image
+                        ? asset('storage/' . $event->image)
+                        : null,
+
+                    'venue' => $event->venue,
+                    'event_date' => $event->event_date,
+                    'start_time' => $event->start_time,
+                    'end_time' => $event->end_time,
+                    'max_participants' => $event->max_participants,
+                    'status' => $event->status,
+
+                    'category' => $event->category,
+                    'coordinator' => $event->coordinator,
+
+                    'is_registered' => $registration !== null,
+                    'registration_status' => $registration?->status,
+                ];
+            });
+
+        return response()->json([
+            'events' => $events
+        ]);
+    }
+
+
+    // =====================================================
+    // GET SINGLE EVENT DETAILS
+    // =====================================================
+
+    public function show(Request $request, $id)
+    {
+        $student = $request->user();
+
+        $event = Event::with(['category', 'coordinator'])
+            ->where('status', 'Approved')
+            ->findOrFail($id);
+
+        $registration = Registration::where('student_id', $student->id)
+            ->where('event_id', $event->id)
+            ->first();
+
+        return response()->json([
+            'event' => [
                 'id' => $event->id,
                 'event_name' => $event->event_name,
                 'description' => $event->description,
+
+                // EVENT IMAGE
+                'image' => $event->image
+                    ? asset('storage/' . $event->image)
+                    : null,
+
                 'venue' => $event->venue,
                 'event_date' => $event->event_date,
                 'start_time' => $event->start_time,
@@ -41,54 +98,21 @@ class StudentEventController extends Controller
 
                 'is_registered' => $registration !== null,
                 'registration_status' => $registration?->status,
-            ];
-        });
-
-    return response()->json([
-        'events' => $events
-    ]);
-}
+            ]
+        ]);
+    }
 
 
-    // Get single event details
-    public function show(Request $request, $id)
-{
-    $student = $request->user();
+    // =====================================================
+    // REGISTER LOGGED-IN STUDENT FOR EVENT
+    // =====================================================
 
-    $event = Event::with(['category', 'coordinator'])
-        ->where('status', 'Approved')
-        ->findOrFail($id);
-
-    $registration = Registration::where('student_id', $student->id)
-        ->where('event_id', $event->id)
-        ->first();
-
-    return response()->json([
-        'event' => [
-            'id' => $event->id,
-            'event_name' => $event->event_name,
-            'description' => $event->description,
-            'venue' => $event->venue,
-            'event_date' => $event->event_date,
-            'start_time' => $event->start_time,
-            'end_time' => $event->end_time,
-            'max_participants' => $event->max_participants,
-            'status' => $event->status,
-            'category' => $event->category,
-            'coordinator' => $event->coordinator,
-            'is_registered' => $registration !== null,
-            'registration_status' => $registration?->status,
-        ]
-    ]);
-}
-
-
-    // Register logged-in student for event
     public function register(Request $request, $id)
     {
         $student = $request->user();
 
-        $event = Event::where('status', 'Approved')->findOrFail($id);
+        $event = Event::where('status', 'Approved')
+            ->findOrFail($id);
 
         // Check if already registered
         $existingRegistration = Registration::where('student_id', $student->id)

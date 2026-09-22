@@ -11,6 +11,7 @@ class Event extends Model
     'coordinator_id',
     'event_name',
     'description',
+    'image',
     'venue',
     'event_date',
     'start_time',

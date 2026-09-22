@@ -106,28 +106,13 @@ export class EventService {
 
 
   // Create event as coordinator
-  addCoordinatorEvent(data: any): Observable<any> {
+addCoordinatorEvent(data: FormData): Observable<any> {
+  return this.http.post(this.coordinatorUrl, data);
+}
 
-    return this.http.post(
-      this.coordinatorUrl,
-      data
-    );
-
-  }
-
-
-  // Update own event
-  updateCoordinatorEvent(
-    id: number,
-    data: any
-  ): Observable<any> {
-
-    return this.http.put(
-      `${this.coordinatorUrl}/${id}`,
-      data
-    );
-
-  }
+updateCoordinatorEvent(id: number, data: FormData): Observable<any> {
+  return this.http.post(`${this.coordinatorUrl}/${id}`, data);
+}
 
 
   // Delete own event
