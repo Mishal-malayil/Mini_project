@@ -9,43 +9,32 @@ import { EventService } from '../../../core/services/event';
 @Component({
   selector: 'app-coordinator-events',
   standalone: true,
-
   imports: [
     CommonModule,
     FormsModule
   ],
-
   templateUrl: './coordinator-event.html',
   styleUrls: ['./coordinator-event.css']
 })
 export class CoordinatorEvents implements OnInit {
-
 
   // =====================================================
   // EVENTS & CATEGORIES
   // =====================================================
 
   events: any[] = [];
-
   categories: any[] = [];
-
   loading = false;
 
-
   // =====================================================
-  // ADD EVENT FORM
+  // ADD / EDIT EVENT FORM
   // =====================================================
 
   newEvent: any = {
-
     category_id: '',
-
     event_name: '',
-
     description: '',
-
     venue: '',
-
     event_date: '',
 
     start_time: '',
@@ -55,9 +44,9 @@ export class CoordinatorEvents implements OnInit {
     end_time_display: '',
 
     max_participants: null
-
   };
 
+  editingEventId: number | null = null;
 
   // =====================================================
   // CUSTOM TIME PICKER
@@ -65,18 +54,14 @@ export class CoordinatorEvents implements OnInit {
 
   activeTimePicker: 'start' | 'end' | null = null;
 
-  timePickerHour: number = 12;
-
-  timePickerMinute: number = 0;
-
+  timePickerHour = 12;
+  timePickerMinute = 0;
   timePickerPeriod: 'AM' | 'PM' = 'AM';
-
 
   hours: number[] = [
     1, 2, 3, 4, 5, 6,
     7, 8, 9, 10, 11, 12
   ];
-
 
   minutes: number[] = [
     0,
@@ -93,6 +78,17 @@ export class CoordinatorEvents implements OnInit {
     55
   ];
 
+  // =====================================================
+  // IMAGE
+  // =====================================================
+
+  selectedImage: File | null = null;
+
+  // =====================================================
+  // VIEW EVENT
+  // =====================================================
+
+  selectedEvent: any = null;
 
   // =====================================================
   // CONSTRUCTOR
@@ -103,19 +99,14 @@ export class CoordinatorEvents implements OnInit {
     private router: Router
   ) {}
 
-
   // =====================================================
   // INIT
   // =====================================================
 
   ngOnInit(): void {
-
     this.loadCategories();
-
     this.loadEvents();
-
   }
-
 
   // =====================================================
   // LOAD CATEGORIES
@@ -136,17 +127,13 @@ export class CoordinatorEvents implements OnInit {
 
           this.categories = response;
 
-        }
-
-        else if (
+        } else if (
           Array.isArray(response?.data)
         ) {
 
           this.categories = response.data;
 
-        }
-
-        else {
+        } else {
 
           this.categories = [];
 
@@ -156,7 +143,6 @@ export class CoordinatorEvents implements OnInit {
           'CATEGORIES:',
           this.categories
         );
-
       },
 
       error: (error) => {
@@ -178,7 +164,6 @@ export class CoordinatorEvents implements OnInit {
     });
 
   }
-
 
   // =====================================================
   // LOAD ONLY MY EVENTS
@@ -203,17 +188,13 @@ export class CoordinatorEvents implements OnInit {
 
             this.events = response;
 
-          }
-
-          else if (
+          } else if (
             Array.isArray(response?.data)
           ) {
 
             this.events = response.data;
 
-          }
-
-          else {
+          } else {
 
             this.events = [];
 
@@ -236,9 +217,7 @@ export class CoordinatorEvents implements OnInit {
           );
 
           this.events = [];
-
           this.loading = false;
-
 
           if (error.status === 401) {
 
@@ -247,11 +226,13 @@ export class CoordinatorEvents implements OnInit {
               title: 'Session Expired',
               text: 'Please login again.',
               confirmButtonColor: '#2563EB'
-            });
+            }).then(() => {
 
-            this.router.navigate([
-              '/coordinator/login'
-            ]);
+              this.router.navigate([
+                '/coordinator/login'
+              ]);
+
+            });
 
           }
 
@@ -261,12 +242,13 @@ export class CoordinatorEvents implements OnInit {
 
   }
 
-
   // =====================================================
   // OPEN ADD EVENT MODAL
   // =====================================================
 
   openAddEventModal(): void {
+
+    this.editingEventId = null;
 
     this.resetForm();
 
@@ -281,11 +263,13 @@ export class CoordinatorEvents implements OnInit {
       (window as any).bootstrap;
 
     if (!bootstrap) {
+
       console.error(
         'Bootstrap is not loaded.'
       );
 
       return;
+
     }
 
     const modal =
@@ -295,7 +279,6 @@ export class CoordinatorEvents implements OnInit {
     modal.show();
 
   }
-
 
   // =====================================================
   // OPEN CUSTOM TIME PICKER
@@ -314,16 +297,13 @@ export class CoordinatorEvents implements OnInit {
       currentTime =
         this.newEvent.start_time;
 
-    }
-    else {
+    } else {
 
       currentTime =
         this.newEvent.end_time;
 
     }
 
-
-    // If time already selected
     if (currentTime) {
 
       const parts =
@@ -335,32 +315,22 @@ export class CoordinatorEvents implements OnInit {
       const minute =
         Number(parts[1]);
 
-
       if (hour === 0) {
 
         this.timePickerHour = 12;
-
         this.timePickerPeriod = 'AM';
 
-      }
-
-      else if (hour < 12) {
+      } else if (hour < 12) {
 
         this.timePickerHour = hour;
-
         this.timePickerPeriod = 'AM';
 
-      }
-
-      else if (hour === 12) {
+      } else if (hour === 12) {
 
         this.timePickerHour = 12;
-
         this.timePickerPeriod = 'PM';
 
-      }
-
-      else {
+      } else {
 
         this.timePickerHour =
           hour - 12;
@@ -369,24 +339,18 @@ export class CoordinatorEvents implements OnInit {
 
       }
 
-
       this.timePickerMinute =
         minute;
 
-    }
-
-    else {
+    } else {
 
       this.timePickerHour = 12;
-
       this.timePickerMinute = 0;
-
       this.timePickerPeriod = 'AM';
 
     }
 
   }
-
 
   // =====================================================
   // SELECT HOUR
@@ -398,7 +362,6 @@ export class CoordinatorEvents implements OnInit {
 
   }
 
-
   // =====================================================
   // SELECT MINUTE
   // =====================================================
@@ -408,7 +371,6 @@ export class CoordinatorEvents implements OnInit {
     this.timePickerMinute = minute;
 
   }
-
 
   // =====================================================
   // SELECT AM / PM
@@ -421,7 +383,6 @@ export class CoordinatorEvents implements OnInit {
     this.timePickerPeriod = period;
 
   }
-
 
   // =====================================================
   // CONFIRM TIME
@@ -439,43 +400,31 @@ export class CoordinatorEvents implements OnInit {
         this.timePickerMinute
       ).padStart(2, '0');
 
-
-    // Display value
     const displayTime =
       `${hour}:${minute} ${this.timePickerPeriod}`;
 
-
-    // Convert to 24-hour
     let hour24 =
       this.timePickerHour;
 
-
-    if (this.timePickerPeriod === 'AM') {
+    if (
+      this.timePickerPeriod === 'AM'
+    ) {
 
       if (hour24 === 12) {
-
         hour24 = 0;
-
       }
 
-    }
-
-    else {
+    } else {
 
       if (hour24 !== 12) {
-
         hour24 += 12;
-
       }
 
     }
-
 
     const apiTime =
       `${String(hour24).padStart(2, '0')}:${minute}`;
 
-
-    // START TIME
     if (
       this.activeTimePicker === 'start'
     ) {
@@ -488,8 +437,6 @@ export class CoordinatorEvents implements OnInit {
 
     }
 
-
-    // END TIME
     if (
       this.activeTimePicker === 'end'
     ) {
@@ -502,421 +449,431 @@ export class CoordinatorEvents implements OnInit {
 
     }
 
-
     this.activeTimePicker = null;
 
   }
 
-
   // =====================================================
-  // ADD EVENT
+  // ADD / UPDATE EVENT
   // =====================================================
 
- addEvent(form: NgForm): void {
+  addEvent(form: NgForm): void {
 
-  // ==============================
-  // FORM VALIDATION
-  // ==============================
+    // ---------------------------------------------------
+    // FORM VALIDATION
+    // ---------------------------------------------------
 
-  if (form.invalid) {
-    form.control.markAllAsTouched();
-    return;
-  }
+    if (form.invalid) {
 
-  // ==============================
-  // DATE & TIME VALIDATION
-  // ==============================
+      form.control.markAllAsTouched();
 
-  if (!this.validateEventDateTime()) {
-    return;
-  }
-
-  this.loading = true;
-
-  // ==============================
-  // EVENT DATA
-  // ==============================
-
-const eventData = new FormData();
-
-eventData.append(
-  'category_id',
-  String(Number(this.newEvent.category_id))
-);
-
-eventData.append(
-  'event_name',
-  this.newEvent.event_name.trim()
-);
-
-eventData.append(
-  'description',
-  this.newEvent.description?.trim() || ''
-);
-
-eventData.append(
-  'venue',
-  this.newEvent.venue.trim()
-);
-
-eventData.append(
-  'event_date',
-  this.newEvent.event_date
-);
-
-eventData.append(
-  'start_time',
-  `${this.newEvent.start_time}:00`
-);
-
-eventData.append(
-  'end_time',
-  `${this.newEvent.end_time}:00`
-);
-
-eventData.append(
-  'max_participants',
-  String(Number(this.newEvent.max_participants))
-);
-
-
-// IMAGE
-if (this.selectedImage) {
-  eventData.append(
-    'image',
-    this.selectedImage,
-    this.selectedImage.name
-  );
-}
-
-
-// DEBUG
-console.log('SELECTED IMAGE:', this.selectedImage);
-
-eventData.forEach((value, key) => {
-  console.log('FORM DATA:', key, value);
-});
-
-
-// CREATE / UPDATE
-let request$;
-
-if (this.editingEventId !== null) {
-
-  eventData.append('_method', 'PUT');
-
-  request$ = this.eventService.updateCoordinatorEvent(
-    this.editingEventId,
-    eventData
-  );
-
-} else {
-
-  request$ = this.eventService.addCoordinatorEvent(
-    eventData
-  );
-
-}
-
-
-request$.subscribe({
-  next: (response: any) => {
-
-    console.log('Event saved:', response);
-
-    Swal.fire({
-      icon: 'success',
-      title: 'Success',
-      text: response.message || 'Event saved successfully.',
-      timer: 1500,
-      showConfirmButton: false
-    });
-
-    this.resetForm();
-
-    this.loadEvents();
-
-  },
-
-  error: (error) => {
-
-    console.error('Event save error:', error);
-
-    Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text:
-        error.error?.message ||
-        'Failed to save event.'
-    });
-
-  }
-});
-
-  console.log('========== EVENT DATA ==========');
-  console.log('EDITING ID:', this.editingEventId);
-  console.log('EVENT DATA:', eventData);
-  console.log('================================');
-
-
-
-
-    
-
-
-  request$.subscribe({
-
-    // ==============================
-    // SUCCESS
-    // ==============================
-
-    next: (response: any) => {
-
-      this.loading = false;
-
-      // IMPORTANT:
-      // Store this BEFORE setting editingEventId = null
-      const wasEditing =
-        this.editingEventId !== null;
-
-
-      console.log(
-        wasEditing
-          ? 'EVENT UPDATED:'
-          : 'EVENT CREATED:',
-        response
-      );
-
-
-      // ==============================
-      // CLOSE MODAL
-      // ==============================
-
-      const modalElement =
-        document.getElementById('addEventModal');
-
-      if (modalElement) {
-
-        const bootstrap =
-          (window as any).bootstrap;
-
-        if (bootstrap) {
-
-          const modal =
-            bootstrap.Modal
-              .getInstance(modalElement);
-
-          modal?.hide();
-
-        }
-
-      }
-
-
-      // ==============================
-      // RESET FORM
-      // ==============================
-
-      form.resetForm();
-
-      this.resetForm();
-
-      // Reset edit mode
-      this.editingEventId = null;
-
-
-      // ==============================
-      // RELOAD MY EVENTS
-      // ==============================
-
-      this.loadEvents();
-
-
-      // ==============================
-      // SUCCESS MESSAGE
-      // ==============================
-
-      Swal.fire({
-
-        icon: 'success',
-
-        title:
-          wasEditing
-            ? 'Event Updated!'
-            : 'Event Created!',
-
-        text:
-          response.message ||
-          (
-            wasEditing
-              ? 'Event updated successfully.'
-              : 'Event submitted successfully. Waiting for admin approval.'
-          ),
-
-        confirmButtonColor: '#2563EB'
-
-      });
-
-    },
-
-
-    // ==============================
-    // ERROR
-    // ==============================
-
-    error: (error) => {
-
-      this.loading = false;
-
-      console.error(
-        '========== EVENT OPERATION ERROR =========='
-      );
-
-      console.error(
-        'STATUS:',
-        error.status
-      );
-
-      console.error(
-        'ERROR BODY:',
-        error.error
-      );
-
-      console.error(
-        'MESSAGE:',
-        error.error?.message
-      );
-
-      console.error(
-        'VALIDATION:',
-        error.error?.errors
-      );
-
-      console.error(
-        '==========================================='
-      );
-
-
-      let message =
-        'Unable to save event.';
-
-
-      // ==============================
-      // VALIDATION ERROR
-      // ==============================
-
-      if (error.status === 422) {
-
-        const errors =
-          error.error?.errors;
-
-        if (errors) {
-
-          message =
-            Object.entries(errors)
-              .map(
-                ([field, messages]: [string, any]) =>
-                  `${field}: ${messages.join(', ')}`
-              )
-              .join('\n');
-
-        }
-
-        else if (error.error?.message) {
-
-          message =
-            error.error.message;
-
-        }
-
-      }
-
-
-      // ==============================
-      // AUTH ERROR
-      // ==============================
-
-      else if (error.status === 401) {
-
-        message =
-          'Coordinator authentication failed. Please login again.';
-
-      }
-
-
-      // ==============================
-      // NOT FOUND / UNAUTHORIZED
-      // ==============================
-
-      else if (error.status === 404) {
-
-        message =
-          error.error?.message ||
-          'Event not found or you are not authorized to edit this event.';
-
-      }
-
-
-      // ==============================
-      // SERVER ERROR
-      // ==============================
-
-      else if (error.status === 500) {
-
-        message =
-          'Server error. Please check the Laravel terminal.';
-
-      }
-
-
-      Swal.fire({
-
-        icon: 'error',
-
-        title:
-          this.editingEventId !== null
-            ? 'Failed to Update Event'
-            : 'Failed to Create Event',
-
-        text: message,
-
-        confirmButtonColor: '#DC2626'
-
-      });
+      return;
 
     }
 
-  });
+    // ---------------------------------------------------
+    // DATE & TIME VALIDATION
+    // ---------------------------------------------------
 
-}
+    if (
+      !this.validateEventDateTime()
+    ) {
 
+      return;
+
+    }
+
+    this.loading = true;
+
+    // ---------------------------------------------------
+    // FORM DATA
+    // ---------------------------------------------------
+
+    const eventData =
+      new FormData();
+
+    eventData.append(
+      'category_id',
+      String(
+        Number(
+          this.newEvent.category_id
+        )
+      )
+    );
+
+    eventData.append(
+      'event_name',
+      this.newEvent.event_name.trim()
+    );
+
+    eventData.append(
+      'description',
+      this.newEvent.description?.trim() || ''
+    );
+
+    eventData.append(
+      'venue',
+      this.newEvent.venue.trim()
+    );
+
+    eventData.append(
+      'event_date',
+      this.newEvent.event_date
+    );
+
+    eventData.append(
+      'start_time',
+      `${this.newEvent.start_time}:00`
+    );
+
+    eventData.append(
+      'end_time',
+      `${this.newEvent.end_time}:00`
+    );
+
+    if (
+      this.newEvent.max_participants !== null &&
+      this.newEvent.max_participants !== ''
+    ) {
+
+      eventData.append(
+        'max_participants',
+        String(
+          Number(
+            this.newEvent.max_participants
+          )
+        )
+      );
+
+    }
+
+    // ---------------------------------------------------
+    // IMAGE
+    // ---------------------------------------------------
+
+    if (this.selectedImage) {
+
+      eventData.append(
+        'image',
+        this.selectedImage,
+        this.selectedImage.name
+      );
+
+    }
+
+    // ---------------------------------------------------
+    // DEBUG
+    // ---------------------------------------------------
+
+    console.log(
+      'SELECTED IMAGE:',
+      this.selectedImage
+    );
+
+    eventData.forEach(
+      (value, key) => {
+
+        console.log(
+          'FORM DATA:',
+          key,
+          value
+        );
+
+      }
+    );
+
+    // ---------------------------------------------------
+    // CREATE / UPDATE
+    // ---------------------------------------------------
+
+    let request$;
+
+    if (
+      this.editingEventId !== null
+    ) {
+
+      // Laravel method spoofing
+      eventData.append(
+        '_method',
+        'PUT'
+      );
+
+      request$ =
+        this.eventService
+          .updateCoordinatorEvent(
+            this.editingEventId,
+            eventData
+          );
+
+    } else {
+
+      request$ =
+        this.eventService
+          .addCoordinatorEvent(
+            eventData
+          );
+
+    }
+
+    // ---------------------------------------------------
+    // ONLY ONE SUBSCRIBE
+    // ---------------------------------------------------
+
+    request$.subscribe({
+
+      // =================================================
+      // SUCCESS
+      // =================================================
+
+      next: (response: any) => {
+
+        this.loading = false;
+
+        const wasEditing =
+          this.editingEventId !== null;
+
+        console.log(
+          wasEditing
+            ? 'EVENT UPDATED:'
+            : 'EVENT CREATED:',
+          response
+        );
+
+        // ------------------------------------------------
+        // CLOSE MODAL
+        // ------------------------------------------------
+
+        const modalElement =
+          document.getElementById(
+            'addEventModal'
+          );
+
+        if (modalElement) {
+
+          const bootstrap =
+            (window as any).bootstrap;
+
+          if (bootstrap) {
+
+            const modal =
+              bootstrap.Modal
+                .getInstance(
+                  modalElement
+                );
+
+            modal?.hide();
+
+          }
+
+        }
+
+        // ------------------------------------------------
+        // RESET FORM
+        // ------------------------------------------------
+
+        form.resetForm();
+
+        this.resetForm();
+
+        this.editingEventId =
+          null;
+
+        // ------------------------------------------------
+        // RELOAD EVENTS
+        // ------------------------------------------------
+
+        this.loadEvents();
+
+        // ------------------------------------------------
+        // SUCCESS MESSAGE
+        // ------------------------------------------------
+
+        Swal.fire({
+
+          icon: 'success',
+
+          title:
+            wasEditing
+              ? 'Event Updated!'
+              : 'Event Created!',
+
+          text:
+            response.message ||
+            (
+              wasEditing
+                ? 'Event updated successfully.'
+                : 'Event submitted successfully. Waiting for admin approval.'
+            ),
+
+          confirmButtonColor:
+            '#2563EB'
+
+        });
+
+      },
+
+      // =================================================
+      // ERROR
+      // =================================================
+
+      error: (error) => {
+
+        this.loading = false;
+
+        console.error(
+          'EVENT OPERATION ERROR:',
+          error
+        );
+
+        let message =
+          'Unable to save event.';
+
+        // ------------------------------------------------
+        // VALIDATION / VENUE CONFLICT
+        // ------------------------------------------------
+
+        if (
+          error.status === 422
+        ) {
+
+          const errors =
+            error.error?.errors;
+
+          if (errors) {
+
+            message =
+              Object.entries(errors)
+                .map(
+                  (
+                    [field, messages]:
+                    [string, any]
+                  ) =>
+                    `${field}: ${messages.join(', ')}`
+                )
+                .join('\n');
+
+          } else if (
+            error.error?.message
+          ) {
+
+            message =
+              error.error.message;
+
+          }
+
+        }
+
+        // ------------------------------------------------
+        // AUTH ERROR
+        // ------------------------------------------------
+
+        else if (
+          error.status === 401
+        ) {
+
+          message =
+            'Coordinator authentication failed. Please login again.';
+
+        }
+
+        // ------------------------------------------------
+        // NOT FOUND
+        // ------------------------------------------------
+
+        else if (
+          error.status === 404
+        ) {
+
+          message =
+            error.error?.message ||
+            'Event not found or you are not authorized to edit this event.';
+
+        }
+
+        // ------------------------------------------------
+        // SERVER ERROR
+        // ------------------------------------------------
+
+        else if (
+          error.status === 500
+        ) {
+
+          message =
+            'Server error. Please check the Laravel terminal.';
+
+        }
+
+        // ------------------------------------------------
+        // SWEET ALERT
+        // ------------------------------------------------
+
+        Swal.fire({
+
+          icon: 'error',
+
+          title:
+            error.status === 422
+              ? 'Venue Not Available'
+              : (
+                  this.editingEventId !== null
+                    ? 'Failed to Update Event'
+                    : 'Failed to Create Event'
+                ),
+
+          text: message,
+
+          confirmButtonColor:
+            '#DC2626'
+
+        });
+
+      }
+
+    });
+
+  }
 
   // =====================================================
   // RESET FORM
   // =====================================================
 
   resetForm(): void {
-  this.newEvent = {
-    category_id: '',
-    event_name: '',
-    description: '',
-    venue: '',
-    event_date: '',
-    start_time: '',
-    start_time_display: '',
-    end_time: '',
-    end_time_display: '',
-    max_participants: null
-  };
 
-  this.selectedImage = null;
+    this.newEvent = {
 
-  this.activeTimePicker = null;
-  this.timePickerHour = 12;
-  this.timePickerMinute = 0;
-  this.timePickerPeriod = 'AM';
-}
+      category_id: '',
 
+      event_name: '',
+
+      description: '',
+
+      venue: '',
+
+      event_date: '',
+
+      start_time: '',
+
+      start_time_display: '',
+
+      end_time: '',
+
+      end_time_display: '',
+
+      max_participants: null
+
+    };
+
+    this.selectedImage = null;
+
+    this.activeTimePicker = null;
+
+    this.timePickerHour = 12;
+
+    this.timePickerMinute = 0;
+
+    this.timePickerPeriod = 'AM';
+
+  }
 
   // =====================================================
   // TODAY'S DATE
@@ -924,7 +881,8 @@ request$.subscribe({
 
   getToday(): string {
 
-    const today = new Date();
+    const today =
+      new Date();
 
     const year =
       today.getFullYear();
@@ -939,11 +897,9 @@ request$.subscribe({
         today.getDate()
       ).padStart(2, '0');
 
-
     return `${year}-${month}-${day}`;
 
   }
-
 
   // =====================================================
   // VALIDATE EVENT DATE & TIME
@@ -951,19 +907,26 @@ request$.subscribe({
 
   validateEventDateTime(): boolean {
 
-    // Date
-    if (!this.newEvent.event_date) {
+    // ---------------------------------------------------
+    // DATE
+    // ---------------------------------------------------
+
+    if (
+      !this.newEvent.event_date
+    ) {
 
       Swal.fire({
 
         icon: 'warning',
 
-        title: 'Select Event Date',
+        title:
+          'Select Event Date',
 
         text:
           'Please select an event date.',
 
-        confirmButtonColor: '#2563EB'
+        confirmButtonColor:
+          '#2563EB'
 
       });
 
@@ -971,20 +934,26 @@ request$.subscribe({
 
     }
 
+    // ---------------------------------------------------
+    // START TIME
+    // ---------------------------------------------------
 
-    // Start time
-    if (!this.newEvent.start_time) {
+    if (
+      !this.newEvent.start_time
+    ) {
 
       Swal.fire({
 
         icon: 'warning',
 
-        title: 'Select Start Time',
+        title:
+          'Select Start Time',
 
         text:
           'Please select the event start time.',
 
-        confirmButtonColor: '#2563EB'
+        confirmButtonColor:
+          '#2563EB'
 
       });
 
@@ -992,20 +961,26 @@ request$.subscribe({
 
     }
 
+    // ---------------------------------------------------
+    // END TIME
+    // ---------------------------------------------------
 
-    // End time
-    if (!this.newEvent.end_time) {
+    if (
+      !this.newEvent.end_time
+    ) {
 
       Swal.fire({
 
         icon: 'warning',
 
-        title: 'Select End Time',
+        title:
+          'Select End Time',
 
         text:
           'Please select the event end time.',
 
-        confirmButtonColor: '#2563EB'
+        confirmButtonColor:
+          '#2563EB'
 
       });
 
@@ -1013,43 +988,43 @@ request$.subscribe({
 
     }
 
-
-    // -----------------------------------------
-    // Create selected date/time
-    // -----------------------------------------
+    // ---------------------------------------------------
+    // SELECTED DATE/TIME
+    // ---------------------------------------------------
 
     const selectedStart =
       new Date(
         `${this.newEvent.event_date}T${this.newEvent.start_time}`
       );
 
-
     const selectedEnd =
       new Date(
         `${this.newEvent.event_date}T${this.newEvent.end_time}`
       );
 
-
     const now =
       new Date();
 
+    // ---------------------------------------------------
+    // PREVIOUS DATE/TIME
+    // ---------------------------------------------------
 
-    // -----------------------------------------
-    // Previous date/time
-    // -----------------------------------------
-
-    if (selectedStart <= now) {
+    if (
+      selectedStart <= now
+    ) {
 
       Swal.fire({
 
         icon: 'warning',
 
-        title: 'Invalid Event Time',
+        title:
+          'Invalid Event Time',
 
         text:
           'Please select a future date and time.',
 
-        confirmButtonColor: '#2563EB'
+        confirmButtonColor:
+          '#2563EB'
 
       });
 
@@ -1057,207 +1032,413 @@ request$.subscribe({
 
     }
 
+    // ---------------------------------------------------
+    // END TIME
+    // ---------------------------------------------------
 
-    // -----------------------------------------
-    // End time
-    // -----------------------------------------
-
-    if (selectedEnd <= selectedStart) {
+    if (
+      selectedEnd <= selectedStart
+    ) {
 
       Swal.fire({
 
         icon: 'warning',
 
-        title: 'Invalid Time',
+        title:
+          'Invalid Time',
 
         text:
           'End time must be later than start time.',
 
-        confirmButtonColor: '#2563EB'
+        confirmButtonColor:
+          '#2563EB'
 
       });
 
       return false;
 
     }
-
 
     return true;
 
   }
 
-selectedEvent: any = null;
+  // =====================================================
+  // VIEW EVENT
+  // =====================================================
 
-viewEvent(event: any): void {
-  this.selectedEvent = event;
+  viewEvent(event: any): void {
 
-  const modalElement = document.getElementById('viewEventModal');
+    this.selectedEvent =
+      event;
 
-  if (modalElement) {
-    const bootstrap = (window as any).bootstrap;
-    const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
-    modal.show();
+    const modalElement =
+      document.getElementById(
+        'viewEventModal'
+      );
+
+    if (modalElement) {
+
+      const bootstrap =
+        (window as any).bootstrap;
+
+      if (!bootstrap) {
+        return;
+      }
+
+      const modal =
+        bootstrap.Modal
+          .getOrCreateInstance(
+            modalElement
+          );
+
+      modal.show();
+
+    }
+
   }
-}
 
-deleteEvent(id: number): void {
+  // =====================================================
+  // DELETE EVENT
+  // =====================================================
 
-  Swal.fire({
-    icon: 'warning',
-    title: 'Delete Event?',
-    text: 'This event will be permanently deleted.',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, Delete',
-    cancelButtonText: 'Cancel',
-    confirmButtonColor: '#DC2626',
-    cancelButtonColor: '#6B7280'
-  }).then((result) => {
+  deleteEvent(id: number): void {
 
-    if (!result.isConfirmed) {
+    Swal.fire({
+
+      icon: 'warning',
+
+      title:
+        'Delete Event?',
+
+      text:
+        'This event will be permanently deleted.',
+
+      showCancelButton: true,
+
+      confirmButtonText:
+        'Yes, Delete',
+
+      cancelButtonText:
+        'Cancel',
+
+      confirmButtonColor:
+        '#DC2626',
+
+      cancelButtonColor:
+        '#6B7280',
+
+      reverseButtons: true
+
+    }).then(
+      (result) => {
+
+        if (
+          !result.isConfirmed
+        ) {
+          return;
+        }
+
+        this.loading = true;
+
+        this.eventService
+          .deleteCoordinatorEvent(id)
+          .subscribe({
+
+            next: (response: any) => {
+
+              this.loading = false;
+
+              Swal.fire({
+
+                icon: 'success',
+
+                title:
+                  'Deleted!',
+
+                text:
+                  response.message ||
+                  'Event deleted successfully.',
+
+                confirmButtonColor:
+                  '#2563EB'
+
+              });
+
+              this.loadEvents();
+
+            },
+
+            error: (error) => {
+
+              this.loading = false;
+
+              console.error(
+                'Delete event error:',
+                error
+              );
+
+              Swal.fire({
+
+                icon: 'error',
+
+                title:
+                  'Delete Failed',
+
+                text:
+                  error.error?.message ||
+                  'Unable to delete event.',
+
+                confirmButtonColor:
+                  '#DC2626'
+
+              });
+
+            }
+
+          });
+
+      }
+    );
+
+  }
+
+  // =====================================================
+  // SET TIME FOR EDIT
+  // =====================================================
+
+  setTimeForPicker(
+    time: string,
+    type: 'start' | 'end'
+  ): void {
+
+    if (!time) {
       return;
     }
 
-    this.loading = true;
+    const parts =
+      time
+        .substring(0, 5)
+        .split(':');
 
-    this.eventService.deleteCoordinatorEvent(id).subscribe({
+    let hour =
+      Number(parts[0]);
 
-      next: (response: any) => {
+    const minute =
+      parts[1];
 
-        this.loading = false;
+    const period =
+      hour >= 12
+        ? 'PM'
+        : 'AM';
 
-        Swal.fire({
-          icon: 'success',
-          title: 'Deleted!',
-          text: response.message || 'Event deleted successfully.',
-          confirmButtonColor: '#2563EB'
-        });
+    if (hour === 0) {
 
-        // Refresh My Events
-        this.loadEvents();
+      hour = 12;
 
-      },
+    } else if (hour > 12) {
 
-      error: (error) => {
+      hour -= 12;
 
-        this.loading = false;
+    }
 
-        console.error('Delete event error:', error);
+    if (
+      type === 'start'
+    ) {
 
-        Swal.fire({
-          icon: 'error',
-          title: 'Delete Failed',
-          text:
-            error.error?.message ||
-            'Unable to delete event.',
-          confirmButtonColor: '#DC2626'
-        });
+      this.newEvent.start_time =
+        time.substring(0, 5);
 
-      }
+      this.newEvent.start_time_display =
+        `${String(hour).padStart(2, '0')}:${minute} ${period}`;
 
-    });
+    } else {
 
-  });
+      this.newEvent.end_time =
+        time.substring(0, 5);
 
-}
-setTimeForPicker(
-  time: string,
-  type: 'start' | 'end'
-): void {
+      this.newEvent.end_time_display =
+        `${String(hour).padStart(2, '0')}:${minute} ${period}`;
 
-  if (!time) {
-    return;
-  }
-
-  const parts = time.substring(0, 5).split(':');
-
-  let hour = Number(parts[0]);
-  const minute = parts[1];
-
-  const period = hour >= 12 ? 'PM' : 'AM';
-
-  if (hour === 0) {
-    hour = 12;
-  }
-  else if (hour > 12) {
-    hour -= 12;
-  }
-
-  if (type === 'start') {
-
-    this.newEvent.start_hour = hour;
-    this.newEvent.start_minute = minute;
-    this.newEvent.start_period = period;
-
-  }
-  else {
-
-    this.newEvent.end_hour = hour;
-    this.newEvent.end_minute = minute;
-    this.newEvent.end_period = period;
+    }
 
   }
 
-}
+  // =====================================================
+  // EDIT EVENT
+  // =====================================================
 
+  editEvent(event: any): void {
 
-editingEventId: number | null = null;
+    this.editingEventId =
+      event.id;
 
-editEvent(event: any): void {
+    this.newEvent = {
 
-  this.editingEventId = event.id;
+      category_id:
+        event.category_id,
 
-  this.newEvent = {
-    category_id: event.category_id,
-    event_name: event.event_name,
-    description: event.description || '',
-    venue: event.venue,
-    event_date: event.event_date,
-    start_hour: '',
-    start_minute: '',
-    start_period: '',
-    end_hour: '',
-    end_minute: '',
-    end_period: '',
-    max_participants: event.max_participants
-  };
+      event_name:
+        event.event_name,
 
-  // Convert database time to AM/PM picker
-  this.setTimeForPicker(
-    event.start_time,
-    'start'
-  );
+      description:
+        event.description || '',
 
-  this.setTimeForPicker(
-    event.end_time,
-    'end'
-  );
+      venue:
+        event.venue,
 
-  const modalElement =
-    document.getElementById('addEventModal');
+      event_date:
+        event.event_date,
 
-  if (modalElement) {
+      start_time:
+        '',
 
-    const bootstrap = (window as any).bootstrap;
+      start_time_display:
+        '',
 
-    const modal =
-      bootstrap.Modal.getOrCreateInstance(
-        modalElement
+      end_time:
+        '',
+
+      end_time_display:
+        '',
+
+      max_participants:
+        event.max_participants
+
+    };
+
+    // ---------------------------------------------------
+    // Convert database time
+    // ---------------------------------------------------
+
+    this.setTimeForPicker(
+      event.start_time,
+      'start'
+    );
+
+    this.setTimeForPicker(
+      event.end_time,
+      'end'
+    );
+
+    // ---------------------------------------------------
+    // Open modal
+    // ---------------------------------------------------
+
+    const modalElement =
+      document.getElementById(
+        'addEventModal'
       );
 
-    modal.show();
+    if (modalElement) {
+
+      const bootstrap =
+        (window as any).bootstrap;
+
+      if (!bootstrap) {
+        return;
+      }
+
+      const modal =
+        bootstrap.Modal
+          .getOrCreateInstance(
+            modalElement
+          );
+
+      modal.show();
+
+    }
 
   }
 
-}
+  // =====================================================
+  // IMAGE SELECT
+  // =====================================================
 
-selectedImage: File | null = null;
+  onImageSelected(
+    event: any
+  ): void {
 
-onImageSelected(event: any): void {
-  const file = event.target.files?.[0];
+    const file =
+      event.target.files?.[0];
 
-  if (file) {
-    this.selectedImage = file;
+    if (!file) {
+      return;
+    }
+
+    // Optional frontend validation
+    const allowedTypes = [
+      'image/jpeg',
+      'image/png',
+      'image/webp'
+    ];
+
+    if (
+      !allowedTypes.includes(
+        file.type
+      )
+    ) {
+
+      Swal.fire({
+
+        icon: 'warning',
+
+        title:
+          'Invalid Image',
+
+        text:
+          'Please select a JPG, PNG or WEBP image.',
+
+        confirmButtonColor:
+          '#2563EB'
+
+      });
+
+      event.target.value = '';
+
+      this.selectedImage = null;
+
+      return;
+
+    }
+
+    // 5 MB
+    if (
+      file.size >
+      5 * 1024 * 1024
+    ) {
+
+      Swal.fire({
+
+        icon: 'warning',
+
+        title:
+          'Image Too Large',
+
+        text:
+          'Image size must be less than 5 MB.',
+
+        confirmButtonColor:
+          '#2563EB'
+
+      });
+
+      event.target.value = '';
+
+      this.selectedImage = null;
+
+      return;
+
+    }
+
+    this.selectedImage =
+      file;
+
+    console.log(
+      'Selected image:',
+      this.selectedImage
+    );
+
   }
-}
 
 }
