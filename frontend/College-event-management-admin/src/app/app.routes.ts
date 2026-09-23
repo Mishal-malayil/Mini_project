@@ -49,6 +49,8 @@ import { StudentLayout } from './student/layouts/student-layout/student-layout';
 import { StudentDashboard } from './student/pages/student-dashboard/student-dashboard';
 import { studentAuthGuard } from './core/guards/student-auth-guard';
 import { ExploreEvents } from './student/pages/explore-events/explore-events';
+import { EventDetails } from './student/pages/event-details/event-details';
+
 export const routes: Routes = [
 
     // ============================================
@@ -236,7 +238,11 @@ export const routes: Routes = [
     {
         path: 'events',
         component: ExploreEvents
-    }
+    },
+    {
+  path: 'event-details/:id',
+  component: EventDetails
+}
   ]
 },
     

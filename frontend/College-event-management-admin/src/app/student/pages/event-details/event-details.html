@@ -1,0 +1,193 @@
+<div class="details-page">
+
+  <!-- Back -->
+  <div class="back-section">
+
+    <a
+      routerLink="/student/explore-events"
+      class="back-btn">
+
+      ← Back to Events
+
+    </a>
+
+  </div>
+
+
+  <!-- Loading -->
+  <div
+    *ngIf="loading"
+    class="loading">
+
+    Loading event details...
+
+  </div>
+
+
+  <!-- Event -->
+  <div
+    *ngIf="!loading && event"
+    class="event-details-card">
+
+
+    <!-- Image -->
+    <div class="event-image">
+
+      <img
+        [src]="getEventImage()"
+        [alt]="event.event_name">
+
+    </div>
+
+
+    <!-- Content -->
+    <div class="event-content">
+
+      <span class="status">
+        {{ event.status }}
+      </span>
+
+      <h1>
+        {{ event.event_name }}
+      </h1>
+
+      <p class="description">
+        {{ event.description }}
+      </p>
+
+
+      <div class="details-grid">
+
+
+        <div class="detail-item">
+
+          <span class="icon">📅</span>
+
+          <div>
+            <small>Date</small>
+
+            <strong>
+              {{ event.event_date | date:'dd MMM yyyy' }}
+            </strong>
+          </div>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <span class="icon">⏰</span>
+
+          <div>
+            <small>Time</small>
+
+            <strong>
+              {{ event.start_time }} -
+              {{ event.end_time }}
+            </strong>
+          </div>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <span class="icon">📍</span>
+
+          <div>
+            <small>Venue</small>
+
+            <strong>
+              {{ event.venue }}
+            </strong>
+          </div>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <span class="icon">👥</span>
+
+          <div>
+            <small>Maximum Participants</small>
+
+            <strong>
+              {{ event.max_participants || 'Unlimited' }}
+            </strong>
+          </div>
+
+        </div>
+
+
+        <div
+          class="detail-item"
+          *ngIf="event.category">
+
+          <span class="icon">🏷️</span>
+
+          <div>
+            <small>Category</small>
+
+            <strong>
+              {{ event.category.category_name }}
+            </strong>
+          </div>
+
+        </div>
+
+
+        <div
+          class="detail-item"
+          *ngIf="event.coordinator">
+
+          <span class="icon">👤</span>
+
+          <div>
+            <small>Coordinator</small>
+
+            <strong>
+              {{ event.coordinator.name }}
+            </strong>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Register -->
+      <div class="register-section">
+
+        <button
+          *ngIf="!event.is_registered"
+          class="register-btn"
+          [disabled]="registering"
+          (click)="register()">
+
+          <span *ngIf="!registering">
+            Register for Event
+          </span>
+
+          <span *ngIf="registering">
+            Registering...
+          </span>
+
+        </button>
+
+
+        <div
+          *ngIf="event.is_registered"
+          class="registered-message">
+
+          ✓ You are already registered
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

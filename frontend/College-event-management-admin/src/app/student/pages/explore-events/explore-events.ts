@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
-
+import { RouterLink } from '@angular/router';
 import { EventService } from '../../../core/services/event';
 
 @Component({
   selector: 'app-explore-events',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,RouterLink],
   templateUrl: './explore-events.html',
   styleUrl: './explore-events.css'
 })

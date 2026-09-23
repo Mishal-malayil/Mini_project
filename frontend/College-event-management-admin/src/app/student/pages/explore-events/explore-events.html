@@ -214,13 +214,10 @@
           <div class="event-footer">
 
             <button
-              type="button"
-              class="view-btn"
-              (click)="viewEvent(event.id)"
-            >
-              <i class="bi bi-eye"></i>
-              View Details
-            </button>
+  class="view-btn"
+  [routerLink]="['/student/event-details', event.id]">
+  View Details
+</button>
 
 
             <button
