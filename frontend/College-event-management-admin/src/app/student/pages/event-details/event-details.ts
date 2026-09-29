@@ -72,18 +72,22 @@ export class EventDetails implements OnInit {
 
   register(): void {
 
-    if (!this.event) {
-      return;
-    }
+  if (!this.event?.id) {
+    return;
+  }
 
-    if (this.event.is_registered) {
+  Swal.fire({
+    icon: 'question',
+    title: 'Register for Event?',
+    text: `Do you want to register for "${this.event.event_name}"?`,
+    showCancelButton: true,
+    confirmButtonText: 'Yes, Register',
+    cancelButtonText: 'Cancel',
+    reverseButtons: true,
+    confirmButtonColor: '#2563eb'
+  }).then((result) => {
 
-      Swal.fire({
-        icon: 'info',
-        title: 'Already Registered',
-        text: 'You have already registered for this event.'
-      });
-
+    if (!result.isConfirmed) {
       return;
     }
 
@@ -95,8 +99,14 @@ export class EventDetails implements OnInit {
 
         next: (response: any) => {
 
+          console.log(
+            'Registration Response:',
+            response
+          );
+
           this.registering = false;
 
+          // Update UI immediately
           this.event.is_registered = true;
           this.event.registration_status = 'Registered';
 
@@ -106,19 +116,20 @@ export class EventDetails implements OnInit {
             text:
               response?.message ||
               'You have successfully registered for this event.',
-            confirmButtonColor: '#2563EB'
+            timer: 1800,
+            showConfirmButton: false
           });
 
         },
 
         error: (error: any) => {
 
-          this.registering = false;
-
           console.error(
-            'Event Registration Error:',
+            'Registration Error:',
             error
           );
+
+          this.registering = false;
 
           Swal.fire({
             icon: 'error',
@@ -132,7 +143,8 @@ export class EventDetails implements OnInit {
 
       });
 
-  }
+  });
+}
 
   getEventImage(): string {
 

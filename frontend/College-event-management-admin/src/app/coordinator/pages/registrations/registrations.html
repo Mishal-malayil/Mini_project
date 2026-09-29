@@ -397,49 +397,48 @@
 
               <div class="action-buttons">
 
-                <!-- View -->
+               <!-- View -->
+<button
+  type="button"
+  class="view-btn"
+  title="View Registration"
+  (click)="viewRegistration(registration)">
 
-                <button
-                  type="button"
-                  class="view-btn"
-                  title="View Registration"
-                  (click)="viewRegistration(registration)">
+  <i class="bi bi-eye"></i>
 
-                  <i class="bi bi-eye"></i>
-
-                </button>
-
-
-                <!-- Approve -->
-
-                <button
-                  *ngIf="
-                    registration.status === 'Pending'
-                  "
-                  type="button"
-                  class="approve-btn"
-                  title="Approve Registration"
-                  (click)="approveRegistration(registration)">
-
-                  <i class="bi bi-check-lg"></i>
-
-                </button>
+</button>
 
 
-                <!-- Reject -->
+<!-- Approve -->
+<button
+  *ngIf="
+    registration.status === 'Pending' ||
+    registration.status === 'Rejected'
+  "
+  type="button"
+  class="approve-btn"
+  title="Approve Registration"
+  (click)="approveRegistration(registration)">
 
-                <button
-                  *ngIf="
-                    registration.status === 'Pending'
-                  "
-                  type="button"
-                  class="reject-btn"
-                  title="Reject Registration"
-                  (click)="rejectRegistration(registration)">
+  <i class="bi bi-check-lg"></i>
 
-                  <i class="bi bi-x-lg"></i>
+</button>
 
-                </button>
+
+<!-- Reject -->
+<button
+  *ngIf="
+    registration.status === 'Pending' ||
+    registration.status === 'Approved'
+  "
+  type="button"
+  class="reject-btn"
+  title="Reject Registration"
+  (click)="rejectRegistration(registration)">
+
+  <i class="bi bi-x-lg"></i>
+
+</button>
 
               </div>
 
