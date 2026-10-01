@@ -160,4 +160,9 @@ registerStudentEvent(id: number): Observable<any> {
     {}
   );
 }
+getStudentRegistrations(): Observable<any> {
+  return this.http.get(
+    `${environment.apiUrl}/student/registrations`
+  );
+}
 }

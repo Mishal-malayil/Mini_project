@@ -70,79 +70,52 @@ export class EventDetails implements OnInit {
   });
 }
 
-  register(): void {
-
-  if (!this.event?.id) {
-    return;
-  }
-
+register(): void {
   Swal.fire({
+    title: 'Confirm Registration',
+    text: `Are you sure you want to register for "${this.event.event_name}"?`,
     icon: 'question',
-    title: 'Register for Event?',
-    text: `Do you want to register for "${this.event.event_name}"?`,
     showCancelButton: true,
     confirmButtonText: 'Yes, Register',
     cancelButtonText: 'Cancel',
-    reverseButtons: true,
-    confirmButtonColor: '#2563eb'
+    confirmButtonColor: '#2563eb',
+    cancelButtonColor: '#6b7280',
+    reverseButtons: true
   }).then((result) => {
 
-    if (!result.isConfirmed) {
-      return;
-    }
+    if (result.isConfirmed) {
+      this.registering = true;
 
-    this.registering = true;
-
-    this.eventService
-      .registerStudentEvent(this.event.id)
-      .subscribe({
-
+      this.eventService.registerStudentEvent(this.event.id).subscribe({
         next: (response: any) => {
-
-          console.log(
-            'Registration Response:',
-            response
-          );
 
           this.registering = false;
 
           // Update UI immediately
           this.event.is_registered = true;
-          this.event.registration_status = 'Registered';
+          this.event.registration_status = 'Pending';
 
           Swal.fire({
             icon: 'success',
-            title: 'Registration Successful',
-            text:
-              response?.message ||
-              'You have successfully registered for this event.',
-            timer: 1800,
-            showConfirmButton: false
+            title: 'Registration Submitted!',
+            text: 'Your registration request has been sent to the coordinator.',
+            confirmButtonColor: '#2563eb'
           });
-
         },
 
-        error: (error: any) => {
-
-          console.error(
-            'Registration Error:',
-            error
-          );
+        error: (error) => {
 
           this.registering = false;
 
           Swal.fire({
             icon: 'error',
             title: 'Registration Failed',
-            text:
-              error?.error?.message ||
-              'Unable to register for this event.'
+            text: error.error?.message || 'Unable to register for this event.',
+            confirmButtonColor: '#dc2626'
           });
-
         }
-
       });
-
+    }
   });
 }
 

@@ -103,52 +103,77 @@ class StudentEventController extends Controller
     }
 
 
-    // =====================================================
-    // REGISTER LOGGED-IN STUDENT FOR EVENT
-    // =====================================================
+    
 
-    public function register(Request $request, $id)
-    {
-        $student = $request->user();
+// =====================================================
+// REGISTER LOGGED-IN STUDENT FOR EVENT
+// =====================================================
 
-        $event = Event::where('status', 'Approved')
-            ->findOrFail($id);
+public function register(Request $request, $id)
+{
+    $student = $request->user();
 
-        // Check if already registered
-        $existingRegistration = Registration::where('student_id', $student->id)
-            ->where('event_id', $event->id)
-            ->first();
+    if (!$student) {
+        return response()->json([
+            'message' => 'Student not authenticated.'
+        ], 401);
+    }
 
-        if ($existingRegistration) {
+    // Only approved events can be registered
+    $event = Event::where('status', 'Approved')
+        ->findOrFail($id);
+
+    // Check existing registration
+    $existingRegistration = Registration::where('student_id', $student->id)
+        ->where('event_id', $event->id)
+        ->first();
+
+    if ($existingRegistration) {
+
+        if ($existingRegistration->status === 'Pending') {
             return response()->json([
-                'message' => 'You are already registered for this event.'
+                'message' => 'Your registration request is already pending approval.'
             ], 422);
         }
 
-        // Check maximum participants
-        if ($event->max_participants) {
-
-            $registeredCount = Registration::where('event_id', $event->id)
-                ->where('status', 'Registered')
-                ->count();
-
-            if ($registeredCount >= $event->max_participants) {
-                return response()->json([
-                    'message' => 'This event is full.'
-                ], 422);
-            }
+        if ($existingRegistration->status === 'Approved') {
+            return response()->json([
+                'message' => 'You are already approved for this event.'
+            ], 422);
         }
 
-        $registration = Registration::create([
-            'student_id' => $student->id,
-            'event_id' => $event->id,
-            'registration_date' => now()->toDateString(),
-            'status' => 'Registered',
-        ]);
-
-        return response()->json([
-            'message' => 'Event registration successful.',
-            'registration' => $registration
-        ], 201);
+        if ($existingRegistration->status === 'Rejected') {
+            return response()->json([
+                'message' => 'Your registration request was rejected.'
+            ], 422);
+        }
     }
+
+    // Check maximum participants
+    if ($event->max_participants) {
+
+        $approvedCount = Registration::where('event_id', $event->id)
+            ->where('status', 'Approved')
+            ->count();
+
+        if ($approvedCount >= $event->max_participants) {
+            return response()->json([
+                'message' => 'This event is full.'
+            ], 422);
+        }
+    }
+
+    // Create registration as Pending
+    $registration = Registration::create([
+        'student_id' => $student->id,
+        'event_id' => $event->id,
+        'registration_date' => now()->toDateString(),
+        'status' => 'Pending',
+    ]);
+
+    return response()->json([
+        'message' => 'Event registration request submitted successfully. Waiting for coordinator approval.',
+        'registration' => $registration
+    ], 201);
+}
 }

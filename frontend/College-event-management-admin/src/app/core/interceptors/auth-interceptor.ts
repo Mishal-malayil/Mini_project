@@ -4,8 +4,13 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   let token: string | null = null;
 
+  // Student API
+  if (req.url.includes('/student/')) {
+    token = localStorage.getItem('student_token');
+  }
+
   // Coordinator API
-  if (req.url.includes('/coordinator/')) {
+  else if (req.url.includes('/coordinator/')) {
     token = localStorage.getItem('coordinator_token');
   }
 
@@ -15,7 +20,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   if (token) {
-
     const authReq = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`,

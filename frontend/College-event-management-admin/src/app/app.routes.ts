@@ -50,7 +50,7 @@ import { StudentDashboard } from './student/pages/student-dashboard/student-dash
 import { studentAuthGuard } from './core/guards/student-auth-guard';
 import { ExploreEvents } from './student/pages/explore-events/explore-events';
 import { EventDetails } from './student/pages/event-details/event-details';
-
+import { MyRegistrations } from './student/pages/my-registrations/my-registrations';
 export const routes: Routes = [
 
     // ============================================
@@ -242,6 +242,10 @@ export const routes: Routes = [
     {
   path: 'event-details/:id',
   component: EventDetails
+},
+{
+    path: 'registrations',
+    component: MyRegistrations
 }
   ]
 },

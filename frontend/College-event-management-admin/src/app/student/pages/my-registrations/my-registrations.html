@@ -1,1 +1,170 @@
 
+<div class="registrations-page">
+
+  <div class="page-header">
+
+    <div>
+      <h1>My Registrations</h1>
+
+      <p>
+        View your event registrations and their current status.
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- Loading -->
+
+  <div
+    *ngIf="loading"
+    class="loading">
+
+    <div class="spinner"></div>
+
+    <p>Loading your registrations...</p>
+
+  </div>
+
+
+  <!-- Empty -->
+
+  <div
+    *ngIf="!loading && registrations.length === 0"
+    class="empty-state">
+
+    <i class="bi bi-calendar-x"></i>
+
+    <h2>No Registrations Yet</h2>
+
+    <p>
+      You haven't registered for any events yet.
+    </p>
+
+    <a
+      routerLink="/student/events"
+      class="explore-btn">
+
+      <i class="bi bi-calendar-event"></i>
+      Explore Events
+
+    </a>
+
+  </div>
+
+
+  <!-- Registration Cards -->
+
+  <div
+    *ngIf="!loading && registrations.length > 0"
+    class="registrations-grid">
+
+    <div
+      class="registration-card"
+      *ngFor="let registration of registrations">
+
+      <div class="event-image">
+
+        <img
+          [src]="getEventImage(registration)"
+          [alt]="registration.event_name">
+
+      </div>
+
+
+      <div class="event-content">
+
+        <div class="event-top">
+
+          <span
+            class="status"
+            [ngClass]="getStatusClass(registration.status)">
+
+            <i
+              *ngIf="registration.status === 'Approved'"
+              class="bi bi-check-circle-fill">
+            </i>
+
+            <i
+              *ngIf="registration.status === 'Pending'"
+              class="bi bi-clock-fill">
+            </i>
+
+            <i
+              *ngIf="registration.status === 'Rejected'"
+              class="bi bi-x-circle-fill">
+            </i>
+
+            {{ registration.status }}
+
+          </span>
+
+        </div>
+
+
+        <h2>
+          {{ registration.event_name }}
+        </h2>
+
+
+        <div class="event-details">
+
+          <div>
+            <i class="bi bi-calendar3"></i>
+
+            <span>
+              {{ registration.event_date | date:'dd MMM yyyy' }}
+            </span>
+          </div>
+
+
+          <div>
+            <i class="bi bi-clock"></i>
+
+            <span>
+              {{ registration.start_time }}
+              -
+              {{ registration.end_time }}
+            </span>
+          </div>
+
+
+          <div>
+            <i class="bi bi-geo-alt"></i>
+
+            <span>
+              {{ registration.venue }}
+            </span>
+          </div>
+
+        </div>
+
+
+        <div class="registration-date">
+
+          Registered on:
+          {{ registration.registration_date | date:'dd MMM yyyy' }}
+
+        </div>
+
+
+        <a
+          [routerLink]="[
+            '/student/event-details',
+            registration.event_id
+          ]"
+          class="view-btn">
+
+          View Event
+
+          <i class="bi bi-arrow-right"></i>
+
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -132,7 +132,122 @@
   text-align: center;
   color: #6b7280;
 }
+.back-section {
+  margin-bottom: 24px;
+}
 
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 10px 18px;
+
+  background: #ffffff;
+  color: #2563eb;
+
+  border: 1px solid #dbe3f0;
+  border-radius: 10px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  text-decoration: none;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+  transition: all 0.25s ease;
+}
+
+.back-btn i {
+  font-size: 17px;
+  transition: transform 0.25s ease;
+}
+
+.back-btn:hover {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+
+  box-shadow: 0 5px 14px rgba(37, 99, 235, 0.25);
+
+  transform: translateY(-1px);
+}
+
+.back-btn:hover i {
+  transform: translateX(-4px);
+}
+
+.back-btn:active {
+  transform: translateY(0);
+}
+.registration-status {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  padding: 15px 18px;
+  border-radius: 12px;
+
+  font-size: 14px;
+}
+
+.registration-status i {
+  font-size: 24px;
+}
+
+.registration-status div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.registration-status strong {
+  font-size: 15px;
+}
+
+.registration-status span {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* Pending */
+
+.registration-status.pending {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #c2410c;
+}
+
+.registration-status.pending i {
+  color: #f59e0b;
+}
+
+
+/* Approved */
+
+.registration-status.approved {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #047857;
+}
+
+.registration-status.approved i {
+  color: #10b981;
+}
+
+
+/* Rejected */
+
+.registration-status.rejected {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+}
+
+.registration-status.rejected i {
+  color: #ef4444;
+}
 @media (max-width: 768px) {
 
   .event-image {

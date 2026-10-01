@@ -1,17 +1,12 @@
 <div class="details-page">
 
   <!-- Back -->
-  <div class="back-section">
-
-    <a
-      routerLink="/student/explore-events"
-      class="back-btn">
-
-      ← Back to Events
-
-    </a>
-
-  </div>
+<div class="back-section">
+  <a routerLink="/student/events" class="back-btn">
+    <i class="bi bi-arrow-left"></i>
+    <span>Back to Events</span>
+  </a>
+</div>
 
 
   <!-- Loading -->
@@ -156,35 +151,71 @@
       </div>
 
 
-      <!-- Register -->
-      <div class="register-section">
+<div class="register-section">
 
-        <button
-          *ngIf="!event.is_registered"
-          class="register-btn"
-          [disabled]="registering"
-          (click)="register()">
+  <!-- Not registered -->
+  <button
+    *ngIf="!event.is_registered"
+    class="register-btn"
+    [disabled]="registering"
+    (click)="register()">
 
-          <span *ngIf="!registering">
-            Register for Event
-          </span>
+    <span *ngIf="!registering">
+      Register for Event
+    </span>
 
-          <span *ngIf="registering">
-            Registering...
-          </span>
+    <span *ngIf="registering">
+      Registering...
+    </span>
 
-        </button>
+  </button>
 
 
-        <div
-          *ngIf="event.is_registered"
-          class="registered-message">
+  <!-- Pending -->
+  <div
+    *ngIf="event.registration_status === 'Pending'"
+    class="registration-status pending">
 
-          ✓ You are already registered
+    <i class="bi bi-clock"></i>
 
-        </div>
+    <div>
+      <strong>Registration Pending</strong>
+      <span>Waiting for coordinator approval</span>
+    </div>
 
-      </div>
+  </div>
+
+
+  <!-- Approved -->
+  <div
+    *ngIf="event.registration_status === 'Approved'"
+    class="registration-status approved">
+
+    <i class="bi bi-check-circle-fill"></i>
+
+    <div>
+      <strong>Registration Approved</strong>
+      <span>You are approved for this event</span>
+    </div>
+
+  </div>
+
+
+  <!-- Rejected -->
+  <div
+    *ngIf="event.registration_status === 'Rejected'"
+    class="registration-status rejected">
+
+    <i class="bi bi-x-circle-fill"></i>
+
+    <div>
+      <strong>Registration Rejected</strong>
+      <span>Your registration was rejected by the coordinator</span>
+    </div>
+
+  </div>
+
+</div>
 
     </div>
 
