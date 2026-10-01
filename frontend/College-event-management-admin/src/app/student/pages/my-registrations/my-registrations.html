@@ -149,17 +149,21 @@
 
 
         <a
-          [routerLink]="[
-            '/student/event-details',
-            registration.event_id
-          ]"
-          class="view-btn">
+  [routerLink]="['/student/event-details', registration.event_id]"
+  class="view-btn">
+  View Event
+  <i class="bi bi-arrow-right"></i>
+</a>
 
-          View Event
-
-          <i class="bi bi-arrow-right"></i>
-
-        </a>
+<button
+  *ngIf="registration.status !== 'Approved'"
+  type="button"
+  class="cancel-btn"
+  (click)="cancelRegistration(registration)">
+  <i class="bi bi-x-circle"></i>
+  Cancel Registration
+</button>
+        
 
       </div>
 

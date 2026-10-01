@@ -165,4 +165,5 @@ getStudentRegistrations(): Observable<any> {
     `${environment.apiUrl}/student/registrations`
   );
 }
+
 }

@@ -31,10 +31,11 @@ use App\Http\Controllers\Api\Coordinator\CoordinatorResultController;
 use App\Http\Controllers\Api\Coordinator\CoordinatorAnnouncementController;
 
 // =====================================================
-// COORDINATOR CONTROLLERS
+// STUDENT CONTROLLERS
 // =====================================================
 use App\Http\Controllers\Api\Student\StudentAuthController;
 use App\Http\Controllers\Api\Student\StudentEventController;
+use App\Http\Controllers\Api\Student\StudentRegistrationController;
 
 // =====================================================
 // ADMIN LOGIN
@@ -469,41 +470,40 @@ Route::prefix('student')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
 
-        // Student Logout
-        Route::post('/logout', [
-            StudentAuthController::class,
-            'logout'
-        ]);
+    Route::post('/logout', [
+        StudentAuthController::class,
+        'logout'
+    ]);
 
-        // Student Profile
-        Route::get('/profile', [
-            StudentAuthController::class,
-            'profile'
-        ]);
+    Route::get('/profile', [
+        StudentAuthController::class,
+        'profile'
+    ]);
 
+    // Student Events
+    Route::get('/events', [
+        StudentEventController::class,
+        'index'
+    ]);
 
-        // =================================================
-        // STUDENT EVENTS
-        // =================================================
+    Route::get('/events/{id}', [
+        StudentEventController::class,
+        'show'
+    ]);
 
-        // Explore approved events
-        Route::get('/events', [
-            StudentEventController::class,
-            'index'
-        ]);
+    Route::post('/events/{id}/register', [
+        StudentEventController::class,
+        'register'
+    ]);
 
-        // View event details
-        Route::get('/events/{id}', [
-            StudentEventController::class,
-            'show'
-        ]);
+    // My Registrations
+    Route::get('/registrations', [
+        StudentRegistrationController::class,
+        'index'
+    ]);
+    Route::delete('/registrations/{id}', 
+    [StudentRegistrationController::class, 
+    'destroy']);
 
-        // Register for event
-        Route::post('/events/{id}/register', [
-            StudentEventController::class,
-            'register'
-        ]);
-
-    });
-
+});
 });

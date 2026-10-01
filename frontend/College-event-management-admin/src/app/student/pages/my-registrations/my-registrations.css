@@ -262,6 +262,31 @@
 
   animation: spin 0.8s linear infinite;
 }
+.cancel-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 10px 16px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fff;
+  color: #dc2626;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.cancel-btn:hover {
+  background: #dc2626;
+  color: #fff;
+  border-color: #dc2626;
+}
+
+.cancel-btn i {
+  font-size: 16px;
+}
 
 @keyframes spin {
   to {

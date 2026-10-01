@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventService } from '../../../core/services/event';
+import { RegistrationService } from '../../../core/services/registration';
 import { RouterLink } from '@angular/router';
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-my-registrations',
@@ -20,39 +21,41 @@ export class MyRegistrations implements OnInit {
   loading = false;
 
   constructor(
-    private eventService: EventService
+    private eventService: EventService,
+    private registrationService: RegistrationService
   ) {}
 
   ngOnInit(): void {
     this.loadRegistrations();
   }
 
-  loadRegistrations(): void {
+loadRegistrations(): void {
 
-    this.loading = true;
+  this.loading = true;
 
-    this.eventService.getStudentRegistrations().subscribe({
+  this.registrationService.getStudentRegistrations().subscribe({
 
-      next: (response: any) => {
+    next: (response: any) => {
 
-        this.registrations =
-          response.registrations || [];
+      console.log('My Registrations:', response);
 
-        this.loading = false;
-      },
+      this.registrations = response.registrations || [];
 
-      error: (error) => {
+      this.loading = false;
 
-        console.error(
-          'Failed to load registrations:',
-          error
-        );
+    },
 
-        this.loading = false;
-      }
+    error: (error) => {
 
-    });
-  }
+      console.error('My Registrations Error:', error);
+
+      this.loading = false;
+
+    }
+
+  });
+
+}
 
   getEventImage(registration: any): string {
 
@@ -75,6 +78,53 @@ export class MyRegistrations implements OnInit {
         return 'pending';
     }
   }
+cancelRegistration(registration: any): void {
 
+  Swal.fire({
+    title: 'Cancel Registration?',
+    text: `Are you sure you want to cancel "${registration.event_name}"?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, Cancel',
+    cancelButtonText: 'Keep Registration',
+    confirmButtonColor: '#dc2626',
+    cancelButtonColor: '#6b7280',
+    reverseButtons: true
+  }).then((result) => {
+
+    if (result.isConfirmed) {
+
+      this.registrationService
+        .deleteStudentRegistration(registration.id)
+        .subscribe({
+          next: (response: any) => {
+
+            Swal.fire({
+              icon: 'success',
+              title: 'Registration Cancelled',
+              text: response.message,
+              confirmButtonColor: '#2563eb'
+            });
+
+            // Remove it immediately from the displayed list
+            this.registrations = this.registrations.filter(
+              item => item.id !== registration.id
+            );
+          },
+
+          error: (error) => {
+
+            Swal.fire({
+              icon: 'error',
+              title: 'Unable to Cancel',
+              text: error.error?.message || 'Something went wrong.',
+              confirmButtonColor: '#dc2626'
+            });
+
+          }
+        });
+    }
+  });
+}
 }
 

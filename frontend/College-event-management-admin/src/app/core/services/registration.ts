@@ -24,6 +24,14 @@ export class RegistrationService {
     environment.apiUrl + '/coordinator/registrations';
 
 
+  // =====================================================
+  // STUDENT REGISTRATION API
+  // =====================================================
+
+  private studentApiUrl =
+    environment.apiUrl + '/student/registrations';
+
+
   constructor(
     private http: HttpClient
   ) {}
@@ -103,5 +111,22 @@ export class RegistrationService {
     );
 
   }
+
+
+  // =====================================================
+  // STUDENT
+  // =====================================================
+
+  // Get logged-in student's registrations
+  getStudentRegistrations(): Observable<any> {
+
+    return this.http.get(
+      this.studentApiUrl
+    );
+
+  }
+  deleteStudentRegistration(id: number): Observable<any> {
+  return this.http.delete(`${this.studentApiUrl}/${id}`);
+}
 
 }
