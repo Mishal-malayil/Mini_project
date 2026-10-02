@@ -31,4 +31,9 @@ export class StudentService {
   deleteStudent(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
+  getStudentProfile() {
+  return this.http.get(
+    `${environment.apiUrl}/student/profile`
+  );
+}
 }

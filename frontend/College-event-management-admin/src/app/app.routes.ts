@@ -52,7 +52,7 @@ import { ExploreEvents } from './student/pages/explore-events/explore-events';
 import { EventDetails } from './student/pages/event-details/event-details';
 import { MyRegistrations } from './student/pages/my-registrations/my-registrations';
 import { MyResults } from './student/pages/my-result/my-result';
-
+import { MyProfile } from './student/pages/my-profile/my-profile';
 
 export const routes: Routes = [
 
@@ -253,6 +253,10 @@ export const routes: Routes = [
 {
     path : 'results',
     component:MyResults
+},
+{
+    path : 'profile',
+    component:MyProfile
 }
   
 ]},

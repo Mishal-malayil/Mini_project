@@ -26,4 +26,15 @@ export class StudentAuthService {
   getProfile() {
     return this.http.get(`${this.apiUrl}/profile`);
   }
+  
+  updatePassword(data: {
+  current_password: string;
+  password: string;
+  password_confirmation: string;
+}) {
+  return this.http.put(
+    `${environment.apiUrl}/student/password`,
+    data
+  );
+}
 }

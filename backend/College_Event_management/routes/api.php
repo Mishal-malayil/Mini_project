@@ -463,6 +463,7 @@ Route::prefix('student')->group(function () {
         StudentAuthController::class,
         'login'
     ]);
+    
 
 
     // =================================================
@@ -479,6 +480,10 @@ Route::prefix('student')->group(function () {
     Route::get('/profile', [
         StudentAuthController::class,
         'profile'
+    ]);
+    Route::put('/password',[
+        StudentAuthController::class, 
+        'updatePassword'
     ]);
 
     // Student Events
@@ -510,6 +515,7 @@ Route::prefix('student')->group(function () {
      [StudentResultController::class, 
      'index']);
     
+     
 
 });
 });

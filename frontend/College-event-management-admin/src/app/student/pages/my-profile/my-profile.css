@@ -1,0 +1,428 @@
+.profile-page {
+  padding: 28px;
+  min-height: 100%;
+  background: #f8fafc;
+}
+
+
+/* Header */
+
+.page-header {
+  margin-bottom: 28px;
+}
+
+.page-header h1 {
+  margin: 0;
+  color: #111827;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.page-header p {
+  margin: 7px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+
+/* Loading */
+
+.loading {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+}
+
+.spinner {
+  width: 42px;
+  height: 42px;
+  border: 4px solid #e5e7eb;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* Container */
+
+.profile-container {
+  max-width: 900px;
+}
+
+
+/* Profile Header */
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 28px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+}
+
+.avatar {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.profile-name h2 {
+  margin: 0 0 7px;
+  color: #111827;
+  font-size: 22px;
+}
+
+.profile-name p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.profile-name p i {
+  margin-right: 5px;
+  color: #2563eb;
+}
+
+
+/* Section */
+
+.profile-section {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 18px;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+}
+
+
+/* Section title */
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 17px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.section-title i {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-title h3 {
+  margin: 0;
+  color: #111827;
+  font-size: 16px;
+}
+
+
+/* Info */
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  color: #9ca3af;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.value {
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+
+/* Account */
+
+.account-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.account-title {
+  display: block;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.account-subtitle {
+  display: block;
+  margin-top: 4px;
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.active-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border-radius: 20px;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+/* Actions */
+
+.profile-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.logout-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border: 1px solid #fecaca;
+  border-radius: 9px;
+  background: #fff;
+  color: #dc2626;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.logout-btn:hover {
+  background: #dc2626;
+  color: #fff;
+  border-color: #dc2626;
+  transform: translateY(-1px);
+}
+/* =====================================================
+   CHANGE PASSWORD
+===================================================== */
+
+.password-info {
+  margin: -5px 0 22px;
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+
+.password-field {
+  margin-bottom: 18px;
+}
+
+
+.password-field label {
+  display: block;
+  margin-bottom: 7px;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+.password-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+
+.password-input input {
+  width: 100%;
+  height: 44px;
+  padding: 0 45px 0 13px;
+  border: 1px solid #d1d5db;
+  border-radius: 9px;
+  outline: none;
+  background: #fff;
+  color: #111827;
+  font-size: 14px;
+  transition: 0.2s ease;
+  box-sizing: border-box;
+}
+
+
+.password-input input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+
+.password-input button {
+  position: absolute;
+  right: 5px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  cursor: pointer;
+  border-radius: 7px;
+}
+
+
+.password-input button:hover {
+  background: #f3f4f6;
+  color: #2563eb;
+}
+
+
+.password-requirement {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 3px;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+
+.password-requirement i {
+  color: #2563eb;
+}
+
+
+.password-action {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+
+.update-password-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 155px;
+  padding: 11px 18px;
+  border: none;
+  border-radius: 9px;
+  background: #2563eb;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+
+.update-password-btn:hover:not(:disabled) {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+
+.update-password-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+
+.spin {
+  animation: passwordSpin 0.8s linear infinite;
+}
+
+
+@keyframes passwordSpin {
+
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}
+
+
+/* Responsive */
+
+@media (max-width: 650px) {
+
+  .profile-page {
+    padding: 18px;
+  }
+
+  .page-header h1 {
+    font-size: 23px;
+  }
+
+  .profile-header {
+    padding: 20px;
+  }
+
+  .avatar {
+    width: 62px;
+    height: 62px;
+    font-size: 21px;
+  }
+
+  .profile-name h2 {
+    font-size: 18px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .account-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .profile-actions {
+    justify-content: stretch;
+  }
+
+  .logout-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+}

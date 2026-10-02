@@ -7,6 +7,7 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+
 class StudentAuthController extends Controller
 {
     // Student Registration
@@ -84,4 +85,54 @@ class StudentAuthController extends Controller
             $request->user()
         );
     }
+
+    public function updatePassword(Request $request)
+{
+    $student = $request->user();
+
+    if (!$student) {
+        return response()->json([
+            'message' => 'Student not authenticated.'
+        ], 401);
+    }
+
+    $validated = $request->validate([
+        'current_password' => 'required|string',
+        'password' => 'required|string|min:8|confirmed',
+    ]);
+
+    // Check current password
+    if (!Hash::check(
+        $validated['current_password'],
+        $student->password
+    )) {
+        return response()->json([
+            'message' => 'Current password is incorrect.'
+        ], 422);
+    }
+
+    // Prevent using the same password
+    if (Hash::check(
+        $validated['password'],
+        $student->password
+    )) {
+        return response()->json([
+            'message' => 'New password must be different from your current password.'
+        ], 422);
+    }
+
+    // Update password
+    $student->password = Hash::make(
+        $validated['password']
+    );
+
+    $student->save();
+
+    // Logout all existing Sanctum tokens
+    $student->tokens()->delete();
+
+    return response()->json([
+        'message' => 'Password updated successfully. Please login again.'
+    ], 200);
+}
 }
