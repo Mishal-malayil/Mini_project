@@ -51,6 +51,9 @@ import { studentAuthGuard } from './core/guards/student-auth-guard';
 import { ExploreEvents } from './student/pages/explore-events/explore-events';
 import { EventDetails } from './student/pages/event-details/event-details';
 import { MyRegistrations } from './student/pages/my-registrations/my-registrations';
+import { MyResults } from './student/pages/my-result/my-result';
+
+
 export const routes: Routes = [
 
     // ============================================
@@ -246,9 +249,13 @@ export const routes: Routes = [
 {
     path: 'registrations',
     component: MyRegistrations
-}
-  ]
 },
+{
+    path : 'results',
+    component:MyResults
+}
+  
+]},
     
     
   

@@ -36,6 +36,7 @@ use App\Http\Controllers\Api\Coordinator\CoordinatorAnnouncementController;
 use App\Http\Controllers\Api\Student\StudentAuthController;
 use App\Http\Controllers\Api\Student\StudentEventController;
 use App\Http\Controllers\Api\Student\StudentRegistrationController;
+use App\Http\Controllers\Api\Student\StudentResultController;
 
 // =====================================================
 // ADMIN LOGIN
@@ -504,6 +505,11 @@ Route::prefix('student')->group(function () {
     Route::delete('/registrations/{id}', 
     [StudentRegistrationController::class, 
     'destroy']);
+
+    Route::get('/results',
+     [StudentResultController::class, 
+     'index']);
+    
 
 });
 });

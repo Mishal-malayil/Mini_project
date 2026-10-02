@@ -23,6 +23,14 @@ export class ResultService {
     environment.apiUrl + '/coordinator/results';
 
 
+  // =====================================================
+  // STUDENT RESULT API
+  // =====================================================
+
+  studentApiUrl =
+    environment.apiUrl + '/student/results';
+
+
   constructor(
     private http: HttpClient
   ) {}
@@ -91,36 +99,40 @@ export class ResultService {
 
 
   // Create / publish result
- createCoordinatorResult(
-  data: {
-    event_id: number;
-    student_id: number;
-    position: string;
-    remarks?: string | null;
+  createCoordinatorResult(
+    data: {
+      event_id: number;
+      student_id: number;
+      position: string;
+      remarks?: string | null;
+    }
+  ) {
+
+    return this.http.post(
+      this.coordinatorApiUrl,
+      data
+    );
+
   }
-) {
-  return this.http.post(
-    this.coordinatorApiUrl,
-    data
-  );
-}
 
 
   // Update coordinator result
- updateCoordinatorResult(
-  id: number,
-  data: {
-    event_id: number;
-    student_id: number;
-    position: string;
-    remarks?: string | null;
+  updateCoordinatorResult(
+    id: number,
+    data: {
+      event_id: number;
+      student_id: number;
+      position: string;
+      remarks?: string | null;
+    }
+  ) {
+
+    return this.http.put(
+      `${this.coordinatorApiUrl}/${id}`,
+      data
+    );
+
   }
-) {
-  return this.http.put(
-    `${this.coordinatorApiUrl}/${id}`,
-    data
-  );
-}
 
 
   // Delete coordinator result
@@ -130,6 +142,20 @@ export class ResultService {
 
     return this.http.delete(
       `${this.coordinatorApiUrl}/${id}`
+    );
+
+  }
+
+
+  // =====================================================
+  // STUDENT
+  // =====================================================
+
+  // Get results of logged-in student
+  getStudentResults() {
+
+    return this.http.get(
+      this.studentApiUrl
     );
 
   }
