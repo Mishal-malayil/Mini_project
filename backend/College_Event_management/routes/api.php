@@ -37,6 +37,7 @@ use App\Http\Controllers\Api\Student\StudentAuthController;
 use App\Http\Controllers\Api\Student\StudentEventController;
 use App\Http\Controllers\Api\Student\StudentRegistrationController;
 use App\Http\Controllers\Api\Student\StudentResultController;
+use App\Http\Controllers\Api\Student\StudentNotificationController;
 
 // =====================================================
 // ADMIN LOGIN
@@ -515,6 +516,10 @@ Route::prefix('student')->group(function () {
      [StudentResultController::class, 
      'index']);
     
+     Route::get(
+    '/notifications',
+    [StudentNotificationController::class,
+    'index']);
      
 
 });

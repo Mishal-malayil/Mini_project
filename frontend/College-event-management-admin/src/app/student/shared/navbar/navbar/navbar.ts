@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AnnouncementService } from '../../../../core/services/announcement';
 
 @Component({
   selector: 'app-navbar',
@@ -21,11 +22,13 @@ export class Navbar implements OnInit {
   searchOpen = false;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private announcementService: AnnouncementService
   ) {}
 
   ngOnInit(): void {
     this.loadStudent();
+    this.loadNotificationCount();
   }
 
   // ==============================
@@ -94,7 +97,36 @@ export class Navbar implements OnInit {
       words[0].charAt(0) +
       words[words.length - 1].charAt(0)
     ).toUpperCase();
+  }
 
+  // ==============================
+  // NOTIFICATION COUNT
+  // ==============================
+
+  loadNotificationCount(): void {
+
+    this.announcementService
+      .getStudentUnreadCount()
+      .subscribe({
+
+        next: (response: any) => {
+
+          this.notificationCount =
+            response?.count || 0;
+
+        },
+
+        error: (error) => {
+
+          console.error(
+            'Notification count error:',
+            error
+          );
+
+          this.notificationCount = 0;
+        }
+
+      });
   }
 
   // ==============================
@@ -124,10 +156,38 @@ export class Navbar implements OnInit {
 
   openNotifications(): void {
 
-    this.router.navigate([
-      '/student/notifications'
-    ]);
+    // Mark all current notifications as seen
+    this.announcementService
+      .markStudentNotificationsAsSeen()
+      .subscribe({
 
+        next: () => {
+
+          // Remove notification badge immediately
+          this.notificationCount = 0;
+
+          // Open notification page
+          this.router.navigate([
+            '/student/notifications'
+          ]);
+
+        },
+
+        error: (error) => {
+
+          console.error(
+            'Mark notifications as seen error:',
+            error
+          );
+
+          // Still open notification page
+          this.router.navigate([
+            '/student/notifications'
+          ]);
+
+        }
+
+      });
   }
 
   // ==============================
@@ -146,48 +206,43 @@ export class Navbar implements OnInit {
   // LOGOUT
   // ==============================
 
+  logout(): void {
 
-logout(): void {
+    Swal.fire({
+      icon: 'question',
+      title: 'Logout?',
+      text: 'Are you sure you want to logout from your student account?',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, Logout',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true,
+      allowOutsideClick: false
+    }).then((result) => {
 
-  Swal.fire({
-    icon: 'question',
-    title: 'Logout?',
-    text: 'Are you sure you want to logout from your student account?',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, Logout',
-    cancelButtonText: 'Cancel',
-    reverseButtons: true,
-    allowOutsideClick: false
-  }).then((result) => {
+      if (result.isConfirmed) {
 
-    if (result.isConfirmed) {
+        localStorage.removeItem('student');
+        localStorage.removeItem('student_token');
+        localStorage.removeItem('token');
 
-      // Remove student login data
-      localStorage.removeItem('student');
-      localStorage.removeItem('student_token');
-      localStorage.removeItem('token');
+        this.student = null;
 
-      this.student = null;
+        Swal.fire({
+          icon: 'success',
+          title: 'Logged Out',
+          text: 'You have been logged out successfully.',
+          timer: 1500,
+          showConfirmButton: false
+        }).then(() => {
 
-      // Show logout success message
-      Swal.fire({
-        icon: 'success',
-        title: 'Logged Out',
-        text: 'You have been logged out successfully.',
-        timer: 1500,
-        showConfirmButton: false
-      }).then(() => {
+          this.router.navigate([
+            '/student/login'
+          ]);
 
-        // Go to student login
-        this.router.navigate(['/student/login']);
+        });
 
-      });
+      }
 
-    }
-
-  });
-}
-
-
-
+    });
+  }
 }

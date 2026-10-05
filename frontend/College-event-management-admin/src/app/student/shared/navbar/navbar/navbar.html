@@ -83,22 +83,20 @@
          NOTIFICATION
     =========================== -->
 
-    <button
-      class="navbar-icon-btn"
-      type="button"
-      title="Notifications"
-      (click)="openNotifications()"
-    >
+<button
+  class="navbar-icon-btn"
+  type="button"
+  title="Notifications"
+  (click)="openNotifications()"
+>
+  <i class="bi bi-bell"></i>
 
-      <i class="bi bi-bell"></i>
-
-      @if (notificationCount > 0) {
-        <span class="notification-dot">
-          {{ notificationCount }}
-        </span>
-      }
-
-    </button>
+  @if (notificationCount > 0) {
+    <span class="notification-dot">
+      {{ notificationCount }}
+    </span>
+  }
+</button>
 
 
     <!-- Divider -->

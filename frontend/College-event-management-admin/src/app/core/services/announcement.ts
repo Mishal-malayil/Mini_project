@@ -15,6 +15,9 @@ export class AnnouncementService {
   private coordinatorApiUrl =
     `${environment.apiUrl}/coordinator/announcements`;
 
+  private studentApiUrl =
+  `${environment.apiUrl}/student/notifications`;
+
   constructor(private http: HttpClient) {}
 
   // =========================
@@ -71,4 +74,24 @@ export class AnnouncementService {
     return this.http.delete(`${this.coordinatorApiUrl}/${id}`);
   }
 
+
+  getStudentNotifications() {
+
+    return this.http.get(
+      this.studentApiUrl
+    );
+
+  }
+  getStudentUnreadCount(): Observable<any> {
+  return this.http.get(
+    `${environment.apiUrl}/student/notifications/unread-count`
+  );
+}
+
+markStudentNotificationsAsSeen(): Observable<any> {
+  return this.http.post(
+    `${environment.apiUrl}/student/notifications/mark-seen`,
+    {}
+  );
+}
 }

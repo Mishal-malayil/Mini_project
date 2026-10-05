@@ -53,6 +53,7 @@ import { EventDetails } from './student/pages/event-details/event-details';
 import { MyRegistrations } from './student/pages/my-registrations/my-registrations';
 import { MyResults } from './student/pages/my-result/my-result';
 import { MyProfile } from './student/pages/my-profile/my-profile';
+import { Notifications } from './student/pages/notifications/notifications';
 
 export const routes: Routes = [
 
@@ -257,6 +258,10 @@ export const routes: Routes = [
 {
     path : 'profile',
     component:MyProfile
+},
+{
+    path : 'notifications',
+    component:Notifications
 }
   
 ]},
