@@ -521,6 +521,9 @@ Route::prefix('student')->group(function () {
     [StudentNotificationController::class,
     'index']);
      
+    Route::get('/notifications/unread-count', [StudentNotificationController::class, 'unreadCount']);
+        Route::post('/notifications/mark-seen', [StudentNotificationController::class, 'markSeen']);
+
 
 });
 });

@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { CommonModule } from '@angular/common';
 import { AnnouncementService } from '../../../../core/services/announcement';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css'
 })
-export class Navbar implements OnInit {
+export class Navbar  implements OnInit {
 
   student: any = null;
 
@@ -105,29 +106,33 @@ export class Navbar implements OnInit {
 
   loadNotificationCount(): void {
 
-    this.announcementService
-      .getStudentUnreadCount()
-      .subscribe({
+  this.announcementService
+    .getStudentUnreadCount()
+    .subscribe({
 
-        next: (response: any) => {
+      next: (response: any) => {
 
-          this.notificationCount =
-            response?.count || 0;
+        console.log(
+          'UNREAD NOTIFICATION COUNT:',
+          response
+        );
 
-        },
+        this.notificationCount =
+          response?.count || 0;
+      },
 
-        error: (error) => {
+      error: (error: any) => {
 
-          console.error(
-            'Notification count error:',
-            error
-          );
+        console.error(
+          'Notification count error:',
+          error
+        );
 
-          this.notificationCount = 0;
-        }
+        this.notificationCount = 0;
+      }
 
-      });
-  }
+    });
+}
 
   // ==============================
   // TOGGLE SEARCH
@@ -156,39 +161,38 @@ export class Navbar implements OnInit {
 
   openNotifications(): void {
 
-    // Mark all current notifications as seen
-    this.announcementService
-      .markStudentNotificationsAsSeen()
-      .subscribe({
+  this.announcementService
+    .markStudentNotificationsAsSeen()
+    .subscribe({
 
-        next: () => {
+      next: (response: any) => {
 
-          // Remove notification badge immediately
-          this.notificationCount = 0;
+        console.log(
+          'NOTIFICATIONS MARKED SEEN:',
+          response
+        );
 
-          // Open notification page
-          this.router.navigate([
-            '/student/notifications'
-          ]);
+        this.notificationCount = 0;
 
-        },
+        this.router.navigate([
+          '/student/notifications'
+        ]);
+      },
 
-        error: (error) => {
+      error: (error: any) => {
 
-          console.error(
-            'Mark notifications as seen error:',
-            error
-          );
+        console.error(
+          'Mark notifications as seen error:',
+          error
+        );
 
-          // Still open notification page
-          this.router.navigate([
-            '/student/notifications'
-          ]);
+        this.router.navigate([
+          '/student/notifications'
+        ]);
+      }
 
-        }
-
-      });
-  }
+    });
+}
 
   // ==============================
   // PROFILE

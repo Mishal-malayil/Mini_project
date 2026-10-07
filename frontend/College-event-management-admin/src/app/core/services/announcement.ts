@@ -8,90 +8,121 @@ import { environment } from '../../../environments/environment';
 })
 export class AnnouncementService {
 
-  // Admin / General announcements
-  private apiUrl = `${environment.apiUrl}/announcements`;
-
-  // Coordinator announcements
-  private coordinatorApiUrl =
-    `${environment.apiUrl}/coordinator/announcements`;
-
-  private studentApiUrl =
-  `${environment.apiUrl}/student/notifications`;
-
-  constructor(private http: HttpClient) {}
-
   // =========================
   // ADMIN / GENERAL
   // =========================
 
-  // Get All Announcements
-  getAnnouncements(): Observable<any> {
-    return this.http.get(this.apiUrl);
-  }
-
-  // Get Single Announcement
-  getAnnouncement(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`);
-  }
-
-  // Add Announcement
-  addAnnouncement(data: any): Observable<any> {
-    return this.http.post(this.apiUrl, data);
-  }
-
-  // Update Announcement
-  updateAnnouncement(id: number, data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, data);
-  }
-
-  // Delete Announcement
-  deleteAnnouncement(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
-  }
-
+  private apiUrl =
+    `${environment.apiUrl}/announcements`;
 
   // =========================
   // COORDINATOR
   // =========================
 
-  // Get coordinator's announcements
+  private coordinatorApiUrl =
+    `${environment.apiUrl}/coordinator/announcements`;
+
+  // =========================
+  // STUDENT
+  // =========================
+
+  private studentApiUrl =
+    `${environment.apiUrl}/student/notifications`;
+
+  constructor(
+    private http: HttpClient
+  ) {}
+
+  // =========================
+  // ADMIN / GENERAL
+  // =========================
+
+  getAnnouncements(): Observable<any> {
+    return this.http.get(this.apiUrl);
+  }
+
+  getAnnouncement(id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${id}`);
+  }
+
+  addAnnouncement(data: any): Observable<any> {
+    return this.http.post(this.apiUrl, data);
+  }
+
+  updateAnnouncement(
+    id: number,
+    data: any
+  ): Observable<any> {
+    return this.http.put(
+      `${this.apiUrl}/${id}`,
+      data
+    );
+  }
+
+  deleteAnnouncement(id: number): Observable<any> {
+    return this.http.delete(
+      `${this.apiUrl}/${id}`
+    );
+  }
+
+  // =========================
+  // COORDINATOR
+  // =========================
+
   getCoordinatorAnnouncements(): Observable<any> {
-    return this.http.get(this.coordinatorApiUrl);
+    return this.http.get(
+      this.coordinatorApiUrl
+    );
   }
 
-  // Get single coordinator announcement
-  getCoordinatorAnnouncement(id: number): Observable<any> {
-    return this.http.get(`${this.coordinatorApiUrl}/${id}`);
+  getCoordinatorAnnouncement(
+    id: number
+  ): Observable<any> {
+    return this.http.get(
+      `${this.coordinatorApiUrl}/${id}`
+    );
   }
 
-  // Send announcement
-  sendCoordinatorAnnouncement(data: any): Observable<any> {
-    return this.http.post(this.coordinatorApiUrl, data);
+  sendCoordinatorAnnouncement(
+    data: any
+  ): Observable<any> {
+    return this.http.post(
+      this.coordinatorApiUrl,
+      data
+    );
   }
 
-  // Delete coordinator announcement
-  deleteCoordinatorAnnouncement(id: number): Observable<any> {
-    return this.http.delete(`${this.coordinatorApiUrl}/${id}`);
+  deleteCoordinatorAnnouncement(
+    id: number
+  ): Observable<any> {
+    return this.http.delete(
+      `${this.coordinatorApiUrl}/${id}`
+    );
   }
 
+  // =========================
+  // STUDENT
+  // =========================
 
-  getStudentNotifications() {
-
+  // Get all notifications
+  getStudentNotifications(): Observable<any> {
     return this.http.get(
       this.studentApiUrl
     );
-
   }
-  getStudentUnreadCount(): Observable<any> {
-  return this.http.get(
-    `${environment.apiUrl}/student/notifications/unread-count`
-  );
-}
 
-markStudentNotificationsAsSeen(): Observable<any> {
-  return this.http.post(
-    `${environment.apiUrl}/student/notifications/mark-seen`,
-    {}
-  );
-}
+  // Get unread notification count
+  getStudentUnreadCount(): Observable<any> {
+    return this.http.get(
+      `${this.studentApiUrl}/unread-count`
+    );
+  }
+
+  // Mark notifications as seen
+  markStudentNotificationsAsSeen(): Observable<any> {
+    return this.http.post(
+      `${this.studentApiUrl}/mark-seen`,
+      {}
+    );
+  }
 }

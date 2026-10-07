@@ -8,6 +8,7 @@ import {
   AnnouncementService
 } from '../../../core/services/announcement';
 
+
 @Component({
   selector: 'app-notifications',
   standalone: true,
@@ -59,7 +60,7 @@ export class Notifications implements OnInit {
 
         },
 
-        error: (error) => {
+        error: (error: any) => {
 
           console.error(
             'STUDENT NOTIFICATIONS ERROR:',
