@@ -211,46 +211,74 @@
 
 
           <!-- FOOTER -->
-          <div class="event-footer">
+          <!-- FOOTER -->
+<div class="event-footer">
 
-            <button
-  class="view-btn"
-  [routerLink]="['/student/event-details', event.id]">
-  View Details
-</button>
+  <button
+    class="view-btn"
+    [routerLink]="['/student/event-details', event.id]"
+  >
+    View Details
+  </button>
 
 
-            <button
-              type="button"
-              class="register-btn"
-              (click)="registerEvent(event.id)"
-              [disabled]="
-                event.is_registered ||
-                event.registered ||
-                event.registration_status === 'Registered'
-              "
-            >
+  <!-- NOT REGISTERED -->
+  <button
+    *ngIf="!event.is_registered"
+    type="button"
+    class="register-btn"
+    (click)="registerEvent(event.id)"
+  >
+    <i class="bi bi-person-plus"></i>
+    Register
+  </button>
 
-              <ng-container
-                *ngIf="
-                  event.is_registered ||
-                  event.registered ||
-                  event.registration_status === 'Registered';
-                  else registerText
-                "
-              >
-                <i class="bi bi-check-circle"></i>
-                Registered
-              </ng-container>
 
-              <ng-template #registerText>
-                <i class="bi bi-person-plus"></i>
-                Register
-              </ng-template>
+  <!-- PENDING -->
+  <button
+    *ngIf="
+      event.is_registered &&
+      event.registration_status === 'Pending'
+    "
+    type="button"
+    class="register-btn pending-btn"
+    disabled
+  >
+    <i class="bi bi-clock"></i>
+    Pending
+  </button>
 
-            </button>
 
-          </div>
+  <!-- APPROVED -->
+  <button
+    *ngIf="
+      event.is_registered &&
+      event.registration_status === 'Approved'
+    "
+    type="button"
+    class="register-btn registered-btn"
+    disabled
+  >
+    <i class="bi bi-check-circle"></i>
+    Registered
+  </button>
+
+
+  <!-- REJECTED -->
+  <button
+    *ngIf="
+      event.is_registered &&
+      event.registration_status === 'Rejected'
+    "
+    type="button"
+    class="register-btn rejected-btn"
+    disabled
+  >
+    <i class="bi bi-x-circle"></i>
+    Rejected
+  </button>
+
+</div>
 
         </div>
 

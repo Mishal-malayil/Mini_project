@@ -839,6 +839,23 @@
 
   line-height: 1.6;
 }
+.pending-btn {
+  background: #fff3cd;
+  color: #b77900;
+  cursor: not-allowed;
+}
+
+.registered-btn {
+  background: #dcfce7;
+  color: #15803d;
+  cursor: not-allowed;
+}
+
+.rejected-btn {
+  background: #fee2e2;
+  color: #dc2626;
+  cursor: not-allowed;
+}
 
 
 /* =========================================

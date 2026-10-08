@@ -132,53 +132,47 @@ export class ExploreEvents implements OnInit {
     ]);
   }
 
-  registerEvent(id: number): void {
+ registerEvent(eventId: number): void {
 
-    Swal.fire({
-      icon: 'question',
-      title: 'Register for Event?',
-      text: 'Do you want to register for this event?',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, Register',
-      cancelButtonText: 'Cancel',
-      reverseButtons: true
-    }).then((result) => {
+  this.eventService.registerStudentEvent(eventId).subscribe({
 
-      if (!result.isConfirmed) {
-        return;
+    next: (response: any) => {
+
+      console.log('REGISTRATION RESPONSE:', response);
+
+      const event = this.filteredEvents.find(
+        e => e.id === eventId
+      );
+
+      if (event) {
+        event.is_registered = true;
+        event.registration_status = 'Pending';
       }
 
-      this.eventService.registerStudentEvent(id).subscribe({
-
-        next: (response: any) => {
-
-          Swal.fire({
-            icon: 'success',
-            title: 'Registration Successful',
-            text: response?.message ||
-                  'You have been registered for this event.',
-            timer: 1800,
-            showConfirmButton: false
-          });
-
-          this.loadEvents();
-        },
-
-        error: (error: any) => {
-
-          console.error('Registration error:', error);
-
-          Swal.fire({
-            icon: 'error',
-            title: 'Registration Failed',
-            text: error?.error?.message ||
-                  'Unable to register for this event.'
-          });
-        }
+      // If you have SweetAlert:
+      Swal.fire({
+        icon: 'success',
+        title: 'Registration Submitted',
+        text: 'Your registration is pending coordinator approval.',
+        confirmButtonText: 'OK'
       });
 
-    });
-  }
+    },
+
+    error: (error: any) => {
+
+      console.error('REGISTRATION ERROR:', error);
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Registration Failed',
+        text: error?.error?.message || 'Unable to register for this event.'
+      });
+
+    }
+
+  });
+}
 
  getEventImage(event: any): string {
   if (event.image) {
