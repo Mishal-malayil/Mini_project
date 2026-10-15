@@ -16,4 +16,5 @@ class EventCategory extends Model
     {
         return $this->hasMany(Event::class, 'category_id');
     }
+    
 }

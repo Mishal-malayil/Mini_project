@@ -132,45 +132,56 @@ export class ExploreEvents implements OnInit {
     ]);
   }
 
- registerEvent(eventId: number): void {
+registerEvent(eventId: number): void {
+  const event = this.events.find((item: any) => item.id === eventId);
 
-  this.eventService.registerStudentEvent(eventId).subscribe({
-
-    next: (response: any) => {
-
-      console.log('REGISTRATION RESPONSE:', response);
-
-      const event = this.filteredEvents.find(
-        e => e.id === eventId
-      );
-
-      if (event) {
-        event.is_registered = true;
-        event.registration_status = 'Pending';
-      }
-
-      // If you have SweetAlert:
-      Swal.fire({
-        icon: 'success',
-        title: 'Registration Submitted',
-        text: 'Your registration is pending coordinator approval.',
-        confirmButtonText: 'OK'
-      });
-
-    },
-
-    error: (error: any) => {
-
-      console.error('REGISTRATION ERROR:', error);
-
-      Swal.fire({
-        icon: 'error',
-        title: 'Registration Failed',
-        text: error?.error?.message || 'Unable to register for this event.'
-      });
-
+  Swal.fire({
+    title: 'Confirm Registration',
+    text: `Are you sure you want to register for "${event?.event_name || 'this event'}"?`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, Register',
+    cancelButtonText: 'Cancel',
+    confirmButtonColor: '#2563eb',
+    cancelButtonColor: '#6b7280',
+    reverseButtons: true
+  }).then((result) => {
+    if (!result.isConfirmed) {
+      return;
     }
 
+    this.eventService.registerStudentEvent(eventId).subscribe({
+      next: (response: any) => {
+        const selectedEvent = this.events.find(
+          (item: any) => item.id === eventId
+        );
+
+        if (selectedEvent) {
+          selectedEvent.is_registered = true;
+          selectedEvent.registration_status = 'Pending';
+        }
+
+        this.filterEvents();
+
+        Swal.fire({
+          title: 'Registration Submitted!',
+          text: response?.message ||
+            'Your registration request has been submitted successfully.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#2563eb'
+        });
+      },
+      error: (error: any) => {
+        Swal.fire({
+          title: 'Registration Failed',
+          text: error?.error?.message ||
+            'Unable to register for this event. Please try again.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    });
   });
 }
 
@@ -189,36 +200,32 @@ export class ExploreEvents implements OnInit {
            'General';
   }
 
-  formatDate(date: string): string {
-
-    if (!date) {
-      return 'Date not available';
-    }
-
-    return new Date(date).toLocaleDateString(
-      'en-IN',
-      {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric'
-      }
-    );
+ formatDate(date: string | null | undefined): string {
+  if (!date) {
+    return 'Date not specified';
   }
 
-  formatTime(time: string): string {
+  return new Date(date).toLocaleDateString('en-IN', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric'
+  });
+}
 
-    if (!time) {
-      return 'Time not available';
-    }
-
-    const date = new Date(`1970-01-01T${time}`);
-
-    return date.toLocaleTimeString(
-      'en-IN',
-      {
-        hour: '2-digit',
-        minute: '2-digit'
-      }
-    );
+  formatTime(time: string | null | undefined): string {
+  if (!time) {
+    return 'Not specified';
   }
+
+  const [hours, minutes] = time.split(':');
+
+  const date = new Date();
+  date.setHours(Number(hours), Number(minutes), 0, 0);
+
+  return date.toLocaleTimeString('en-IN', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  });
+}
 }

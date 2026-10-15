@@ -173,20 +173,25 @@
 
 
             <!-- Time -->
-            <div class="info-item">
+           <div class="info-item">
+  <div class="info-icon">
+    <i class="bi bi-clock"></i>
+  </div>
 
-              <div class="info-icon">
-                <i class="bi bi-clock"></i>
-              </div>
+  <div>
+    <span>Time</span>
+    <strong>
+      <ng-container *ngIf="event.start_time && event.end_time; else noTime">
+        {{ formatTime(event.start_time) }} -
+        {{ formatTime(event.end_time) }}
+      </ng-container>
 
-              <div>
-                <span>Time</span>
-                <strong>
-                  {{ formatTime(event.event_time || event.time) }}
-                </strong>
-              </div>
-
-            </div>
+      <ng-template #noTime>
+        Time not available
+      </ng-template>
+    </strong>
+  </div>
+</div>
 
 
             <!-- Venue -->
@@ -210,7 +215,7 @@
           </div>
 
 
-          <!-- FOOTER -->
+          
           <!-- FOOTER -->
 <div class="event-footer">
 

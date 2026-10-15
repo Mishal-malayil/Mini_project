@@ -8,10 +8,18 @@ use Illuminate\Http\Request;
 
 class EventCategoryController extends Controller
 {
-    // Display all categories
+    // Display all categories with automatically calculated status
     public function index()
     {
-        return response()->json(EventCategory::all(), 200);
+        $categories = EventCategory::withCount('events')
+            ->get()
+            ->map(function ($category) {
+                $category->status = $category->events_count > 0;
+
+                return $category;
+            });
+
+        return response()->json($categories, 200);
     }
 
     // Store a new category
@@ -19,54 +27,63 @@ class EventCategoryController extends Controller
     {
         $validated = $request->validate([
             'category_name' => 'required|string|max:255|unique:event_categories,category_name',
-            'description'   => 'nullable|string',
-            'status'        => 'required|boolean',
+            'description' => 'nullable|string',
         ]);
 
-        $category = EventCategory::create($validated);
+        $category = EventCategory::create([
+            'category_name' => $validated['category_name'],
+            'description' => $validated['description'] ?? null,
+            'status' => false,
+        ]);
+
+        $category->loadCount('events');
 
         return response()->json([
             'message' => 'Event category created successfully',
-            'category' => $category
+            'category' => $category,
         ], 201);
     }
 
     // Display one category
     public function show($id)
     {
-        $category = EventCategory::find($id);
+        $category = EventCategory::withCount('events')->find($id);
 
         if (!$category) {
             return response()->json([
-                'message' => 'Event category not found'
+                'message' => 'Event category not found',
             ], 404);
         }
+
+        $category->status = $category->events_count > 0;
 
         return response()->json($category, 200);
     }
 
-    // Update category
+    // Update category details
     public function update(Request $request, $id)
     {
         $category = EventCategory::find($id);
 
         if (!$category) {
             return response()->json([
-                'message' => 'Event category not found'
+                'message' => 'Event category not found',
             ], 404);
         }
 
         $validated = $request->validate([
             'category_name' => 'required|string|max:255|unique:event_categories,category_name,' . $id,
-            'description'   => 'nullable|string',
-            'status' => 'required|boolean',
+            'description' => 'nullable|string',
         ]);
 
         $category->update($validated);
 
+        $category->loadCount('events');
+        $category->status = $category->events_count > 0;
+
         return response()->json([
             'message' => 'Event category updated successfully',
-            'category' => $category
+            'category' => $category,
         ], 200);
     }
 
@@ -77,14 +94,21 @@ class EventCategoryController extends Controller
 
         if (!$category) {
             return response()->json([
-                'message' => 'Event category not found'
+                'message' => 'Event category not found',
             ], 404);
+        }
+
+        // Prevent deleting a category that is still used by events
+        if ($category->events()->exists()) {
+            return response()->json([
+                'message' => 'Cannot delete a category that has events.',
+            ], 422);
         }
 
         $category->delete();
 
         return response()->json([
-            'message' => 'Event category deleted successfully'
+            'message' => 'Event category deleted successfully',
         ], 200);
     }
 }
