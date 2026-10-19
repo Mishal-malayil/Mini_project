@@ -464,6 +464,17 @@ Route::prefix('student')->group(function () {
         StudentAuthController::class,
         'login'
     ]);
+    Route::post('/forgot-password', [
+    StudentAuthController::class, 'forgotPassword'
+    ]);
+
+    Route::post('/verify-reset-otp', [
+    StudentAuthController::class, 'verifyResetOtp'
+    ]);
+
+    Route::post('/reset-password', [
+    StudentAuthController::class, 'resetPassword'
+]);
     
 
 

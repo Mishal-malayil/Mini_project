@@ -37,4 +37,25 @@ export class StudentAuthService {
     data
   );
 }
+forgotPassword(email: string) {
+  return this.http.post(`${this.apiUrl}/forgot-password`, {
+    email
+  });
+}
+
+verifyResetOtp(email: string, otp: string) {
+  return this.http.post(`${this.apiUrl}/verify-reset-otp`, {
+    email,
+    otp
+  });
+}
+
+resetPassword(data: {
+  email: string;
+  otp: string;
+  new_password: string;
+  new_password_confirmation: string;
+}) {
+  return this.http.post(`${this.apiUrl}/reset-password`, data);
+}
 }
