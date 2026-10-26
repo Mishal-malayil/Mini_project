@@ -214,7 +214,38 @@
 
           </div>
 
+<!-- PARTICIPANT CAPACITY -->
+<div class="participant-capacity">
+  <div class="capacity-info">
+    <i class="bi bi-people"></i>
 
+    <span>
+      Participants:
+      {{ event.registered_count ?? 0 }}
+      /
+      {{ event.max_participants ?? 'Unlimited' }}
+    </span>
+  </div>
+
+  <div
+    class="capacity-info"
+    *ngIf="event.max_participants !== null &&
+           event.max_participants !== undefined"
+  >
+    <i class="bi bi-person-check"></i>
+
+    <span>
+      Seats remaining: {{ event.available_seats ?? event.max_participants }}
+    </span>
+  </div>
+
+  <span
+    class="capacity-full"
+    *ngIf="event.is_full"
+  >
+    Event Full
+  </span>
+</div>
           
           <!-- FOOTER -->
 <div class="event-footer">
@@ -227,16 +258,24 @@
   </button>
 
 
-  <!-- NOT REGISTERED -->
-  <button
-    *ngIf="!event.is_registered"
-    type="button"
-    class="register-btn"
-    (click)="registerEvent(event.id)"
-  >
-    <i class="bi bi-person-plus"></i>
-    Register
-  </button>
+ <!-- NOT REGISTERED -->
+<button
+  *ngIf="!event.is_registered"
+  type="button"
+  class="register-btn"
+  [class.event-full-btn]="event.is_full"
+  [disabled]="event.is_full"
+  (click)="registerEvent(event.id)"
+>
+  <i
+    class="bi"
+    [ngClass]="event.is_full
+      ? 'bi-x-circle'
+      : 'bi-person-plus'"
+  ></i>
+
+  {{ event.is_full ? 'Event Full' : 'Register' }}
+</button>
 
 
   <!-- PENDING -->

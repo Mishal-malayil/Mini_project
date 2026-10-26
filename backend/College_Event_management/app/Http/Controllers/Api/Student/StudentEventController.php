@@ -6,12 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\Registration;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StudentEventController extends Controller
 {
-    // =====================================================
-    // GET AVAILABLE EVENTS FOR STUDENTS
-    // =====================================================
+    /*
+    |--------------------------------------------------------------------------
+    | GET AVAILABLE EVENTS FOR STUDENTS
+    |--------------------------------------------------------------------------
+    */
 
     public function index(Request $request)
     {
@@ -23,131 +26,76 @@ class StudentEventController extends Controller
             ], 401);
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | EVENT VISIBILITY RULE
-        |--------------------------------------------------------------------------
-        |
-        | Show event when:
-        |
-        | 1. Event status is Approved
-        | 2. Event date is in the future
-        |
-        | OR
-        |
-        | 3. Event date is today
-        | 4. Current time is before or equal to end_time
-        |
-        */
-
         $events = Event::with([
                 'category',
                 'coordinator'
             ])
             ->where('status', 'Approved')
-
             ->where(function ($query) {
-
-                // Future events
-                $query->whereDate(
-                    'event_date',
-                    '>',
-                    today()
-                )
-
-                // Today's events which have not ended
-                ->orWhere(function ($query) {
-
-                    $query->whereDate(
-                        'event_date',
-                        today()
-                    )
-                    ->whereTime(
-                        'end_time',
-                        '>=',
-                        now()->format('H:i:s')
-                    );
-
-                });
-
+                $query->whereDate('event_date', '>', today())
+                    ->orWhere(function ($query) {
+                        $query->whereDate('event_date', today())
+                            ->whereTime(
+                                'end_time',
+                                '>=',
+                                now()->format('H:i:s')
+                            );
+                    });
             })
-
             ->orderBy('event_date', 'asc')
             ->orderBy('start_time', 'asc')
             ->get()
-
             ->map(function ($event) use ($student) {
-
-                /*
-                |--------------------------------------------------------------------------
-                | CHECK STUDENT REGISTRATION
-                |--------------------------------------------------------------------------
-                */
 
                 $registration = Registration::where(
                         'student_id',
                         $student->id
                     )
-                    ->where(
+                    ->where('event_id', $event->id)
+                    ->first();
+
+                $registeredCount = Registration::where(
                         'event_id',
                         $event->id
                     )
-                    ->first();
-
+                    ->whereIn('status', ['Pending', 'Approved'])
+                    ->count();
 
                 return [
                     'id' => $event->id,
-
                     'event_name' => $event->event_name,
-
                     'description' => $event->description,
-
-
-                    // =====================================================
-                    // EVENT IMAGE
-                    // =====================================================
 
                     'image' => $event->image
                         ? asset('storage/' . $event->image)
                         : null,
 
-
-                    // =====================================================
-                    // EVENT INFORMATION
-                    // =====================================================
-
                     'venue' => $event->venue,
-
                     'event_date' => $event->event_date,
-
                     'start_time' => $event->start_time,
-
                     'end_time' => $event->end_time,
 
                     'max_participants' => $event->max_participants,
+                    'registered_count' => $registeredCount,
+
+                    'available_seats' => $event->max_participants !== null
+                        ? max(
+                            0,
+                            $event->max_participants - $registeredCount
+                        )
+                        : null,
+
+                    'is_full' => $event->max_participants !== null
+                        && $registeredCount >= $event->max_participants,
 
                     'status' => $event->status,
-
-
-                    // =====================================================
-                    // CATEGORY & COORDINATOR
-                    // =====================================================
-
                     'category' => $event->category,
-
                     'coordinator' => $event->coordinator,
 
-
-                    // =====================================================
-                    // STUDENT REGISTRATION
-                    // =====================================================
-
                     'is_registered' => $registration !== null,
-
                     'registration_status' => $registration?->status,
                 ];
             });
-
 
         return response()->json([
             'events' => $events
@@ -155,9 +103,11 @@ class StudentEventController extends Controller
     }
 
 
-    // =====================================================
-    // GET SINGLE EVENT DETAILS
-    // =====================================================
+    /*
+    |--------------------------------------------------------------------------
+    | GET SINGLE EVENT DETAILS
+    |--------------------------------------------------------------------------
+    */
 
     public function show(Request $request, $id)
     {
@@ -169,127 +119,82 @@ class StudentEventController extends Controller
             ], 401);
         }
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | ONLY SHOW APPROVED AND ACTIVE EVENTS
-        |--------------------------------------------------------------------------
-        */
-
         $event = Event::with([
                 'category',
                 'coordinator'
             ])
             ->where('status', 'Approved')
-
             ->where(function ($query) {
-
-                // Future events
-                $query->whereDate(
-                    'event_date',
-                    '>',
-                    today()
-                )
-
-                // Today's events which have not ended
-                ->orWhere(function ($query) {
-
-                    $query->whereDate(
-                        'event_date',
-                        today()
-                    )
-                    ->whereTime(
-                        'end_time',
-                        '>=',
-                        now()->format('H:i:s')
-                    );
-
-                });
-
+                $query->whereDate('event_date', '>', today())
+                    ->orWhere(function ($query) {
+                        $query->whereDate('event_date', today())
+                            ->whereTime(
+                                'end_time',
+                                '>=',
+                                now()->format('H:i:s')
+                            );
+                    });
             })
-
             ->findOrFail($id);
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | CHECK STUDENT REGISTRATION
-        |--------------------------------------------------------------------------
-        */
 
         $registration = Registration::where(
                 'student_id',
                 $student->id
             )
-            ->where(
+            ->where('event_id', $event->id)
+            ->first();
+
+        $registeredCount = Registration::where(
                 'event_id',
                 $event->id
             )
-            ->first();
-
+            ->whereIn('status', ['Pending', 'Approved'])
+            ->count();
 
         return response()->json([
-
             'event' => [
-
                 'id' => $event->id,
-
                 'event_name' => $event->event_name,
-
                 'description' => $event->description,
-
-
-                // =====================================================
-                // EVENT IMAGE
-                // =====================================================
 
                 'image' => $event->image
                     ? asset('storage/' . $event->image)
                     : null,
 
-
-                // =====================================================
-                // EVENT INFORMATION
-                // =====================================================
-
                 'venue' => $event->venue,
-
                 'event_date' => $event->event_date,
-
                 'start_time' => $event->start_time,
-
                 'end_time' => $event->end_time,
 
                 'max_participants' => $event->max_participants,
+                'registered_count' => $registeredCount,
+
+                'available_seats' => $event->max_participants !== null
+                    ? max(
+                        0,
+                        $event->max_participants - $registeredCount
+                    )
+                    : null,
+
+                'is_full' => $event->max_participants !== null
+                    && $registeredCount >= $event->max_participants,
 
                 'status' => $event->status,
-
-
-                // =====================================================
-                // CATEGORY & COORDINATOR
-                // =====================================================
-
                 'category' => $event->category,
-
                 'coordinator' => $event->coordinator,
 
-
-                // =====================================================
-                // STUDENT REGISTRATION
-                // =====================================================
-
                 'is_registered' => $registration !== null,
-
                 'registration_status' => $registration?->status,
             ]
-
         ]);
     }
 
 
-    // =====================================================
-    // REGISTER LOGGED-IN STUDENT FOR EVENT
-    // =====================================================
+    /*
+    |--------------------------------------------------------------------------
+    | REGISTER LOGGED-IN STUDENT FOR EVENT
+    |--------------------------------------------------------------------------
+    */
 
     public function register(Request $request, $id)
     {
@@ -301,177 +206,154 @@ class StudentEventController extends Controller
             ], 401);
         }
 
+        return DB::transaction(function () use ($student, $id) {
 
-        /*
-        |--------------------------------------------------------------------------
-        | ONLY APPROVED AND ACTIVE EVENTS CAN BE REGISTERED
-        |--------------------------------------------------------------------------
-        */
+            /*
+            |--------------------------------------------------------------------------
+            | FIND AND LOCK EVENT
+            |--------------------------------------------------------------------------
+            */
 
-        $event = Event::where(
-                'status',
-                'Approved'
-            )
+            $event = Event::where('status', 'Approved')
+                ->where(function ($query) {
+                    $query->whereDate('event_date', '>', today())
+                        ->orWhere(function ($query) {
+                            $query->whereDate('event_date', today())
+                                ->whereTime(
+                                    'end_time',
+                                    '>=',
+                                    now()->format('H:i:s')
+                                );
+                        });
+                })
+                ->where('id', $id)
+                ->lockForUpdate()
+                ->first();
 
-            ->where(function ($query) {
+            if (!$event) {
+                return response()->json([
+                    'message' =>
+                        'This event is unavailable, not approved, or has already ended.'
+                ], 404);
+            }
 
-                // Future events
-                $query->whereDate(
-                    'event_date',
-                    '>',
-                    today()
+
+            /*
+            |--------------------------------------------------------------------------
+            | CHECK EXISTING REGISTRATION
+            |--------------------------------------------------------------------------
+            */
+
+            $existingRegistration = Registration::where(
+                    'student_id',
+                    $student->id
                 )
+                ->where('event_id', $event->id)
+                ->first();
 
-                // Today's events which have not ended
-                ->orWhere(function ($query) {
+            if ($existingRegistration) {
 
-                    $query->whereDate(
-                        'event_date',
-                        today()
-                    )
-                    ->whereTime(
-                        'end_time',
-                        '>=',
-                        now()->format('H:i:s')
-                    );
+                if ($existingRegistration->status === 'Pending') {
+                    return response()->json([
+                        'message' =>
+                            'Your registration request is already pending approval.'
+                    ], 422);
+                }
 
-                });
+                if ($existingRegistration->status === 'Approved') {
+                    return response()->json([
+                        'message' =>
+                            'You are already approved for this event.'
+                    ], 422);
+                }
 
-            })
-
-            ->findOrFail($id);
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | CHECK EXISTING REGISTRATION
-        |--------------------------------------------------------------------------
-        */
-
-        $existingRegistration = Registration::where(
-                'student_id',
-                $student->id
-            )
-            ->where(
-                'event_id',
-                $event->id
-            )
-            ->first();
-
-
-        if ($existingRegistration) {
-
-            // =====================================================
-            // PENDING
-            // =====================================================
-
-            if ($existingRegistration->status === 'Pending') {
+                if ($existingRegistration->status === 'Rejected') {
+                    return response()->json([
+                        'message' =>
+                            'Your registration request was rejected.'
+                    ], 422);
+                }
 
                 return response()->json([
                     'message' =>
-                        'Your registration request is already pending approval.'
+                        'A registration record already exists for this event.'
                 ], 422);
             }
 
 
-            // =====================================================
-            // APPROVED
-            // =====================================================
+            /*
+            |--------------------------------------------------------------------------
+            | CHECK MAXIMUM PARTICIPANTS
+            |--------------------------------------------------------------------------
+            |
+            | Pending and Approved registrations count toward the limit.
+            | Rejected registrations do not count.
+            | A null maximum means unlimited registrations.
+            |
+            */
 
-            if ($existingRegistration->status === 'Approved') {
-
-                return response()->json([
-                    'message' =>
-                        'You are already approved for this event.'
-                ], 422);
-            }
-
-
-            // =====================================================
-            // REJECTED
-            // =====================================================
-
-            if ($existingRegistration->status === 'Rejected') {
-
-                return response()->json([
-                    'message' =>
-                        'Your registration request was rejected.'
-                ], 422);
-            }
-        }
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | CHECK MAXIMUM PARTICIPANTS
-        |--------------------------------------------------------------------------
-        */
-
-        if ($event->max_participants) {
-
-            $approvedCount = Registration::where(
+            $registeredCount = Registration::where(
                     'event_id',
                     $event->id
                 )
-                ->where(
-                    'status',
-                    'Approved'
-                )
+                ->whereIn('status', ['Pending', 'Approved'])
                 ->count();
 
-
             if (
-                $approvedCount >=
-                $event->max_participants
+                $event->max_participants !== null
+                && $registeredCount >= $event->max_participants
             ) {
-
                 return response()->json([
                     'message' =>
-                        'This event is full.'
+                        'This event has reached its maximum participant limit.',
+                    'max_participants' => $event->max_participants,
+                    'registered_count' => $registeredCount,
+                    'available_seats' => 0,
                 ], 422);
             }
-        }
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | CREATE REGISTRATION
-        |--------------------------------------------------------------------------
-        |
-        | New registration always starts as Pending.
-        |
-        */
+            /*
+            |--------------------------------------------------------------------------
+            | CREATE REGISTRATION
+            |--------------------------------------------------------------------------
+            |
+            | New registration starts with Pending status.
+            |
+            */
 
-        $registration = Registration::create([
-
-            'student_id' =>
-                $student->id,
-
-            'event_id' =>
-                $event->id,
-
-            'registration_date' =>
-                now()->toDateString(),
-
-            'status' =>
-                'Pending',
-        ]);
+            $registration = Registration::create([
+                'student_id' => $student->id,
+                'event_id' => $event->id,
+                'registration_date' => now()->toDateString(),
+                'status' => 'Pending',
+            ]);
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | SUCCESS RESPONSE
-        |--------------------------------------------------------------------------
-        */
+            /*
+            |--------------------------------------------------------------------------
+            | SUCCESS RESPONSE
+            |--------------------------------------------------------------------------
+            */
 
-        return response()->json([
+            $newRegisteredCount = $registeredCount + 1;
 
-            'message' =>
-                'Event registration request submitted successfully. Waiting for coordinator approval.',
+            return response()->json([
+                'message' =>
+                    'Event registration request submitted successfully. Waiting for coordinator approval.',
 
-            'registration' =>
-                $registration
+                'registration' => $registration,
 
-        ], 201);
+                'max_participants' => $event->max_participants,
+                'registered_count' => $newRegisteredCount,
+
+                'available_seats' => $event->max_participants !== null
+                    ? max(
+                        0,
+                        $event->max_participants - $newRegisteredCount
+                    )
+                    : null,
+            ], 201);
+        });
     }
 }

@@ -856,7 +856,45 @@
   color: #dc2626;
   cursor: not-allowed;
 }
+/* Participant capacity */
+.participant-capacity {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
 
+.capacity-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #475569;
+  font-size: 13px;
+}
+
+.capacity-info i {
+  color: #2563eb;
+  font-size: 16px;
+}
+
+.capacity-full {
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.event-full-btn,
+.event-full-btn:disabled {
+  background: #94a3b8;
+  border-color: #94a3b8;
+  color: #fff;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
 
 /* =========================================
    RESPONSIVE

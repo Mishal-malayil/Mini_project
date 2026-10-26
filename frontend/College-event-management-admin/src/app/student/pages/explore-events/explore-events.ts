@@ -172,15 +172,17 @@ registerEvent(eventId: number): void {
           confirmButtonColor: '#2563eb'
         });
       },
-      error: (error: any) => {
-        Swal.fire({
-          title: 'Registration Failed',
-          text: error?.error?.message ||
-            'Unable to register for this event. Please try again.',
-          icon: 'error',
-          confirmButtonText: 'OK'
-        });
-      }
+     error: (error: any) => {
+  this.loadEvents();
+
+  Swal.fire({
+    title: 'Registration Failed',
+    text: error?.error?.message ||
+      'Unable to register for this event. Please try again.',
+    icon: 'error',
+    confirmButtonText: 'OK'
+  });
+}
     });
   });
 }
