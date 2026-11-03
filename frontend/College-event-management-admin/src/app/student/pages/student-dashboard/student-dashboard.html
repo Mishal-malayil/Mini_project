@@ -171,12 +171,110 @@
   </section>
 
 
-  <!-- =========================
-       FEATURED EVENT
-  ========================== -->
-  <section class="featured-section">
+ 
+  
+<!-- FEATURED EVENT -->
+<section class="featured-section">
 
-    <div class="featured-event">
+  <div class="featured-event" *ngIf="featuredEvent as event; else noFeaturedEvent">
+
+    <div class="featured-left">
+
+      <span class="featured-badge">
+        <i class="bi bi-stars"></i>
+        FEATURED EVENT
+      </span>
+
+      <h2>{{ event.title }}</h2>
+
+      <p>{{ event.description }}</p>
+
+      <div class="featured-meta">
+
+        <div>
+          <i class="bi bi-calendar-event"></i>
+          <span>
+            <small>Date</small>
+            {{ event.date | date:'dd MMM yyyy' }}
+          </span>
+        </div>
+
+        <div>
+          <i class="bi bi-clock"></i>
+          <span>
+            <small>Time</small>
+            {{ event.time || 'To be announced' }}
+          </span>
+        </div>
+
+        <div>
+          <i class="bi bi-geo-alt"></i>
+          <span>
+            <small>Venue</small>
+            {{ event.venue }}
+          </span>
+        </div>
+
+      </div>
+
+      <div class="featured-meta">
+        <div>
+          <i class="bi bi-people"></i>
+          <span>
+            <small>Participants</small>
+            {{ event.registered_count ?? 0 }}
+            /
+            {{ event.max_participants ?? 'Unlimited' }}
+          </span>
+        </div>
+      </div>
+
+      <a
+        [routerLink]="['/student/event-details', event.id]"
+        class="featured-button"
+      >
+        View Event
+        <i class="bi bi-arrow-right"></i>
+      </a>
+
+    </div>
+
+    <div class="featured-visual">
+
+      <ng-container *ngIf="event.image; else featuredIcon">
+        <img
+          [src]="event.image"
+          [alt]="event.title"
+          class="featured-image"
+        />
+      </ng-container>
+
+      <ng-template #featuredIcon>
+        <div class="visual-circle circle-one"></div>
+        <div class="visual-circle circle-two"></div>
+
+        <i
+          class="bi trophy-icon"
+          [ngClass]="event.icon || 'bi-calendar-event'"
+        ></i>
+      </ng-template>
+
+      <div class="visual-tag tag-one">
+        <i class="bi bi-calendar-check"></i>
+        Upcoming Event
+      </div>
+
+      <div class="visual-tag tag-two" *ngIf="event.is_full">
+        <i class="bi bi-x-circle"></i>
+        Event Full
+      </div>
+
+    </div>
+
+  </div>
+
+  <ng-template #noFeaturedEvent>
+    <div class="featured-event featured-empty">
 
       <div class="featured-left">
 
@@ -185,72 +283,29 @@
           FEATURED EVENT
         </span>
 
-        <h2>
-          Annual College
-          <br>
-          Sports Meet
-        </h2>
+        <h2>No Upcoming Events</h2>
 
         <p>
-          Get ready to compete, represent your department
-          and create unforgettable memories.
+          There are currently no approved upcoming events.
+          Check back soon for new college activities.
         </p>
 
-        <div class="featured-meta">
-
-          <div>
-            <i class="bi bi-calendar-event"></i>
-
-            <span>
-              <small>Date</small>
-              20 September 2026
-            </span>
-          </div>
-
-          <div>
-            <i class="bi bi-geo-alt"></i>
-
-            <span>
-              <small>Venue</small>
-              College Ground
-            </span>
-          </div>
-
-        </div>
-
-        <a
-          routerLink="/student/events"
-          class="featured-button"
-        >
-          View Event
+        <a routerLink="/student/events" class="featured-button">
+          Explore Events
           <i class="bi bi-arrow-right"></i>
         </a>
 
       </div>
 
-
       <div class="featured-visual">
-
-        <div class="visual-circle circle-one"></div>
-        <div class="visual-circle circle-two"></div>
-
-        <i class="bi bi-trophy-fill trophy-icon"></i>
-
-        <div class="visual-tag tag-one">
-          <i class="bi bi-people-fill"></i>
-          200+ Participants
-        </div>
-
-        <div class="visual-tag tag-two">
-          <i class="bi bi-calendar-check"></i>
-          Registration Open
-        </div>
-
+        <i class="bi bi-calendar-event trophy-icon"></i>
       </div>
 
     </div>
+  </ng-template>
 
-  </section>
+</section>
+
 
 
   <!-- =========================

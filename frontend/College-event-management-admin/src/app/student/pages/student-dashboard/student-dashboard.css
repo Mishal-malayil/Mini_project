@@ -1363,7 +1363,19 @@
   color: #2f966b;
   background: #eaf8f1;
 }
+.featured-image {
+  display: block;
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 18px;
+  position: relative;
+  z-index: 1;
+}
 
+.featured-empty {
+  min-height: 280px;
+}
 
 /* =========================================================
    RESPONSIVE
