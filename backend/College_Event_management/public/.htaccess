@@ -4,6 +4,12 @@
     </IfModule>
 
     RewriteEngine On
+    
+    # CORS headers for Netlify frontend
+    Header always set Access-Control-Allow-Origin "https://cemspro.netlify.app"
+    Header always set Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With, Accept, Origin"
+    Header always set Vary "Origin"
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
