@@ -44,8 +44,13 @@ export class Login {
 
     next: (response) => {
 
-      this.authService.saveToken(response.token);
-      this.authService.saveAdmin(response.admin);
+        console.log('LOGIN RESPONSE KEYS:', Object.keys(response ?? {}));
+  console.log('TOKEN RECEIVED:', !!response?.token);
+
+  this.authService.saveToken(response.token);
+  this.authService.saveAdmin(response.admin);
+
+      
 
       this.loading = false;
 
