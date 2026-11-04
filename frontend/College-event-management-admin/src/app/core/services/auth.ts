@@ -49,12 +49,21 @@ export class AuthService {
     );
   }
 
-  // GET ADMIN
-  getAdmin(): any {
-    const admin = localStorage.getItem('admin');
+ // GET ADMIN
+getAdmin(): any {
+  const admin = localStorage.getItem('admin');
 
-    return admin ? JSON.parse(admin) : null;
+  if (!admin || admin === 'undefined') {
+    return null;
   }
+
+  try {
+    return JSON.parse(admin);
+  } catch (error) {
+    localStorage.removeItem('admin');
+    return null;
+  }
+}
 
   // REMOVE ADMIN
   removeAdmin(): void {
