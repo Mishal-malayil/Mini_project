@@ -8,13 +8,17 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   if (url.includes('/api/student/')) {
     token = localStorage.getItem('student_token');
-  } else if (url.includes('/api/coordinator/')) {
+  } 
+  else if (url.includes('/api/coordinator/')) {
     token = localStorage.getItem('coordinator_token');
-  } else if (url.includes('/api/admin/')) {
+  } 
+  else if (
+    url.includes('/api/admin/') ||
+    url.endsWith('/api/dashboard')
+  ) {
     token = localStorage.getItem('admin_token');
   }
 
-  // Public API or missing token
   if (!token || token === 'undefined' || token === 'null') {
     return next(req);
   }
