@@ -78,40 +78,61 @@ export class StudentLogin {
   // ==========================================
 
   login(): void {
+
+    if (this.loading) {
+      return;
+    }
+
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
     }
 
+    // Remove previous student session
+    localStorage.removeItem('student_token');
+    localStorage.removeItem('student');
+
     this.loading = true;
 
-    this.authService.login(
-      this.loginForm.getRawValue()
-    ).subscribe({
+    const loginData = this.loginForm.getRawValue();
+
+    // Normalize email
+    loginData.email = loginData.email.trim().toLowerCase();
+
+    this.authService.login(loginData).subscribe({
 
       next: (response: any) => {
 
-        // Check backend response
+        // Validate backend response
         if (
           !response ||
           typeof response.token !== 'string' ||
           !response.token.trim() ||
           !response.student ||
-          typeof response.student !== 'object'
+          typeof response.student !== 'object' ||
+          Array.isArray(response.student)
         ) {
+
           this.loading = false;
+
+          localStorage.removeItem('student_token');
+          localStorage.removeItem('student');
+
+          console.error(
+            'Invalid student login response:',
+            response
+          );
 
           Swal.fire({
             icon: 'error',
-            title: 'Login Error',
-            text: 'Student authentication response is incomplete. Please try again.'
+            title: 'Login Failed',
+            text: 'Invalid authentication response. Please try again.'
           });
 
-          console.error('Invalid student login response:', response);
           return;
         }
 
-        // Save valid student session
+        // Save authenticated student session
         localStorage.setItem(
           'student_token',
           response.token
@@ -122,11 +143,11 @@ export class StudentLogin {
           JSON.stringify(response.student)
         );
 
-        console.log('Student login successful');
-        console.log('Student token saved:', !!localStorage.getItem('student_token'));
-        console.log('Student data saved:', !!localStorage.getItem('student'));
-
         this.loading = false;
+
+        console.log('Student login successful');
+        console.log('Student token saved:', true);
+        console.log('Student data saved:', true);
 
         Swal.fire({
           icon: 'success',
@@ -134,22 +155,42 @@ export class StudentLogin {
           text: 'Welcome back!',
           timer: 1500,
           showConfirmButton: false
+        }).then(() => {
+          this.router.navigate(['/student/dashboard']);
         });
 
-        this.router.navigate(['/student/dashboard']);
       },
 
       error: (error: any) => {
+
         this.loading = false;
 
+        // Clear invalid session
+        localStorage.removeItem('student_token');
+        localStorage.removeItem('student');
+
         console.error('Student login error:', error);
+
+        let errorMessage = 'Invalid email or password.';
+
+        if (error.status === 401) {
+          errorMessage = 'Invalid email or password.';
+        } else if (error.status === 422) {
+          errorMessage =
+            error.error?.message || 'Please check your email and password.';
+        } else if (error.status === 0) {
+          errorMessage =
+            'Unable to connect to the server. Please try again.';
+        } else if (error.error?.message) {
+          errorMessage = error.error.message;
+        }
 
         Swal.fire({
           icon: 'error',
           title: 'Login Failed',
-          text: error.error?.message ||
-            'Invalid email or password.'
+          text: errorMessage
         });
+
       }
     });
   }
@@ -159,6 +200,7 @@ export class StudentLogin {
   // ==========================================
 
   openForgotPassword(): void {
+
     this.showForgotPassword = true;
     this.resetStep = 1;
 
@@ -177,6 +219,7 @@ export class StudentLogin {
   // ==========================================
 
   closeForgotPassword(): void {
+
     this.showForgotPassword = false;
     this.resetStep = 1;
 
@@ -195,6 +238,7 @@ export class StudentLogin {
   // ==========================================
 
   changeResetEmail(): void {
+
     this.resetStep = 1;
     this.resetOtp = '';
 
@@ -206,11 +250,13 @@ export class StudentLogin {
   // ==========================================
 
   sendOtp(): void {
+
     const email = this.resetEmail
       .trim()
       .toLowerCase();
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+
       Swal.fire({
         icon: 'warning',
         title: 'Invalid Email',
@@ -220,12 +266,17 @@ export class StudentLogin {
       return;
     }
 
+    if (this.resetLoading) {
+      return;
+    }
+
     this.resetEmail = email;
     this.resetLoading = true;
 
     this.authService.forgotPassword(email).subscribe({
 
       next: (response: any) => {
+
         this.resetLoading = false;
         this.resetStep = 2;
 
@@ -235,9 +286,11 @@ export class StudentLogin {
           text: response?.message ||
             'If the email is registered, an OTP has been generated.'
         });
+
       },
 
       error: (error: any) => {
+
         this.resetLoading = false;
 
         Swal.fire({
@@ -246,6 +299,7 @@ export class StudentLogin {
           text: error.error?.message ||
             'Unable to process your request. Please try again.'
         });
+
       }
     });
   }
@@ -255,15 +309,21 @@ export class StudentLogin {
   // ==========================================
 
   verifyOtp(): void {
+
     const otp = this.resetOtp.trim();
 
     if (!/^\d{6}$/.test(otp)) {
+
       Swal.fire({
         icon: 'warning',
         title: 'Invalid OTP',
         text: 'Please enter the six-digit OTP.'
       });
 
+      return;
+    }
+
+    if (this.verifyLoading) {
       return;
     }
 
@@ -276,6 +336,7 @@ export class StudentLogin {
     ).subscribe({
 
       next: (response: any) => {
+
         this.verifyLoading = false;
         this.resetStep = 3;
 
@@ -287,9 +348,11 @@ export class StudentLogin {
           timer: 1200,
           showConfirmButton: false
         });
+
       },
 
       error: (error: any) => {
+
         this.verifyLoading = false;
 
         Swal.fire({
@@ -298,6 +361,7 @@ export class StudentLogin {
           text: error.error?.message ||
             'Invalid or expired OTP. Please try again.'
         });
+
       }
     });
   }
@@ -307,8 +371,14 @@ export class StudentLogin {
   // ==========================================
 
   resetPassword(): void {
+
     if (this.resetPasswordForm.invalid) {
+
       this.resetPasswordForm.markAllAsTouched();
+      return;
+    }
+
+    if (this.passwordResetLoading) {
       return;
     }
 
@@ -318,6 +388,7 @@ export class StudentLogin {
       values.new_password !==
       values.new_password_confirmation
     ) {
+
       Swal.fire({
         icon: 'warning',
         title: 'Passwords Do Not Match',
@@ -330,19 +401,22 @@ export class StudentLogin {
     this.passwordResetLoading = true;
 
     this.authService.resetPassword({
+
       email: this.resetEmail,
       otp: this.resetOtp,
       new_password: values.new_password,
       new_password_confirmation:
         values.new_password_confirmation
+
     }).subscribe({
 
       next: (response: any) => {
+
         this.passwordResetLoading = false;
 
         this.closeForgotPassword();
 
-        // Clear local student session
+        // Clear student session
         localStorage.removeItem('student_token');
         localStorage.removeItem('student');
 
@@ -352,9 +426,11 @@ export class StudentLogin {
           text: response?.message ||
             'Please log in with your new password.'
         });
+
       },
 
       error: (error: any) => {
+
         this.passwordResetLoading = false;
 
         Swal.fire({
@@ -363,6 +439,7 @@ export class StudentLogin {
           text: error.error?.message ||
             'Unable to reset your password. Please try again.'
         });
+
       }
     });
   }
