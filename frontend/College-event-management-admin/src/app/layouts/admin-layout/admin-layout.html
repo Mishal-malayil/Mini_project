@@ -1,16 +1,14 @@
-
 <div class="mobile-overlay"
      [class.show]="sidebarOpen"
      (click)="closeSidebar()">
 </div>
 
 <app-sidebar
-    [mobileOpen]="sidebarOpen"
+    [class.mobile-open]="sidebarOpen"
     (closeMenu)="closeSidebar()">
 </app-sidebar>
 
 <div class="main-content">
-
     <app-navbar (menuToggle)="toggleSidebar()"></app-navbar>
 
     <div class="content">
@@ -18,5 +16,4 @@
     </div>
 
     <app-footer></app-footer>
-
 </div>
