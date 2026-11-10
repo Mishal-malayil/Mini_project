@@ -1,19 +1,21 @@
+
 import { HttpInterceptorFn } from '@angular/common/http';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const url = req.url;
+
   let token: string | null = null;
 
-  if (req.url.includes('/student/')) {
+  if (url.includes('/api/student/')) {
     token = localStorage.getItem('student_token');
-  } else if (req.url.includes('/coordinator/')) {
+  } else if (url.includes('/api/coordinator/')) {
     token = localStorage.getItem('coordinator_token');
-  } else {
+  } else if (url.includes('/api/admin/')) {
     token = localStorage.getItem('admin_token');
   }
 
-  // Ignore missing or invalid tokens
+  // Public API or missing token
   if (!token || token === 'undefined' || token === 'null') {
-    console.warn('No valid auth token found for:', req.url);
     return next(req);
   }
 
