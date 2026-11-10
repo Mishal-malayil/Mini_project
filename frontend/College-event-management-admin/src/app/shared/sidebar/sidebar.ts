@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+
+import { Component, Input } from '@angular/core';
 import { AuthService } from '../../core/services/auth';
 import { RouterModule } from '@angular/router';
 
@@ -11,10 +12,11 @@ import { RouterModule } from '@angular/router';
 })
 export class Sidebar {
 
+  @Input() mobileOpen = false;
+
   admin: any;
 
   constructor(private authService: AuthService) {
     this.admin = this.authService.getAdmin();
   }
-
 }
