@@ -4,7 +4,10 @@
      (click)="closeSidebar()">
 </div>
 
-<app-sidebar [mobileOpen]="sidebarOpen"></app-sidebar>
+<app-sidebar
+    [mobileOpen]="sidebarOpen"
+    (closeMenu)="closeSidebar()">
+</app-sidebar>
 
 <div class="main-content">
 
