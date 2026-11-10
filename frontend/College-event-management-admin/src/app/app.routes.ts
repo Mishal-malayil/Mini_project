@@ -225,10 +225,12 @@ export const routes: Routes = [
     // STUDENT PANEL
     // ============================================
 
-  {
+ {
   path: 'student',
   component: StudentLayout,
   canActivate: [studentAuthGuard],
+  canActivateChild: [studentAuthGuard],
+
   children: [
     {
       path: '',
@@ -240,31 +242,31 @@ export const routes: Routes = [
       component: StudentDashboard
     },
     {
-        path: 'events',
-        component: ExploreEvents
+      path: 'events',
+      component: ExploreEvents
     },
     {
-  path: 'event-details/:id',
-  component: EventDetails
+      path: 'event-details/:id',
+      component: EventDetails
+    },
+    {
+      path: 'registrations',
+      component: MyRegistrations
+    },
+    {
+      path: 'results',
+      component: MyResults
+    },
+    {
+      path: 'profile',
+      component: MyProfile
+    },
+    {
+      path: 'notifications',
+      component: Notifications
+    }
+  ]
 },
-{
-    path: 'registrations',
-    component: MyRegistrations
-},
-{
-    path : 'results',
-    component:MyResults
-},
-{
-    path : 'profile',
-    component:MyProfile
-},
-{
-    path : 'notifications',
-    component:Notifications
-}
-  
-]},
     
     
   

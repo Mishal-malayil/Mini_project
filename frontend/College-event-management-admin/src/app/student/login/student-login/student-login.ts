@@ -1,3 +1,4 @@
+
 import { Component } from '@angular/core';
 import {
   FormBuilder,
@@ -87,7 +88,30 @@ export class StudentLogin {
     this.authService.login(
       this.loginForm.getRawValue()
     ).subscribe({
+
       next: (response: any) => {
+
+        // Check backend response
+        if (
+          !response ||
+          typeof response.token !== 'string' ||
+          !response.token.trim() ||
+          !response.student ||
+          typeof response.student !== 'object'
+        ) {
+          this.loading = false;
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Login Error',
+            text: 'Student authentication response is incomplete. Please try again.'
+          });
+
+          console.error('Invalid student login response:', response);
+          return;
+        }
+
+        // Save valid student session
         localStorage.setItem(
           'student_token',
           response.token
@@ -97,6 +121,10 @@ export class StudentLogin {
           'student',
           JSON.stringify(response.student)
         );
+
+        console.log('Student login successful');
+        console.log('Student token saved:', !!localStorage.getItem('student_token'));
+        console.log('Student data saved:', !!localStorage.getItem('student'));
 
         this.loading = false;
 
@@ -113,6 +141,8 @@ export class StudentLogin {
 
       error: (error: any) => {
         this.loading = false;
+
+        console.error('Student login error:', error);
 
         Swal.fire({
           icon: 'error',
@@ -194,6 +224,7 @@ export class StudentLogin {
     this.resetLoading = true;
 
     this.authService.forgotPassword(email).subscribe({
+
       next: (response: any) => {
         this.resetLoading = false;
         this.resetStep = 2;
@@ -243,6 +274,7 @@ export class StudentLogin {
       this.resetEmail,
       otp
     ).subscribe({
+
       next: (response: any) => {
         this.verifyLoading = false;
         this.resetStep = 3;
@@ -304,12 +336,13 @@ export class StudentLogin {
       new_password_confirmation:
         values.new_password_confirmation
     }).subscribe({
+
       next: (response: any) => {
         this.passwordResetLoading = false;
 
         this.closeForgotPassword();
 
-        // Clear the local student session
+        // Clear local student session
         localStorage.removeItem('student_token');
         localStorage.removeItem('student');
 
