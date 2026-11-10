@@ -1,8 +1,17 @@
-<app-sidebar></app-sidebar>
+<div class="mobile-overlay"
+     [class.show]="sidebarOpen"
+     (click)="closeSidebar()">
+</div>
+
+<app-sidebar
+    [class.mobile-open]="sidebarOpen">
+</app-sidebar>
 
 <div class="main-content">
 
-    <app-navbar></app-navbar>
+    <app-navbar
+        (menuToggle)="toggleSidebar()">
+    </app-navbar>
 
     <div class="content">
         <router-outlet></router-outlet>

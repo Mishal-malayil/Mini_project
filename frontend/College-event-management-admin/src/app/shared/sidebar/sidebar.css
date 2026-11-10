@@ -171,8 +171,15 @@
     flex-shrink: 0;
 }
 
+
 @media (max-width: 900px) {
     .sidebar {
         transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 1001;
+    }
+
+    .sidebar.mobile-open {
+        transform: translateX(0);
     }
 }

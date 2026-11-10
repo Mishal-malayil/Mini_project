@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../../core/services/auth';
 import { SearchService } from '../../core/services/search';
 import { FormsModule } from '@angular/forms';
@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { ProfileService } from '../../core/services/profile';
 import { CommonModule } from '@angular/common';
+
 
 
 
@@ -22,7 +23,11 @@ changePasswordData = {
   new_password: '',
   new_password_confirmation: ''
 };
+@Output() menuToggle = new EventEmitter<void>();
 
+toggleMenu(): void {
+  this.menuToggle.emit();
+}
 showCurrentPassword = false;
 showNewPassword = false;
 showConfirmPassword = false;
