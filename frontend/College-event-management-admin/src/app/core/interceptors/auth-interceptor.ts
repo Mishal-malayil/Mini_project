@@ -12,10 +12,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   else if (url.includes('/api/coordinator/')) {
     token = localStorage.getItem('coordinator_token');
   } 
-  else if (
-    url.includes('/api/admin/') ||
-    url.endsWith('/api/dashboard')
-  ) {
+  else if (url.includes('/api/')) {
     token = localStorage.getItem('admin_token');
   }
 
